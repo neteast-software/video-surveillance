@@ -1,94 +1,72 @@
 <template>
-  <section
-    class="py-6 overflow-hidden shadow-common rounded bg-base flex flex-col"
-  >
-    <header class="flex justify-between items-center px-6">
-      <!-- <NPopselect v-model:value="filter" :options="options"><div></div></NPopselect> -->
-      <!-- <PopSelect v-model:value="filter" :options="options"></PopSelect> -->
-      <NRadioGroup
-        class="flex-shrink-0"
-        style="width: 200px"
-        v-model:value="status"
-      >
-        <NSpace size="small">
-          <NRadio value="">全部</NRadio>
-          <NRadio :value="MonitorStatus.ONLINE">在线</NRadio>
-          <NRadio :value="MonitorStatus.OFFLINE">离线</NRadio>
-        </NSpace>
-      </NRadioGroup>
-      <NInput
-        style="width: 200px; background: transparent"
-        placeholder="请输入关键字"
-        v-model:value="keyword"
-      ></NInput>
-
-      <!-- <div class="flex items-center">
-                <NTooltip trigger="hover">
-                    <template #trigger>
-                        <i class="w-9 h-9 rounded flex-center border border-[#B5BCD4] mr-9 cursor-pointer laptop:mr-3">
-                            <Icon :icon="ListIcon" class="w-5 h-5"></Icon>
-                        </i>
-                    </template>
-                    <span>列表</span>
-                </NTooltip>
-                <NTooltip trigger="hover">
-                    <template #trigger>
-                        <i class="w-9 h-9 rounded flex-center border cursor-pointer border-[#B5BCD4]">
-                            <Icon :icon="GridIcon" class="w-5 h-5"></Icon>
-                        </i>
-                    </template>
-                    栅格
-                </NTooltip>
-            </div> -->
+  <section class="py-6 overflow-hidden h-full shadow-common flex flex-col">
+    <header class="flex justify-between items-center">
+      <div class="w-full relative">
+        <NButton
+          type="primary"
+          class="absolute right-1.5 top-1/2 -translate-y-1/2 z-10"
+          style="width: 52px; height: 26px"
+          >搜索</NButton
+        >
+        <NInput
+          style="width: 100%; background: transparent"
+          placeholder="请输入关键字"
+          v-model:value="keyword"
+        >
+          <template #prefix>
+            <img src="../../assets/common/search.svg" alt="" />
+          </template>
+        </NInput>
+      </div>
     </header>
-    <header class="flex justify-between items-center px-6 gap-x-6">
-      <!-- <PopSelect v-model:value="filter" :options="options" :width="200" placeholder="请选择nvr"></PopSelect> -->
+    <header class="flex justify-between items-center gap-x-6">
       <NSelect
-        style="width: 200px; background: transparent"
+        style="width: 128px; background: transparent"
         :value="filter || undefined"
         :options="options"
         clearable
-        placeholder="请选择nvr"
+        placeholder="设备状态"
         @update:value="filter = $event"
       ></NSelect>
       <NSelect
-        style="width: 200px; background: transparent"
+        style="width: 128px; background: transparent"
         v-model:value="labels"
         :options="labelOptions"
         multiple
         max-tag-count="responsive"
-        placeholder="请选择标签"
+        placeholder="设备NVR"
         clearable
       ></NSelect>
-      <!-- <PopSelect :options="options" :width="200"></PopSelect> -->
-
-      <!-- <NInput
-                style="width: 200px; background: transparent"
-                placeholder="请输入关键字"
-                v-model:value="keyword"
-            ></NInput> -->
+      <NSelect
+        style="width: 128px; background: transparent"
+        v-model:value="labels"
+        :options="labelOptions"
+        multiple
+        max-tag-count="responsive"
+        placeholder="设备标签"
+        clearable
+      ></NSelect>
     </header>
-    <!-- <header class="px-6 flex">
-        </header> -->
     <section class="h-0 flex-1">
       <NScrollbar>
-        <main class="pb-6">
-          <template v-for="nvr in filteredDeviceList" :key="nvr.id">
-            <h2
-              class="text-[#3D3D3D] dark:text-info mb-4 mt-6 mx-6 flex items-center"
-            >
-              <div
-                class="w-2.5 h-2.5 rounded-full mr-2 offline"
-                :class="{ online: nvr?.online }"
-              ></div>
-              {{ nvr.name }}
-              <span class="ml-4">总路数: {{ nvr.channels?.length }}</span>
-              <span class="ml-4"
-                >在线路数:
-                <span class="text-success">{{
-                  calcOnlineCounts(nvr.channels)
-                }}</span></span
-              >
+        <main class="bg-#F3F6FF rounded-4 py-4 px-3 flex-col gap-3">
+          <template v-for="nvr in filteredDeviceList" class="" :key="nvr.id">
+            <h2 class="m-0 mb-4 flex-between text-4">
+              {{ nvr.name }}(111)
+              <div class="flex gap-4">
+                <div class="flex-center gap-1 text-#4DC591">
+                  <div class="w-2.5 h-2.5 rounded-full bg-#4DC591"></div>
+                  120
+                </div>
+                <div class="flex-center gap-1 text-#EA6733">
+                  <div class="w-2.5 h-2.5 rounded-full bg-#EA6733"></div>
+                  10
+                </div>
+                <div class="flex-center gap-1 text-#707996">
+                  <div class="w-2.5 h-2.5 rounded-full bg-#707996"></div>
+                  2
+                </div>
+              </div>
             </h2>
             <section class="flex flex-wrap gap-5 mx-6">
               <template v-for="ch in nvr.channels" :key="ch.id">
@@ -111,6 +89,7 @@ import {
   NScrollbar,
   SelectOption,
   NInput,
+  NButton,
   NRadioGroup,
   NRadio,
   NSpace,
@@ -170,47 +149,99 @@ const keyword = ref<string>("");
 const status = ref<MonitorStatus | "">("");
 const labels = ref<string[]>([]);
 const deviceList = ref<NVRItem[]>([]);
+const filteredDeviceList = [
+  {
+    id: 1000016,
+    name: "EPC-1北头岭隧道",
+    online: false,
+    channels: [
+      {
+        channelName: "北头岭兰花山隧道口",
+        channelNum: "1",
+        id: 106,
+        imgAddr: null,
+        labels: ["EPC-1", "隧道"],
+        online: true,
+        rtspPort: 554,
+      },
+      {
+        channelName: "2#拌和站1#机皮带",
+        channelNum: "1",
+        id: 106,
+        imgAddr: null,
+        labels: ["EPC-1", "隧道"],
+        online: false,
+        rtspPort: 554,
+      },
+    ],
+  },
+  {
+    id: 1000016,
+    name: "EPC-1标2#拌合站",
+    online: false,
+    channels: [
+      {
+        channelName: "2#拌和站1#机配料机",
+        channelNum: "1",
+        id: 106,
+        imgAddr: null,
+        labels: ["EPC-1", "隧道"],
+        online: true,
+        rtspPort: 554,
+      },
+      {
+        channelName: "2#拌和站料仓通道",
+        channelNum: "1",
+        id: 106,
+        imgAddr: null,
+        labels: ["EPC-1", "隧道"],
+        online: false,
+        rtspPort: 554,
+      },
+    ],
+  },
+];
 
-const filteredDeviceList = computed(() => {
-  const f = filter.value;
-  // if (!f) return deviceList.value;
-  const tmp = deviceList.value.filter((nvr) => !f || nvr.id === f);
-  // console.log(status.value);
-  const selectStatus = status.value;
-  const selectLabels = labels.value;
-  console.log(selectStatus);
-  // if (keyword.value) {
-  return tmp
-    .map((nvr) => {
-      return {
-        ...nvr,
-        channels: nvr.channels?.filter((ch) => {
-          console.log(
-            "sdfskd",
-            selectStatus
-              ? selectStatus === MonitorStatus.ONLINE
-                ? ch.online
-                : !ch.online
-              : true
-          );
-          return (
-            (selectStatus
-              ? selectStatus === MonitorStatus.ONLINE
-                ? ch.online
-                : !ch.online
-              : true) &&
-            (selectLabels.length
-              ? haveCommonLabel(selectLabels, ch.labels || [])
-              : true) &&
-            ch.channelName.includes(keyword.value)
-          );
-        }),
-      };
-    })
-    .filter((nvr) => nvr.channels?.length);
-  // }
-  // return tmp;
-});
+// const filteredDeviceList = computed(() => {
+//   const f = filter.value;
+//   // if (!f) return deviceList.value;
+//   const tmp = deviceList.value.filter((nvr) => !f || nvr.id === f);
+//   // console.log(status.value);
+//   const selectStatus = status.value;
+//   const selectLabels = labels.value;
+//   console.log(selectStatus);
+//   // if (keyword.value) {
+//   return tmp
+//     .map((nvr) => {
+//       return {
+//         ...nvr,
+//         channels: nvr.channels?.filter((ch) => {
+//           console.log(
+//             "sdfskd",
+//             selectStatus
+//               ? selectStatus === MonitorStatus.ONLINE
+//                 ? ch.online
+//                 : !ch.online
+//               : true
+//           );
+//           return (
+//             (selectStatus
+//               ? selectStatus === MonitorStatus.ONLINE
+//                 ? ch.online
+//                 : !ch.online
+//               : true) &&
+//             (selectLabels.length
+//               ? haveCommonLabel(selectLabels, ch.labels || [])
+//               : true) &&
+//             ch.channelName.includes(keyword.value)
+//           );
+//         }),
+//       };
+//     })
+//     .filter((nvr) => nvr.channels?.length);
+//   // }
+//   // return tmp;
+// });
 
 // async function initMonitorList() {
 //   const { data } = await getDevicesList();
@@ -262,10 +293,10 @@ function haveCommonLabel(arr1: string[], arr2: string[]) {
 
 <style scoped>
 .online {
-  @apply !bg-success;
+  @apply !bg-#4DC591;
 }
 .offline {
-  @apply bg-[#707996];
+  @apply bg-#707996;
 }
 :deep(.n-base-selection .n-base-selection-label) {
   background-color: transparent;

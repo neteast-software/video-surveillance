@@ -23,10 +23,15 @@ export default mergeConfigs([
     safelist: [...commonSafeList],
     theme: {
       colors: {
-        primary: "#4880FF",
-        greyBg: "#EFF3F7",
+        primary: "rgb(var(--primary-color))",
+        primaryBg: "rgb(var(--primaryBg-color))",
+        lightGrey: "rgb(var(--text-lightGrey))",
+        greyBg: "rgb(var(--bg-grey))",
         greyText: "#A0AEC0",
-        greyLine: "#EEEEEE",
+        greyLine: "rgb(var(--border-grey))",
+      },
+      textColor: {
+        basic: "rgb(var(--text-basic))",
       },
     },
   }),

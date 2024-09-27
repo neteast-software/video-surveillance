@@ -7,7 +7,7 @@
   >
     <NMessageProvider>
       <navbar></navbar>
-      <main class="flex flex-h-rest mb-5">
+      <main class="flex flex-h-rest mb-5 gap-5">
         <sidebar></sidebar>
         <router-view class="text-basic"></router-view>
       </main>

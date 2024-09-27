@@ -1,5 +1,5 @@
 <template>
-  <div class="h-16 bg-primary flex-between py-3.5 px-6 text-white mb-5">
+  <div class="h-16 bg-#4880FF flex-between py-3.5 px-6 text-white mb-5">
     <aside class="flex-center">
       <img src="../assets/common/logo.svg" alt="" class="w-6 h-6" />
       <span class="text-5 ml-1 mr-2">视频监控系统</span>
