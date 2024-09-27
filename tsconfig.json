@@ -1,0 +1,15 @@
+{
+  "files": [],
+
+  "compilerOptions": {
+    "types": ["node"], // 确保这里包含 "node"
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}

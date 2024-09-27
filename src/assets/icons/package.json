@@ -1,0 +1,9 @@
+{
+  "name": "icons",
+  "description": "Iconify icon components for icons",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@iconify/types": "*"
+  }
+}
