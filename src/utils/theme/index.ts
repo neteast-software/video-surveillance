@@ -14,7 +14,6 @@ import type { GlobalThemeOverrides } from "naive-ui";
 import color, { getColorPalette } from "./color";
 import useSharedThemeColors from "./color";
 import { AnyColor, colord } from "colord";
-// import tailwindPreset from '@ebuild/presets';
 type colorType =
   | "primary"
   | "default"
@@ -138,6 +137,7 @@ export default function useTheme() {
         },
         Button: {
           colorHover: colorPrimary.value,
+          colorPressed: colorPrimary.value,
         },
       };
     },

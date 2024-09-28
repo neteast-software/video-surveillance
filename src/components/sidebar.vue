@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full px-2.5 py-4 bg-white rounded-2">
+  <div class="h-full px-2.5 py-4 bg rounded-2 relative">
     <header class="flex-center bg-greyBg rounded-2 p-2 min-w-48 mb-7.5">
       <img
         src="../assets/imgs/user@1x.png"
@@ -8,47 +8,32 @@
       />
       <div class="text-3.5 flex-w-rest ml-2.5">
         Yaomeier
-        <div class="text-(2.5 greyText)">1565****367</div>
+        <div class="text-(2.5 lightGrey)">1565****367</div>
       </div>
       <div class="w-4 h-4 bg-white flex-center">
         <img src="../assets/common/caret-down.svg" class="w-3 h-3" alt="" />
       </div>
     </header>
     <div>
-      <div class="text-(3 greyText) mb-6">菜单</div>
-      <div class="flex px-3.5 py-4 w-full">
-        <img src="../assets/common/home.svg" class="mr-2" alt="" />
-        首页
-      </div>
-      <div class="flex px-3.5 py-4 w-full">
-        <img src="../assets/common/equipment.svg" class="mr-2" alt="" />
-        设备管理
-      </div>
-      <div class="flex px-3.5 py-4 w-full">
-        <img src="../assets/common/dashboard.svg" class="mr-2" alt="" />
-        综合看板
-      </div>
-      <div class="flex px-3.5 py-4 w-full">
-        <img src="../assets/common/state.svg" class="mr-2" alt="" />
-        状态监测
-      </div>
-      <div class="flex px-3.5 py-4 w-full">
-        <img src="../assets/common/settings.svg" class="mr-2" alt="" />
-        状态监测系统设置
-      </div>
+      <div class="text-3 text-lightGrey mb-6">菜单</div>
+      <NMenu
+        :options="menuOptions"
+        default-value="index"
+        @update:value="handleMenuSelect"
+      />
     </div>
-    <div class="w-full h-1px bg-greyLine"></div>
+    <div class="w-full h-1px bg-greyLine my-10"></div>
     <div>
-      <div class="text-(3 greyText) mb-6">数据</div>
+      <div class="text-(3 lightGrey) mb-6">数据</div>
       <div>
         <div>安全帽在线人数</div>
         <NAvatarGroup :options="options" :size="40" :max="3" class="my-4">
-          <template #avatar="{ option: { name, src } }">
+          <template #avatar="{ option: { label, src } }">
             <n-tooltip>
               <template #trigger>
                 <n-avatar :src="src" />
               </template>
-              {{ name }}
+              {{ label }}
             </n-tooltip>
           </template>
           <template #rest="{ options: restOptions, rest }">
@@ -78,33 +63,61 @@
         </div>
       </div>
     </div>
+    <img
+      src="../assets/imgs/sidebar-bg.png"
+      class="absolute bottom-0 left-0 w-full"
+      alt=""
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { NAvatarGroup, NAvatar, NTooltip, NProgress } from "naive-ui";
+import {
+  NAvatarGroup,
+  NAvatar,
+  NTooltip,
+  NProgress,
+  NMenu,
+  MenuOption,
+} from "naive-ui";
 import user from "../assets/imgs/user@1x.png";
+import { renderIcon, createMenu } from "../utils/other/createMenu";
+import { routes } from "../router";
+import { useRouter } from "vue-router";
+const router = useRouter();
+function handleMenuSelect(key: string) {
+  router.push(key);
+}
+
+function linkTo() {
+  //跳转
+}
+const menuOptions = createMenu(routes);
+
 const options = [
   {
-    name: "Tom",
+    label: "Tom",
     src: user,
   },
   {
-    name: "Tom",
+    label: "Tom",
     src: user,
   },
   {
-    name: "Tom",
+    label: "Tom",
     src: user,
   },
   {
-    name: "Tom",
+    label: "Tom",
     src: user,
   },
 ];
 </script>
 
 <style scoped>
+.bg {
+  background: linear-gradient(180deg, #ffffff 76%, #e3ebff 100%);
+}
 :deep(.n-progress.n-progress--line .n-progress-icon.n-progress-icon--as-text) {
   position: absolute;
   right: 0;

@@ -1,15 +1,15 @@
 <template>
-  <section class="relative">
+  <section class="relative h-full">
     <template v-if="monitorList.length">
       <draggable
         :disabled="gridCount === 1"
         class="w-full h-full"
         :class="[`grid-${gridCount}`, { fullscreen: isFullscreen }]"
-        v-model="monitorList"
         group="monitor"
         item-key="key"
+        v-model="monitorList"
       >
-        <!-- <template #item="{ element: item, index }">
+        <template #item="{ element: item, index }">
           <Monitor
             :is-fullscreen="isFullscreen"
             :class="{ active: activeMonitor === index }"
@@ -44,13 +44,13 @@
               </NPopover>
             </template>
           </Monitor>
-        </template> -->
+        </template>
       </draggable>
     </template>
-    <!-- <template v-else>
+    <template v-else>
       <Monitor src="" index-code="" name=""></Monitor>
-    </template> -->
-    <!-- <MonitorSlider
+    </template>
+    <MonitorSlider
       ref="historyBar"
       v-motion-slide-bottom
       v-on-click-outside="() => (showHistory = false)"
@@ -69,17 +69,13 @@
       >
         <Icon :icon="grid.icon" width="20"></Icon>
       </button>
-    </div> -->
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import Monitor from "./Monitor.vue";
 import MonitorSlider from "./MonitorSlider.vue";
-// import {
-//   getDefaultMonitorList,
-//   getMonitorInfo,
-// } from "@ebuild/utils/network/api/security";
 import { computed, ref, onMounted, watch } from "vue";
 import { NPopover } from "naive-ui";
 import { Icon } from "@iconify/vue";
@@ -126,25 +122,41 @@ watch(monitorList, (val) => {
 });
 async function initMonitorList() {
   sourceList.value = [
-    // {
-    //     key: '123',
-    //     nvrId: 1,
-    //     nvrName: 'aaa',
-    //     channelId: 1,
-    //     channelName: 'bbb',
-    //     online: true
-    // }
-    // {
-    //     key: '123',
-    //     nvrId: 1,
-    //     nvrName: 'aaa',
-    //     channelId: 1,
-    //     channelName: 'bbb',
-    //     online: true
-    // }
+    {
+      key: "123",
+      nvrId: 1,
+      nvrName: "EPC-1北头岭隧道",
+      channelId: 1,
+      channelName: "北头岭隧道掌子面",
+      online: true,
+    },
+    {
+      key: "123",
+      nvrId: 1,
+      nvrName: "EPC-1北头岭隧道",
+      channelId: 1,
+      channelName: "北头岭隧道掌子面",
+      online: true,
+    },
+    {
+      key: "123",
+      nvrId: 1,
+      nvrName: "EPC-1北头岭隧道",
+      channelId: 1,
+      channelName: "北头岭隧道掌子面",
+      online: true,
+    },
+    {
+      key: "123",
+      nvrId: 1,
+      nvrName: "EPC-1北头岭隧道",
+      channelId: 1,
+      channelName: "北头岭隧道掌子面",
+      online: true,
+    },
   ];
 }
-// onMounted(initMonitorList);
+onMounted(initMonitorList);
 function pickMonitor(index: number) {
   const item = sourceList.value.splice(index, 1)[0];
   if (!item) return;

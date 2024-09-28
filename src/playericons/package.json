@@ -1,9 +1,9 @@
 {
-	"name": "@ebuild/playericons",
-	"description": "Iconify icon components for playericons",
-	"version": "1.0.0",
-	"type": "module",
-	"dependencies": {
-		"@iconify/types": "*"
-	}
+  "name": "playericons",
+  "description": "Iconify icon components for playericons",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@iconify/types": "*"
+  }
 }

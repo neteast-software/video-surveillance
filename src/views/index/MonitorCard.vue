@@ -39,8 +39,8 @@
 
 <script setup lang="ts">
 import { NTooltip, NImage } from "naive-ui";
-import type { MonitorListItem } from "@ebuild/utils/network/types/security";
-import { ChannelItem } from "@ebuild/utils/network/api/security";
+import type { MonitorListItem } from "../../utils/network/types/security";
+import { ChannelItem } from "../../utils/network/api/security";
 import textImg from "../../assets/imgs/text.png";
 interface Props {
   nvrName: string;

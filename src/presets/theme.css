@@ -1,0 +1,83 @@
+:root {
+    /* #015C5F */
+    --primary-color: 68 118 227;
+    /* --primary-color: 1 92 95; */
+    /* #838eb6 */
+    --info-color: 131 142 182;
+    /* #B5BCD4 */
+    --text-grey: 181 188 212;
+    /* #09bb2d */
+    /* #4DC591 */
+    --success-color: 77 197 145;
+    /* #EA6733 */
+    --warning-color: 234 103 51;
+    /* #ff6256 */
+    --error-color: 255 98 86;
+    /* #ffffff */
+    --bg-color: 238 238 238;
+    /* #000000 */
+    --bg-color-inverse: 0 0 0;
+    /* #ffffff */
+    --bg-color-deep: 255 255 255;
+    /* #DDE5DD */
+    /* #D0E3FF */
+    /* --bg-secondary: 221 229 221; */
+    --bg-secondary: 208 227 255;
+    /* #2B3D56 */
+    --text-basic: 43 61 86;
+    /* #2B3D56 */
+    /* --text-grey: 43 61 86; */
+    /* #ffffff */
+    --text-color-inverse: 255 255 255;
+    /* #000000 */
+    --border-black: 0 0 0;
+    /* #E7EAF4 */
+    --line-grey: 231 234 244;
+    /* #f2f2f2 */
+    --table-hover: 242 242 242;
+    /* #f2f2f2 背景灰 */
+    --bg-grey: 242 242 242;
+    /* #D62F28 警报红 */
+    --alarm-red: 214 47 40;
+    /* #FF9A03 警报橙 */
+    --alarm-orange: 255 154 3;
+    /* #FDFF00 警报黄 */
+    --alarm-yellow: 253 255 0;
+    /* #3266FE 警报蓝 */
+    --alarm-blue: 50 102 254;
+}
+
+:root.dark {
+    /* #3D8B80 */
+    --primary-color: 149 226 240;
+    /* #7982A2 */
+    --info-color: 121 130 162;
+    /* #313236 */
+    --bg-color: 49 50 54;
+    /* #151718 */
+    --bg-color-deep: 21 23 24;
+    /* #313236*/
+    --bg-secondary: 49 50 54;
+    /* #ffffff */
+    --text-basic: 255 255 255;
+    /* #8698B2 */
+    --text-grey: 134 152 178;
+    /* #040a12 */
+    --text-color-inverse: 4 10 18;
+    /* #ffffff */
+    --border-black: 255 255 255;
+    /* #323B49 */
+    --line-grey: 50 59 73;
+    /* #313236 */
+    --table-hover: 49 50 54;
+
+    /* textarea - css vars */
+    --w-e-textarea-bg-color: #313236;
+    --w-e-textarea-color: #fff;
+    --w-e-toolbar-color: #fff;
+    --w-e-toolbar-bg-color: #2d2f30;
+    --w-e-toolbar-active-color: #fff;
+    --w-e-toolbar-active-bg-color: #838eb6;
+
+    --w-e-toolbar-border-color: rgba(255, 255, 255, 0);
+}

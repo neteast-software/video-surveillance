@@ -3,22 +3,33 @@
     :locale="zhCN"
     :date-locale="dateZhCN"
     :theme-overrides="themeOverrides"
-    class="fill-parent bg-#F6F8F9 h-full flex-col"
+    class="fill-parent bg-#F6F8F9 h-full flex-col text-basic"
   >
-    <NMessageProvider>
-      <navbar></navbar>
-      <main class="flex flex-h-rest mb-5 gap-5">
-        <sidebar></sidebar>
-        <router-view class="text-basic"></router-view>
-      </main>
-    </NMessageProvider>
+    <NDialogProvider>
+      <NNotificationProvider :max="3">
+        <NMessageProvider>
+          <navbar></navbar>
+          <main class="flex flex-h-rest mb-5 gap-5">
+            <sidebar></sidebar>
+            <router-view></router-view>
+          </main>
+        </NMessageProvider>
+      </NNotificationProvider>
+    </NDialogProvider>
   </NConfigProvider>
 </template>
 
 <script setup lang="ts">
 import navbar from "./components/navbar.vue";
 import sidebar from "./components/sidebar.vue";
-import { NConfigProvider, zhCN, dateZhCN, NMessageProvider } from "naive-ui";
+import {
+  NConfigProvider,
+  NDialogProvider,
+  NNotificationProvider,
+  zhCN,
+  dateZhCN,
+  NMessageProvider,
+} from "naive-ui";
 // import { getQuery } from "./api/pack";
 
 const themeOverrides = {
@@ -42,17 +53,6 @@ const themeOverrides = {
   },
   // ...
 };
-// const keyFields = ["tel", "name", "t", "sign"];
-
-// const searchQuery = getQuery(location.href).query;
-// Object.keys(searchQuery).forEach((key) => {
-//   if (!keyFields.includes(key)) {
-//     delete searchQuery[key];
-//   } else {
-//     searchQuery[key] = decodeURIComponent(searchQuery[key]);
-//   }
-// });
-// localStorage.setItem("searchQuery", JSON.stringify(searchQuery));
 </script>
 
 <style scoped></style>

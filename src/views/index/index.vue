@@ -1,9 +1,8 @@
 <template>
   <div class="flex flex-col gap-3.5 pl-5 no-scrollbar flex-w-rest mr-6 h-full">
     <section class="gap-x-3.5 flex items-start justify-between h-full">
-      <section ref="monitorWrap" class="flex-20 shrink-0">
-        111
-        <!-- <MonitorGallery :isFullscreen="isFullscreen"></MonitorGallery> -->
+      <section ref="monitorWrap" class="flex-w-rest h-full">
+        <MonitorGallery :isFullscreen="isFullscreen"></MonitorGallery>
       </section>
       <div class="bg-white px-5 py-6 rounded-4 h-full">
         <header class="flex-y-center gap-1 text-5 font-600">
@@ -39,14 +38,12 @@
 <script setup lang="ts">
 import MonitorGallery from "./MonitorGallery.vue";
 import MonitorList from "./MonitorList.vue";
-// import RegionSelector from '@ebuild/ui/other/RegionSelector.vue';
 import { onMounted, ref } from "vue";
 import { useElementSize, useMounted } from "@vueuse/core";
-// import { getMonitorRegionOptions } from "@ebuild/utils/network/api/security";
 import type { MonitorRegionOption } from "../../utils/network/types/security";
 import { Icon } from "@iconify/vue";
 import { useFullscreen } from "@vueuse/core";
-import enterFullScreen from "../../assets/common/fullscreen.svg";
+// import enterFullScreen from "../../Icons/fullscreen.svg";
 import { NButton } from "naive-ui";
 
 const mounted = useMounted();

@@ -1,9 +1,7 @@
 <template>
-  <div
-    class="w-full relative"
-    :class="{ pb100: isFullscreen, pb60: !isFullscreen }"
-  >
-    <div class="absolute-full">
+  <div class="w-full relative">
+    <!-- :class="{ pb100: isFullscreen, pb60: !isFullscreen }" -->
+    <div class="absolute top-0 left-0 w-full h-full">
       <template v-if="id">
         <template v-if="!rebooting">
           <WebRTCPlayer
@@ -62,14 +60,16 @@
             </NSpin>
           </div>
         </template>
-        <!-- <HlsPlayer
-                    v-else
-                    :controls="controls"
-                    :nvr-id="nvrId"
-                    :channel-id="channelId"
-                    :clientID="id"
-                    @command="(cmd, flag) => cloudControl(nvrId, channelId, CMD[cmd], flag)"
-                ></HlsPlayer> -->
+        <HlsPlayer
+          v-else
+          :controls="controls"
+          :nvr-id="nvrId"
+          :channel-id="channelId"
+          :clientID="id"
+          @command="
+            (cmd, flag) => cloudControl(nvrId, channelId, CMD[cmd], flag)
+          "
+        ></HlsPlayer>
       </template>
       <template v-else>
         <div
@@ -79,9 +79,10 @@
       <button
         v-if="chName"
         :class="{ hidden: webrtc?.controller?.historySwitch }"
-        class="absolute z-1 left-4 text-white z-50 bg-grey/20 h-10 px-4 rounded-full"
+        class="absolute z-1 right-4 text-white z-50 bg-black/50 h-10 px-4 rounded-full flex-center gap-1"
         :style="{ bottom: controls ? '100px' : '14px' }"
       >
+        <img :src="positionImg" mode="scaleToFill" class="w-4 h-4" />
         <span v-if="nvrName">{{ nvrName }} | </span>{{ chName }}
       </button>
     </div>
@@ -89,6 +90,8 @@
 </template>
 
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
+import positionImg from "../../icons/position.svg";
 import WebRTCPlayer from "../../components/video/WebRTCPlayer.vue";
 import HlsPlayer from "../../components/video/HlsPlayer.vue";
 import {

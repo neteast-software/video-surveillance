@@ -94,6 +94,7 @@ export interface ChannelItem {
   online: boolean;
   imgAddr?: string;
   labels?: string[];
+  rtspPort?: number;
 }
 export interface NVRItem {
   id: number;

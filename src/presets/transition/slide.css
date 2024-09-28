@@ -1,0 +1,33 @@
+@keyframes slideLeft {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-120%);
+    }
+}
+@keyframes slideRight {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(120%);
+    }
+}
+.slideLeft-enter-active {
+    transform: translateX(-120%);
+    animation: slideLeft 0.3s 0.3s reverse;
+}
+.slideLeft-leave-active {
+    animation: slideLeft 0.3s;
+}
+
+.slideRight-enter-active {
+    transform: translateX(120%);
+    animation: slideRight 0.3s reverse;
+}
+.slideRight-leave-active {
+    animation: slideRight 0.3s;
+}

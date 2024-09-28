@@ -1,5 +1,5 @@
 <template>
-  <div>综合看板</div>
+  <div>设备管理</div>
 </template>
 
 <script setup lang="ts"></script>
