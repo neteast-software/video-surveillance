@@ -1,29 +1,21 @@
 <template>
-  <NConfigProvider
-    :locale="zhCN"
-    :date-locale="dateZhCN"
-    :theme-overrides="themeOverrides"
-    class="fill-parent bg-#F6F8F9 h-full flex-col text-basic"
-  >
-    <NDialogProvider>
-      <NNotificationProvider :max="3">
-        <NMessageProvider>
-          <navbar></navbar>
-          <main class="flex flex-h-rest mb-5">
-            <sidebar></sidebar>
-            <router-view v-slot="{ Component }" class="relative">
-              <transition name="fade" mode="out-in">
-                <component
-                  :is="Component"
-                  class="absolute top-0 left-0 w-full h-full"
-                />
-              </transition>
-            </router-view>
-          </main>
-        </NMessageProvider>
-      </NNotificationProvider>
-    </NDialogProvider>
-  </NConfigProvider>
+  <LkNaiveProvider class="fill-parent bg-#F6F8F9 h-full flex-col text-basic"
+    >\
+    <navbar></navbar>
+    <main class="flex flex-h-rest mb-5">
+      <sidebar></sidebar>
+      <div class="flex-w-rest">
+        <router-view v-slot="{ Component }" class="relative">
+          <transition name="fade" mode="out-in">
+            <component
+              :is="Component"
+              class="absolute top-0 left-0 w-full h-full"
+            />
+          </transition>
+        </router-view>
+      </div>
+    </main>
+  </LkNaiveProvider>
 </template>
 
 <script setup lang="ts">
@@ -37,6 +29,7 @@ import {
   dateZhCN,
   NMessageProvider,
 } from "naive-ui";
+import { LkNaiveProvider } from "linker-ui";
 // import { getQuery } from "./api/pack";
 
 const themeOverrides = {
