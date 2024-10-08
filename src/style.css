@@ -13,6 +13,7 @@
   --border-grey: 238 238 238;
   /* #EFF3F7*/
   --bg-grey: 239 243 247;
+  --n-item-color-active-hover: #ff0 !important;
 }
 * {
   box-sizing: border-box;

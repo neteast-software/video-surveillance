@@ -1,0 +1,4 @@
+[submodule "packages/linker-ui"]
+	path = packages/linker-ui
+	url = https://github.com/neteast-software/linker-ui.git
+	branch = nanping
