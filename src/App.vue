@@ -11,7 +11,14 @@
           <navbar></navbar>
           <main class="flex flex-h-rest mb-5">
             <sidebar></sidebar>
-            <router-view></router-view>
+            <router-view v-slot="{ Component }" class="relative">
+              <transition name="fade" mode="out-in">
+                <component
+                  :is="Component"
+                  class="absolute top-0 left-0 w-full h-full"
+                />
+              </transition>
+            </router-view>
           </main>
         </NMessageProvider>
       </NNotificationProvider>
@@ -55,4 +62,27 @@ const themeOverrides = {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.fade-enter-from {
+  opacity: 0;
+  transform: translatex(6px);
+}
+
+.fade-enter-to {
+  opacity: 1;
+  transform: translatex(0);
+}
+.fade-leave-from {
+  opacity: 1;
+  transform: translatex(0);
+}
+.fade-leave-to {
+  opacity: 0;
+  transform: translatex(6px);
+}
+</style>

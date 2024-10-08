@@ -13,7 +13,7 @@ export default defineNeteastConfig({
       primaryBg: "rgb(var(--primaryBg-color))",
       lightGrey: "rgb(var(--text-lightGrey))",
       greyBg: "rgb(var(--bg-grey))",
-      greyText: "rgba(var(--text-grey))",
+      greyText: "#8A92A6",
       greyLine: "rgb(var(--border-grey))",
     },
     textColor: {

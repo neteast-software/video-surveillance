@@ -1,6 +1,6 @@
 <template>
   <NConfigProvider
-    class="w-full h-full"
+    class="fill-parent"
     :theme="isDark ? darkTheme : undefined"
     :theme-overrides="naiveThemeOverrides"
     :locale="zhCN"

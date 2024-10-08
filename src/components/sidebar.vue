@@ -16,7 +16,7 @@
           <div class="text-3 text-lightGrey mb-6">菜单</div>
           <NMenu
             :options="menuOptions"
-            default-value="index"
+            :value="menuKey"
             @update:value="handleMenuSelect"
           />
         </div>
@@ -88,10 +88,17 @@ import user from "../assets/imgs/user.png";
 import { createMenu } from "../utils/other/createMenu";
 import { routes } from "../router";
 import { useRouter, useRoute } from "vue-router";
+import { computed, ref } from "vue";
 const router = useRouter();
+const route = useRoute();
 function handleMenuSelect(key: string) {
+  console.log("key", key);
   router.push(key);
 }
+const menuKey = computed(() => {
+  return router.currentRoute.value.name as string;
+});
+
 const menuOptions = createMenu(routes);
 
 const options = [
