@@ -79,18 +79,18 @@ import MonitorSlider from "./MonitorSlider.vue";
 import { computed, ref, onMounted, watch } from "vue";
 import { NPopover } from "naive-ui";
 import { Icon } from "@iconify/vue";
-import grid from "../../assets/icons/grid";
-import grid4 from "../../assets/icons/grid4";
-import grid9 from "../../assets/icons/grid9";
-import grid1 from "../../assets/icons/grid1";
+import grid from "@/assets/icons/grid";
+import grid4 from "@/assets/icons/grid4";
+import grid9 from "@/assets/icons/grid9";
+import grid1 from "@/assets/icons/grid1";
 import { vOnClickOutside } from "@vueuse/components";
-import { MonitorItem } from "../../utils/network/types/security";
+import { MonitorItem } from "@/utils/network/types/security";
 import { pickMonitorKey } from "./helper";
 import { useEventBus, useDebounceFn } from "@vueuse/core";
 import draggable from "vuedraggable";
-import { isEmptyObject } from "../../utils/other";
-import { useDialogAsync } from "../../components/dialog";
-import ControlButton from "../../components/video/ControlButton.vue";
+import { isEmptyObject } from "@/utils/other";
+import { useDialogAsync } from "@/components/dialog";
+import ControlButton from "@/components/video/ControlButton.vue";
 interface Props {
   isFullscreen: boolean;
 }

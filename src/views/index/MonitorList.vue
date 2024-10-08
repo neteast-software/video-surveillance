@@ -107,10 +107,10 @@ import {
   // getDevicesList,
   NVRItem,
   ChannelItem,
-} from "../../utils/network/api/security";
+} from "@/utils/network/api/security";
 import { useEventBus } from "@vueuse/core";
 import { pickMonitorKey } from "./helper";
-import { MonitorItem } from "../../utils/network/types/security";
+import { MonitorItem } from "@/utils/network/types/security";
 import { v4 as uuidv4 } from "uuid";
 enum MonitorStatus {
   ALL = "all",

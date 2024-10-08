@@ -115,7 +115,7 @@ import {
   fullscreen,
   screenshot,
   pictureInPicture,
-} from "../../playericons";
+} from "@/playericons";
 import { NPopover } from "naive-ui";
 import ConsolePanel from "./ConsolePanel.vue";
 import VideoHistory from "./videoHistory.vue";

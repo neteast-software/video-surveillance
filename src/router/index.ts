@@ -3,13 +3,8 @@ import {
   createWebHashHistory,
   type RouteRecordRaw,
 } from "vue-router";
-import homeImg from "../Icons/home.svg";
-import equipmentImg from "../Icons/equipment.svg";
-import dashboardImg from "../Icons/dashboard.svg";
-import stateImg from "../Icons/state.svg";
-import settingsImg from "../Icons/settings.svg";
 
-import { ref, nextTick } from "vue";
+import { ref, nextTick, h } from "vue";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -18,16 +13,16 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("../views/index/index.vue"),
     meta: {
       title: "首页",
-      icon: homeImg,
+      icon: () => h("div", { class: "i-icons:home  w-10 h-10" }),
     },
   },
   {
-    path: "",
+    path: "/deviceManagement",
     name: "deviceManagement",
     component: () => import("../views/deviceManagement/index.vue"),
     meta: {
       title: "设备管理",
-      icon: equipmentImg,
+      icon: () => h("div", { class: "i-icons:equipment  w-10 h-10" }),
     },
     children: [
       {
@@ -36,7 +31,6 @@ export const routes: RouteRecordRaw[] = [
         component: () => import("../views/index/index.vue"),
         meta: {
           title: "设备列表",
-          icon: "",
         },
       },
       {
@@ -45,7 +39,6 @@ export const routes: RouteRecordRaw[] = [
         component: () => import("../views/index/index.vue"),
         meta: {
           title: "设备信息",
-          icon: "",
         },
       },
     ],
@@ -56,26 +49,26 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("../views/dashboard/index.vue"),
     meta: {
       title: "综合看板",
-      icon: dashboardImg,
+      icon: () => h("div", { class: "i-icons:dashboard  w-10 h-10" }),
     },
   },
 
   {
-    path: "/",
+    path: "/statusMonitoring",
     name: "statusMonitoring",
     component: () => import("../views/index/index.vue"),
     meta: {
       title: "状态监测",
-      icon: stateImg,
+      icon: () => h("div", { class: "i-icons:state  w-10 h-10" }),
     },
   },
   {
-    path: "/",
+    path: "/systemSettings",
     name: "systemSettings",
     component: () => import("../views/index/index.vue"),
     meta: {
       title: "系统设置",
-      icon: settingsImg,
+      icon: () => h("div", { class: "i-icons:settings  w-10 h-10" }),
     },
   },
 ];

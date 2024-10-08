@@ -25,10 +25,10 @@
 
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import ArrowIcon from "../../assets/icons/arrow";
+import ArrowIcon from "@/assets/icons/arrow";
 import { NScrollbar, ScrollbarInst } from "naive-ui";
 import { ref } from "vue";
-const testImg = new URL("../../assets/test.png", import.meta.url).href;
+const testImg = new URL("@/assets/test.png", import.meta.url).href;
 const scrollbar = ref<ScrollbarInst>();
 const scrollStep = 100;
 let leftX = 0;

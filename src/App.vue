@@ -9,7 +9,7 @@
       <NNotificationProvider :max="3">
         <NMessageProvider>
           <navbar></navbar>
-          <main class="flex flex-h-rest mb-5 gap-5">
+          <main class="flex flex-h-rest mb-5">
             <sidebar></sidebar>
             <router-view></router-view>
           </main>

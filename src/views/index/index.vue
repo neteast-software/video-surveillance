@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-3.5 pl-5 no-scrollbar flex-w-rest mr-6 h-full">
+  <div class="flex flex-col gap-3.5 mx-5 no-scrollbar flex-w-rest h-full">
     <section class="gap-x-3.5 flex items-start justify-between h-full">
       <section ref="monitorWrap" class="flex-w-rest h-full">
         <MonitorGallery :isFullscreen="isFullscreen"></MonitorGallery>
@@ -40,10 +40,10 @@ import MonitorGallery from "./MonitorGallery.vue";
 import MonitorList from "./MonitorList.vue";
 import { onMounted, ref } from "vue";
 import { useElementSize, useMounted } from "@vueuse/core";
-import type { MonitorRegionOption } from "../../utils/network/types/security";
+import type { MonitorRegionOption } from "@/utils/network/types/security";
 import { Icon } from "@iconify/vue";
 import { useFullscreen } from "@vueuse/core";
-// import enterFullScreen from "../../Icons/fullscreen.svg";
+// import enterFullScreen from "@/Icons/fullscreen.svg";
 import { NButton } from "naive-ui";
 
 const mounted = useMounted();

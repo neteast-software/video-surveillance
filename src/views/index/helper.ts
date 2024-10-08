@@ -1,4 +1,4 @@
-import { MonitorItem } from "../../utils/network/types/security";
+import { MonitorItem } from "@/utils/network/types/security";
 import type { EventBusKey } from "@vueuse/core";
 
 export const pickMonitorKey: EventBusKey<MonitorItem | MonitorItem[]> =

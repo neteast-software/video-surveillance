@@ -32,7 +32,7 @@
 import { Icon, IconifyIcon } from "@iconify/vue";
 import { computed, CSSProperties } from "vue";
 import { NButton, ButtonProps } from "naive-ui";
-import HeroIcon from "../../components/other/HeroIcon.vue";
+import HeroIcon from "@/components/other/HeroIcon.vue";
 interface Props {
   icon?: string | IconifyIcon;
   iconSize?: number;

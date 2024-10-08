@@ -10,7 +10,7 @@
       :fallback-src="fallbackUrl"
       preview-disabled
     ></NImage>
-    <!-- <img class="w-full h-full" src="../../assets//bg-monitor.png" /> -->
+    <!-- <img class="w-full h-full" src="@/assets//bg-monitor.png" /> -->
     <NTooltip trigger="hover">
       <template #trigger>
         <div
@@ -39,9 +39,9 @@
 
 <script setup lang="ts">
 import { NTooltip, NImage } from "naive-ui";
-import type { MonitorListItem } from "../../utils/network/types/security";
-import { ChannelItem } from "../../utils/network/api/security";
-import textImg from "../../assets/imgs/text.png";
+import type { MonitorListItem } from "@/utils/network/types/security";
+import { ChannelItem } from "@/utils/network/api/security";
+import textImg from "@/assets/imgs/text/text.png";
 interface Props {
   nvrName: string;
   monitor: ChannelItem;
@@ -49,8 +49,7 @@ interface Props {
 withDefaults(defineProps<Props>(), {});
 const origin = location.origin;
 // const origin = 'http://218.85.23.25:13402/';
-const fallbackUrl = new URL("../../assets/bg-monitor.jpeg", import.meta.url)
-  .href;
+const fallbackUrl = new URL("@/assets/bg-monitor.jpeg", import.meta.url).href;
 function copyName(nvrName: string, chName: string) {
   navigator.clipboard
     .writeText(`${nvrName} ${chName}`)

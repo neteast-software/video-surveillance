@@ -91,15 +91,15 @@
 
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import positionImg from "../../icons/position.svg";
-import WebRTCPlayer from "../../components/video/WebRTCPlayer.vue";
-import HlsPlayer from "../../components/video/HlsPlayer.vue";
+import positionImg from "@/icons/position.svg";
+import WebRTCPlayer from "@/components/video/WebRTCPlayer.vue";
+import HlsPlayer from "@/components/video/HlsPlayer.vue";
 import {
   cloudControl,
   getChannelEncode,
   setChannelEncode,
   rebootNVR,
-} from "../../utils/network/api/security";
+} from "@/utils/network/api/security";
 import { CMD } from "./helper";
 import { nextTick, onMounted, provide, ref, watch } from "vue";
 import {
@@ -108,12 +108,12 @@ import {
   gotoPresetPoint,
   getPresetPoint,
   clearPresetPoint,
-} from "../../utils/network/api/security";
-import ControlButton from "../../components/video/ControlButton.vue";
-import { useDialogAsync } from "../../components/dialog";
-import { translate, visualization } from "../../assets/icons";
+} from "@/utils/network/api/security";
+import ControlButton from "@/components/video/ControlButton.vue";
+import { useDialogAsync } from "@/components/dialog";
+import { translate, visualization } from "@/assets/icons";
 import { NSpin } from "naive-ui";
-import { timeoutPromise } from "../../utils/other";
+import { timeoutPromise } from "@/utils/other";
 const { confirmDialog } = useDialogAsync();
 interface Props {
   id: string;

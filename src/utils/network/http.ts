@@ -2,7 +2,7 @@ import { useFetch, createFetch, UseFetchReturn } from "@vueuse/core";
 import type { BeforeFetchContext } from "@vueuse/core";
 import { Ref, unref, watch, reactive } from "vue";
 import { clearUrl } from "../other";
-import { baseUrl, timeout } from "../../presets";
+import { baseUrl, timeout } from "@/presets";
 import storage from "../other/storage";
 import { encrypt, md5 } from "../crypto";
 // import { ElNotification } from 'element-plus';

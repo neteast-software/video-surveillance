@@ -66,9 +66,9 @@
 <script setup lang="ts">
 import DirectionPanel from "./DirectionPanel.vue";
 import Adjustor from "./Adjustor.vue";
-import ControlButton from "../../components/video/ControlButton.vue";
-import { preset } from "../../playericons";
-import { electricity, trash } from "../../assets/icons";
+import ControlButton from "@/components/video/ControlButton.vue";
+import { preset } from "@/playericons";
+import { electricity, trash } from "@/assets/icons";
 defineEmits<{
   command: [value: string, flag: number];
   setPreset: [];

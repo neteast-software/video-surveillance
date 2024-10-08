@@ -97,7 +97,7 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import { NButton } from "naive-ui";
-import { chevron, roundedDiamond, corner } from "../../playericons";
+import { chevron, roundedDiamond, corner } from "@/playericons";
 import { inject, ref } from "vue";
 defineEmits<{
   command: [value: string, flag: number];

@@ -33,11 +33,11 @@ import ControlsBar from "./ControlsBar.vue";
 import { VideoPlayer, VideoPlayerProps } from "@videojs-player/vue";
 import "video.js/dist/video-js.css";
 import { ref, computed, onMounted, provide } from "vue";
-import { postVideoStreamHls } from "../../utils/network/api/security";
+import { postVideoStreamHls } from "@/utils/network/api/security";
 import { useFullscreen, useNow } from "@vueuse/core";
 import RecordRTC from "recordrtc";
 import { format, differenceInMilliseconds } from "date-fns";
-import { downloadFile } from "../../utils/other";
+import { downloadFile } from "@/utils/other";
 import {
   recordTimerKey,
   isReadyKey,

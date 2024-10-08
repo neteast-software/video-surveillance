@@ -30,7 +30,7 @@ import {
   dateZhCN,
   darkTheme,
 } from "naive-ui";
-import useTheme, { isDark } from "../../utils/theme";
+import useTheme, { isDark } from "@/utils/theme";
 import { defineComponent, h } from "vue";
 // defineOptions({name: 'NaiveProvider'})
 const { naiveThemeOverrides } = useTheme();

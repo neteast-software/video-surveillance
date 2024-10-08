@@ -158,9 +158,9 @@ import {
   addDays,
 } from "date-fns";
 import { computed, onMounted, ref, unref, inject, watch, nextTick } from "vue";
-import { useDrag } from "../../utils/other/videoDrag";
+import { useDrag } from "@/utils/other/videoDrag";
 import { Icon } from "@iconify/vue";
-import arrow from "../../assets/icons/arrow";
+import arrow from "@/assets/icons/arrow";
 import {
   rewind as rewindIcon,
   pause as pauseIcon,
@@ -169,7 +169,7 @@ import {
   speed,
   speed10,
   speed15,
-} from "../../playericons";
+} from "@/playericons";
 import ControlButton from "./ControlButton.vue";
 import { NDatePicker, NDropdown } from "naive-ui";
 import { datePickerDark } from "naive-ui";

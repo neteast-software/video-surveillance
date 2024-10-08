@@ -10,7 +10,7 @@
     <div class="w-full h-full bg-black">
       <!-- <img
         v-if="!videoIsReady || webRTCError"
-        src="../../assets/imgs/text.png"
+        src="@/assets/imgs/text.png"
         class="w-full h-full"
         alt=""
       /> -->
@@ -76,7 +76,7 @@ import {
   useDebounceFn,
 } from "@vueuse/core";
 import RecordRTC from "recordrtc";
-import { downloadFile } from "../../utils/other";
+import { downloadFile } from "@/utils/other";
 import {
   format,
   differenceInMilliseconds,
@@ -90,7 +90,7 @@ import {
   getRealtimeVideo,
   getRecordVideo,
   testRecordRatio,
-} from "../../utils/network/api/security";
+} from "@/utils/network/api/security";
 import {
   recordTimerKey,
   isReadyKey,
