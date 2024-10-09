@@ -48,7 +48,13 @@
       </draggable>
     </template>
     <template v-else>
-      <Monitor src="" index-code="" name=""></Monitor>
+      <Monitor
+        id=""
+        :nvr-id="0"
+        :channel-id="0"
+        nvr-name=""
+        ch-name=""
+      ></Monitor>
     </template>
     <MonitorSlider
       ref="historyBar"
@@ -122,38 +128,22 @@ watch(monitorList, (val) => {
 });
 async function initMonitorList() {
   sourceList.value = [
-    {
-      key: "123",
-      nvrId: 1,
-      nvrName: "EPC-1北头岭隧道",
-      channelId: 1,
-      channelName: "北头岭隧道掌子面",
-      online: true,
-    },
-    {
-      key: "123",
-      nvrId: 1,
-      nvrName: "EPC-1北头岭隧道",
-      channelId: 1,
-      channelName: "北头岭隧道掌子面",
-      online: true,
-    },
-    {
-      key: "123",
-      nvrId: 1,
-      nvrName: "EPC-1北头岭隧道",
-      channelId: 1,
-      channelName: "北头岭隧道掌子面",
-      online: true,
-    },
-    {
-      key: "123",
-      nvrId: 1,
-      nvrName: "EPC-1北头岭隧道",
-      channelId: 1,
-      channelName: "北头岭隧道掌子面",
-      online: true,
-    },
+    // {
+    //   key: "123",
+    //   nvrId: 1,
+    //   nvrName: "EPC-1北头岭隧道",
+    //   channelId: 1,
+    //   channelName: "北头岭隧道掌子面",
+    //   online: true,
+    // },
+    // {
+    //   key: "123",
+    //   nvrId: 2,
+    //   nvrName: "EPC-1北头岭隧道",
+    //   channelId: 1,
+    //   channelName: "北头岭隧道掌子面",
+    //   online: true,
+    // },
   ];
 }
 onMounted(initMonitorList);

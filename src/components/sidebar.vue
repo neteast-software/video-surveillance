@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full px-2.5 py-4 bg rounded-2 relative">
+  <div class="h-full px-2.5 py-4 bg relative">
     <div class="flex-col justify-between gap-3 h-full">
       <header class="flex-center bg-greyBg rounded-2 p-2 min-w-48 mb-4.5">
         <img :src="user" class="w-7.5 h-7.5 rounded-full" alt="" />

@@ -54,23 +54,23 @@
           <div
             v-for="nvr in filteredDeviceList"
             :key="nvr.id"
-            class="bg-#F3F6FF rounded-4 py-4 px-3"
+            class="border-(2 solid greyLine) rounded-1 py-4 px-3"
           >
             <h2 class="m-0 mb-4 flex-between text-4">
-              {{ nvr.name }}(111)
+              {{ nvr.name }}({{ nvr.channels?.length }})
               <div class="flex gap-4">
                 <div class="flex-center gap-1 text-#4DC591">
                   <div class="w-2.5 h-2.5 rounded-full bg-#4DC591"></div>
-                  120
-                </div>
-                <div class="flex-center gap-1 text-#EA6733">
-                  <div class="w-2.5 h-2.5 rounded-full bg-#EA6733"></div>
-                  10
+                  {{ nvr.channels?.filter((ch) => ch.online).length || 0 }}
                 </div>
                 <div class="flex-center gap-1 text-#707996">
                   <div class="w-2.5 h-2.5 rounded-full bg-#707996"></div>
-                  2
+                  {{ nvr.channels?.filter((ch) => !ch.online).length || 0 }}
                 </div>
+                <!-- <div class="flex-center gap-1 text-#EA6733">
+                  <div class="w-2.5 h-2.5 rounded-full bg-#EA6733"></div>
+                  10
+                </div> -->
               </div>
             </h2>
             <section class="flex flex-wrap gap-5 mx-6">
@@ -95,6 +95,7 @@ import {
   SelectOption,
   NInput,
   NButton,
+  SelectRenderLabel,
   NRadioGroup,
   NRadio,
   NSpace,
@@ -102,9 +103,9 @@ import {
 } from "naive-ui";
 import MonitorCard from "./MonitorCard.vue";
 
-import { computed, onMounted, ref } from "vue";
+import { computed, h, onMounted, ref } from "vue";
 import {
-  // getDevicesList,
+  getDevicesList,
   NVRItem,
   ChannelItem,
 } from "@/utils/network/api/security";
@@ -160,88 +161,46 @@ const statusOptions = ref<SelectOption[]>([
 const labels = ref<string[]>([]);
 // const deviceList = ref<NVRItem[]>([]);
 const deviceList = ref<NVRItem[]>([
-  {
-    id: 1000016,
-    name: "EPC-1北头岭隧道",
-    online: false,
-    channels: [
-      {
-        channelName: "北头岭兰花山隧道口",
-        channelNum: "1",
-        id: 106,
-        imgAddr: "/static/capture/ffd8b5b24d6bfe8d279be9749e4570cd.jpg",
-        labels: ["EPC-1", "隧道"],
-        online: true,
-        rtspPort: 554,
-      },
-
-      {
-        channelName: "2#拌和站1#机皮带",
-        channelNum: "2",
-        id: 107,
-        imgAddr: "/static/capture/29084d21f7c48497ed1a1261c00a8f9f.jpg",
-        labels: ["EPC-1", "隧道"],
-        online: false,
-        rtspPort: 554,
-      },
-    ],
-  },
-  {
-    id: 1000017,
-    name: "EPC-1标2#拌合站",
-    online: false,
-    channels: [
-      {
-        channelName: "2#拌和站1#机配料机",
-        channelNum: "1",
-        id: 106,
-        labels: ["EPC-1", "隧道"],
-        online: true,
-        rtspPort: 554,
-      },
-      {
-        channelName: "2#拌和站1#机配料机",
-        channelNum: "1",
-        id: 106,
-        labels: ["EPC-1", "隧道"],
-        online: true,
-        rtspPort: 554,
-      },
-      {
-        channelName: "2#拌和站料仓通道",
-        channelNum: "1",
-        id: 106,
-
-        labels: ["EPC-1", "隧道"],
-        online: false,
-        rtspPort: 554,
-      },
-    ],
-  },
-  {
-    id: 1000018,
-    name: "EPC-1标2#拌合站",
-    online: false,
-    channels: [
-      {
-        channelName: "2#拌和站1#机配料机",
-        channelNum: "1",
-        id: 106,
-        labels: ["EPC-1", "隧道"],
-        online: true,
-        rtspPort: 554,
-      },
-      {
-        channelName: "2#拌和站料仓通道",
-        channelNum: "1",
-        id: 106,
-
-        labels: ["EPC-1", "隧道"],
-        online: false,
-        rtspPort: 554,
-      },
-    ],
-  },
+  // {
+  //   id: 1000016,
+  //   name: "EPC-1北头岭隧道",
+  //   online: false,
+  //   channels: [
+  //     {
+  //       channelName: "北头岭兰花山隧道口",
+  //       channelNum: "1",
+  //       id: 106,
+  //       imgAddr: "/static/capture/ffd8b5b24d6bfe8d279be9749e4570cd.jpg",
+  //       labels: ["EPC-1", "隧道"],
+  //       online: true,
+  //       rtspPort: 554,
+  //     },
+  //     {
+  //       channelName: "2#拌和站1#机皮带",
+  //       channelNum: "2",
+  //       id: 107,
+  //       imgAddr: "/static/capture/29084d21f7c48497ed1a1261c00a8f9f.jpg",
+  //       labels: ["EPC-1", "隧道"],
+  //       online: false,
+  //       rtspPort: 554,
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: 1000017,
+  //   name: "EPC-1标2#拌合站",
+  //   online: false,
+  //   channels: [
+  //     {
+  //       channelName: "2#拌和站1#机配料机",
+  //       channelNum: "1",
+  //       id: 106,
+  //       labels: ["EPC-1", "隧道"],
+  //       online: true,
+  //       rtspPort: 554,
+  //     },
+  //   ],
+  // },
 ]);
 
 const filteredDeviceList = computed(() => {
@@ -276,8 +235,8 @@ const filteredDeviceList = computed(() => {
 });
 
 async function initMonitorList() {
-  // const { data } = await getDevicesList();
-  // deviceList.value = data;
+  const { data } = await getDevicesList();
+  deviceList.value = data;
   const limit = 4;
   let len = 0;
   const cache: MonitorItem[] = [];

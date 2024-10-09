@@ -1,8 +1,10 @@
 <template>
-  <LkNaiveProvider class="fill-parent bg-#F6F8F9 h-full flex-col text-basic"
-    >\
+  <LkNaiveProvider
+    class="fill-parent bg-#F6F8F9 h-full flex-col text-basic"
+    :naive-theme-overrides="themeOverrides"
+  >
     <navbar></navbar>
-    <main class="flex flex-h-rest mb-5">
+    <main class="flex flex-h-rest">
       <sidebar></sidebar>
       <div class="flex-w-rest">
         <router-view v-slot="{ Component }" class="relative">
@@ -21,16 +23,7 @@
 <script setup lang="ts">
 import navbar from "./components/navbar.vue";
 import sidebar from "./components/sidebar.vue";
-import {
-  NConfigProvider,
-  NDialogProvider,
-  NNotificationProvider,
-  zhCN,
-  dateZhCN,
-  NMessageProvider,
-} from "naive-ui";
 import { LkNaiveProvider } from "linker-ui";
-// import { getQuery } from "./api/pack";
 
 const themeOverrides = {
   common: {

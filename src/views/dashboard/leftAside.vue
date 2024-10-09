@@ -1,6 +1,6 @@
 <template>
   <div class="min-w-125 flex-col gap-4 h-full">
-    <header class="bg-white w-full rounded-1 pt-6 pb-2.5">
+    <header class="bg-white w-full rounded-2px pt-6 pb-2.5">
       <div class="mx-6 flex justify-between">
         <div v-for="data in options" class="flex-center w-1/4">
           <img :src="data.icon" alt="" class="w-8 h-8" />
@@ -40,7 +40,7 @@
     </header>
     <div
       v-show="showList"
-      class="w-full flex-col flex-h-rest bg-white rounded-1 p-7.5"
+      class="w-full flex-col flex-h-rest bg-white rounded-2px p-7.5"
     >
       <header class="flex justify-between mb-6">
         <div class="text-4.5 flex-center font-600">

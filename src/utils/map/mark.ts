@@ -1,6 +1,7 @@
 import * as Cesium from "cesium";
 import Color from "cesium/Source/Core/Color";
 import Viewer from "cesium/Source/Widgets/Viewer/Viewer";
+import { ref } from "vue";
 const points = [
   {
     name: "点1",
@@ -83,9 +84,8 @@ export function addDemoGraphic1(viewer: Viewer) {
   });
 }
 
-let bouncingEntity = null;
-let bounceInterval = null;
-
+let bouncingEntity: any = null;
+let bounceInterval: any = null;
 function startBounce(entity, position) {
   if (bounceInterval) {
     clearInterval(bounceInterval);
@@ -123,6 +123,13 @@ function stopBounce(entity, position) {
   entity.label.show = false; // 隐藏标签
 }
 
+export const bubblePosition = ref([0, 0]); // 弹窗位置（相对于屏幕）
+export const bubbleVisible = ref(false);
+// 计算 Cesium 3D 坐标在屏幕上的位置
+function calculateScreenPosition(viewer, position) {
+  const screenPosition = viewer.scene.cartesianToCanvasCoordinates(position);
+  return [screenPosition.x, screenPosition.y];
+}
 export function setupClickHandler(viewer: Viewer) {
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 
@@ -135,16 +142,18 @@ export function setupClickHandler(viewer: Viewer) {
         const cartographic = Cesium.Cartographic.fromCartesian(position);
         const longitude = Cesium.Math.toDegrees(cartographic.longitude);
         const latitude = Cesium.Math.toDegrees(cartographic.latitude);
-
-        // Start bouncing if not already bouncing
-        if (bouncingEntity !== entity) {
-          startBounce(entity, [longitude, latitude, 0]);
-        }
+        bubblePosition.value = calculateScreenPosition(viewer, position);
+        bubbleVisible.value = true;
+        console.log("bubblePosition", bubblePosition.value);
+        //标记点弹跳
+        // if (bouncingEntity !== entity) {
+        //   startBounce(entity, [longitude, latitude, 0]);
+        // }
       }
     } else {
-      // Clicked outside any entities; stop current bouncing
       if (bouncingEntity) {
         stopBounce(bouncingEntity, bouncingEntity.originalPosition);
+        bubbleVisible.value = false;
       }
     }
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);

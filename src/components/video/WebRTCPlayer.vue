@@ -10,7 +10,7 @@
     <div class="w-full h-full bg-black">
       <!-- <img
         v-if="!videoIsReady || webRTCError"
-        src="@/assets/imgs/text.png"
+        src="../../assets/imgs/text/text.png"
         class="w-full h-full"
         alt=""
       /> -->

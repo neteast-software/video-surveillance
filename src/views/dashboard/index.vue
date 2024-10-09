@@ -1,45 +1,42 @@
 <template>
   <div
-    class="fill-parent mx-5 rounded-4 bg-#94BFFF p-7.5 relative overflow-hidden flex justify-between"
+    class="fill-parent bg-#94BFFF p-7.5 relative overflow-hidden flex justify-between"
   >
-    <aside>
-      <leftAaside></leftAaside>
-    </aside>
-    <aside>
-      <NPopselect
-        v-model:value="selectValue"
-        :options="options"
-        :render-label="renderLabel"
-        trigger="hover"
-        :show-checkmark="false"
-        v-model:show="selectState"
+    <leftAaside class="z-1"></leftAaside>
+    <NPopselect
+      v-model:value="selectValue"
+      :options="options"
+      :render-label="renderLabel"
+      trigger="hover"
+      :show-checkmark="false"
+      v-model:show="selectState"
+    >
+      <div
+        class="flex-between bg-white py-2.5 px-4 h-12 rounded-2px gap-8 text-4 min-w-39 z-1"
       >
-        <div
-          class="flex-between bg-white py-2.5 px-4 rounded-1 gap-8 text-4 min-w-39"
-        >
-          {{ selectValue }}
-          <div class="bg-#EAEFFD w-7 h-7 rounded-1 flex-center">
-            <div
-              class="i-icons:arrow w-5 h-5 text-primary transition"
-              :class="{ 'rotate-180': selectState }"
-            ></div>
-          </div>
+        {{ selectValue }}
+        <div class="bg-#EAEFFD w-7 h-7 rounded-2px flex-center">
+          <div
+            class="i-icons:arrow w-5 h-5 text-primary transition"
+            :class="{ 'rotate-180': selectState }"
+          ></div>
         </div>
-      </NPopselect>
-    </aside>
-    <!-- <CesiumTianditu
-      class="absolute top-0 left-0 w-full h-full"
-    ></CesiumTianditu> -->
-    <!-- <CesiumViewer class="absolute top-0 left-0 w-full h-full"></CesiumViewer> -->
+      </div>
+    </NPopselect>
+    <div class="absolute top-0 left-0 w-full h-full z-0">
+      <CesiumTianditu></CesiumTianditu>
+      <PointBubble></PointBubble>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import LeftAaside from "@/views/dashboard/leftAside.vue";
 import CesiumTianditu from "@/components/map/CesiumTianditu.vue";
-import CesiumViewer from "@/components/map/CesiumViewer.vue";
 import { NPopselect, SelectRenderLabel, NCheckbox } from "naive-ui";
 import { h, ref } from "vue";
+import PointBubble from "./pointBubble.vue";
+import { bubblePosition, bubbleVisible } from "@/utils/map/mark";
 const selectValue = ref("设备类型");
 const selectState = ref(false);
 const options = [
