@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="bubbleVisible"
-    class="bg-white px-7.5 py-8 rounded-1 z-1 absolute text-4 transition"
+    class="bg-white bg px-7.5 py-8 rounded-1 z-1 absolute text-4 transition"
     :style="{
       top: `${bubblePosition[1] - 400}px`,
       left: `${bubblePosition[0] - 300}px`,
@@ -57,4 +57,17 @@ defineProps({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.bg::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 75%;
+  width: 0;
+  height: 0;
+  border-top: 15px solid rgb(255, 255, 255);
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  z-index: 1;
+}
+</style>

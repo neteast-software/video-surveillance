@@ -8,23 +8,14 @@ import type { Ref } from "vue";
 import * as Cesium from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import { cesiumtoken } from "@/utils/map/env";
-import { newtdtMap, modifyMap, modifyBuild } from "@/utils/map/modify";
+import { newtdtMap } from "@/utils/map/modify";
 import {
   addDemoGraphic1,
-  addDemoGraphic2,
   setupClickHandler,
+  updateBubblePosition,
 } from "@/utils/map/mark";
 import { setAntialias, updateBuildingVisibility } from "@/utils/map/index";
-import {
-  addPath,
-  setupPathAnimation,
-  startAnimation,
-  stopAnimation,
-  click_draw_polygon,
-} from "@/utils/map/path";
-// import { ClickToGetLocation } from "../until/ClickToGetLocation";
 
-let isBlue = ref(true);
 const viewer: Ref<Cesium.Viewer | null> = ref(null);
 //3D建筑物
 const tileset = new Cesium.Cesium3DTileset({
@@ -40,7 +31,7 @@ onMounted(() => {
     animation: false, //是否显示动画控件
     selectionIndicator: false, //是否显示选取指示器组件
     baseLayerPicker: false, //是否显示图层选择控件
-    fullscreenButton: false,
+    fullscreenButton: false, //是否显示全屏按钮
     geocoder: false,
     homeButton: false,
     infoBox: false,
@@ -76,6 +67,9 @@ onMounted(() => {
     updateBuildingVisibility(viewer.value, tileset)
   );
   setAntialias(viewer.value); //抗锯齿
+  viewer.value.scene.postRender.addEventListener(() => {
+    if (viewer.value) updateBubblePosition(viewer.value);
+  });
 });
 
 window.addEventListener("resize", function () {

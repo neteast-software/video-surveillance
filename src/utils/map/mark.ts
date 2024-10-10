@@ -126,9 +126,15 @@ function stopBounce(entity, position) {
 export const bubblePosition = ref([0, 0]); // 弹窗位置（相对于屏幕）
 export const bubbleVisible = ref(false);
 // 计算 Cesium 3D 坐标在屏幕上的位置
-function calculateScreenPosition(viewer, position) {
-  const screenPosition = viewer.scene.cartesianToCanvasCoordinates(position);
-  return [screenPosition.x, screenPosition.y];
+export function calculateScreenPosition(
+  viewer: Cesium.Viewer,
+  position: Cesium.Cartesian3
+) {
+  const screenPosition = Cesium.SceneTransforms.wgs84ToWindowCoordinates(
+    viewer.scene,
+    position
+  );
+  return screenPosition ? [screenPosition.x, screenPosition.y] : [0, 0];
 }
 export function setupClickHandler(viewer: Viewer) {
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
@@ -145,18 +151,32 @@ export function setupClickHandler(viewer: Viewer) {
         bubblePosition.value = calculateScreenPosition(viewer, position);
         bubbleVisible.value = true;
         console.log("bubblePosition", bubblePosition.value);
-        //标记点弹跳
-        // if (bouncingEntity !== entity) {
-        //   startBounce(entity, [longitude, latitude, 0]);
-        // }
+        // 取消选中上一个实体并开始新的
+        if (bouncingEntity !== entity) {
+          if (bounceInterval) {
+            clearInterval(bounceInterval);
+            bouncingEntity = null;
+          }
+          bouncingEntity = entity;
+        }
       }
     } else {
       if (bouncingEntity) {
-        stopBounce(bouncingEntity, bouncingEntity.originalPosition);
+        bouncingEntity = null;
         bubbleVisible.value = false;
       }
     }
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+}
+
+// 地图移动时更新 PointBubble 的位置
+export function updateBubblePosition(viewer: Cesium.Viewer) {
+  if (!bouncingEntity) return;
+  const position = bouncingEntity.position.getValue(Cesium.JulianDate.now());
+  const screenPosition = calculateScreenPosition(viewer, position);
+  if (screenPosition) {
+    bubblePosition.value = screenPosition;
+  }
 }
 
 // 动态扩散圆的实现

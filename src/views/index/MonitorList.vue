@@ -16,12 +16,14 @@
           v-model:value="keyword"
         >
           <template #prefix>
-            <img src="../Icons/search.svg" alt="" />
+            <div class="i-icons:search w-5 h-5"></div>
           </template>
         </NInput>
       </div>
     </header>
-    <header class="flex justify-between items-center gap-x-6">
+    <header
+      class="flex justify-between items-center gap-x-6 lt-laptop-(gap-x-2)"
+    >
       <NSelect
         style="width: 128px; background: transparent"
         :value="status || undefined"
@@ -34,7 +36,7 @@
         style="width: 128px; background: transparent"
         :value="filter || undefined"
         :options="options"
-        placeholder="请选择nvr"
+        placeholder="设备nvr"
         @update:value="filter = $event"
         clearable
       ></NSelect>
@@ -42,9 +44,8 @@
         style="width: 128px; background: transparent"
         v-model:value="labels"
         :options="labelOptions"
-        multiple
         max-tag-count="responsive"
-        placeholder="请选择标签"
+        placeholder="设备标签"
         clearable
       ></NSelect>
     </header>
@@ -95,6 +96,7 @@ import {
   SelectOption,
   NInput,
   NButton,
+  NPopover,
   SelectRenderLabel,
   NRadioGroup,
   NRadio,

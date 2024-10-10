@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fill-parent bg-#94BFFF p-7.5 relative overflow-hidden flex justify-between"
+    class="fill-parent bg-#94BFFF p-7.5 lt-laptop-(p-3) relative overflow-hidden flex justify-between"
   >
     <leftAaside class="z-1"></leftAaside>
     <NPopselect
@@ -26,6 +26,7 @@
     <div class="absolute top-0 left-0 w-full h-full z-0">
       <CesiumTianditu></CesiumTianditu>
       <PointBubble></PointBubble>
+      <MapControls class="absolute right-7.5 bottom-7.5 z-1"></MapControls>
     </div>
   </div>
 </template>
@@ -33,10 +34,11 @@
 <script setup lang="ts">
 import LeftAaside from "@/views/dashboard/leftAside.vue";
 import CesiumTianditu from "@/components/map/CesiumTianditu.vue";
+import { bubblePosition } from "@/utils/map/mark";
 import { NPopselect, SelectRenderLabel, NCheckbox } from "naive-ui";
 import { h, ref } from "vue";
 import PointBubble from "./pointBubble.vue";
-import { bubblePosition, bubbleVisible } from "@/utils/map/mark";
+import MapControls from "./mapControls.vue";
 const selectValue = ref("设备类型");
 const selectState = ref(false);
 const options = [

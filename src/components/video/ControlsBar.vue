@@ -1,6 +1,6 @@
 <template>
   <div class="bg-black/50 bar px-4 py-3">
-    <section class="flex gap-x-18">
+    <section class="flex gap-x-18 lt-laptop-(gap-x-10)">
       <RecordButton
         :class="{ 'pointer-events-none': !isReady }"
         @record="$emit('record', $event)"
@@ -13,7 +13,7 @@
         >截图</ControlButton
       >
     </section>
-    <section class="flex items-center gap-x-18">
+    <section class="flex items-center gap-x-18 lt-laptop-(gap-x-10)">
       <ControlButton
         :class="{ 'pointer-events-none': !isReady }"
         :active="!isRecord"
@@ -74,7 +74,7 @@
         ></ConsolePanel>
       </NPopover>
     </section>
-    <section class="flex justify-end gap-x-18">
+    <section class="flex justify-end gap-x-18 lt-laptop-(gap-x-10)">
       <slot name="middle-right"></slot>
       <slot name="right"></slot>
       <!-- <ControlButton :icon="preset" @click="$emit('add-preset')"> 添加预置点 </ControlButton> -->

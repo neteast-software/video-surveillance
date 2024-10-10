@@ -22,9 +22,12 @@
       </div>
       <div
         class="text-3.5 px-2 py-1.5 bg-white/30 rounded-1 flex-center gap-2 cursor-pointer"
+        @click="toggle()"
+        ref="fsWrapper"
+        id="fullscreen"
       >
         <div class="i-icons:fullscreen w-5 h-5"></div>
-        全屏
+        {{ isFullscreen ? "退出" : "全屏" }}
       </div>
     </aside>
     <div class="w-30 h-full bg-white/20 z-0 absolute left-8% -skew-x-20"></div>
@@ -39,6 +42,8 @@
 <script setup lang="ts">
 import { NBadge } from "naive-ui";
 import { ref } from "vue";
+import { useFullscreen } from "@vueuse/core";
+const { isFullscreen, toggle } = useFullscreen();
 
 const BadgeValue = ref(11);
 </script>

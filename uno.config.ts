@@ -19,5 +19,8 @@ export default defineNeteastConfig({
     textColor: {
       basic: "rgb(var(--text-basic))",
     },
+    breakpoints: {
+      laptop: "1540px",
+    },
   },
 });

@@ -1,12 +1,12 @@
 <template>
-  <div class="min-w-125 flex-col gap-4 h-full">
+  <div class="flex-col gap-4 h-full w-28% min-w-100">
     <header class="bg-white w-full rounded-2px pt-6 pb-2.5">
-      <div class="mx-6 flex justify-between">
+      <div class="mx-6 flex justify-between lt-laptop-(mx-3)">
         <div v-for="data in options" class="flex-center w-1/4">
-          <img :src="data.icon" alt="" class="w-8 h-8" />
-          <div class="ml-3 text-4 tracking-normal flex-w-rest">
+          <img :src="data.icon" alt="" class="w-8 h-8 lt-laptop-(w-7 h-7)" />
+          <div class="ml-3 text-4 tracking-normal flex-w-rest lt-laptop-(text-3)">
             {{ data.label }}
-            <div class="text-7 font-700 leading-7.5 mt-1 overflow-hidden">
+            <div class="text-7 font-700 leading-7.5 mt-1 overflow-hidden lt-laptop-(text-6)">
               {{ data.value }}
             </div>
           </div>
@@ -20,7 +20,7 @@
           trigger="hover"
           v-model:show="selectState"
         >
-          <div class="min-w-25 flex-center gap-2 text-4.5">
+          <div class="min-w-25 flex-center gap-2 text-4.5 lt-laptop-(text-4)">
             {{ selectValue }}
             <div
               class="i-icons:arrow w-4 h-4 text-lightGrey transition"
@@ -40,7 +40,7 @@
     </header>
     <div
       v-show="showList"
-      class="w-full flex-col flex-h-rest bg-white rounded-2px p-7.5"
+      class="w-full flex-col flex-h-rest bg-white rounded-2px p-7.5 lt-laptop-(p-5)"
     >
       <header class="flex justify-between mb-6">
         <div class="text-4.5 flex-center font-600">
@@ -48,7 +48,7 @@
           设备列表
         </div>
         <div
-          class="i-icons:close w-6 h-6 text-lightGrey"
+          class="i-icons:close w-6 h-6 text-lightGrey cursor-pointer"
           @click="showList = false"
         ></div>
       </header>
@@ -76,13 +76,13 @@
             <NScrollbar v-else>
               <div
                 v-for="data in dataList"
-                class="bg-#F5F9FF rounded-1 p-5 flex gap-4 mb-5 transition duration-300 border-(2 white solid)"
+                class="bg-#F5F9FF rounded-1 p-5  flex gap-4 mb-5 transition duration-300 border-(2 white solid) lt-laptop-(p-3)"
                 @click="clickList = data.id"
                 :class="{ active: clickList === data.id }"
               >
                 <img
                   src="../../assets/imgs/text/listImg.png"
-                  class="w-25 h-25 rounded-1"
+                  class="w-25 h-25 rounded-1 lt-laptop-(w-22 h-22)"
                   alt=""
                 />
                 <div class="flex-w-rest flex-col justify-between">
@@ -98,7 +98,7 @@
                       在线时长
                     </div>
                     <div class="flex-col flex-center">
-                      <div class="text-(basic 4.5) font-700 flex-center">
+                      <div class="text-(basic 4.5) font-700 flex-center lt-laptop-(text-4)">
                         {{ data.resolution }}
                       </div>
                       分辨率
@@ -144,10 +144,13 @@ input::placeholder {
   color: #cccccc;
 }
 :deep(.n-tabs-tab__label) {
-  font-size: 18px;
+  @apply text-4.5 
 }
 :deep(.n-tabs-bar) {
   display: none;
+}
+:deep(.n-tabs .n-tabs-tab-pad){
+  @apply lt-laptop-(w-6) 
 }
 .active {
   background: linear-gradient(0deg, #e3eeff, #e3eeff), #f5f9ff;
