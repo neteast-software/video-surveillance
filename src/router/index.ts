@@ -26,17 +26,17 @@ export const routes: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: "/list",
+        path: "/deviceManagement/list",
         name: "list",
-        component: () => import("../views/list/index.vue"),
+        component: () => import("../views/deviceManagement/list/index.vue"),
         meta: {
           title: "设备列表",
         },
       },
       {
-        path: "/message",
+        path: "/deviceManagement/message",
         name: "message",
-        component: () => import("../views/index/index.vue"),
+        component: () => import("../views/deviceManagement/message/index.vue"),
         meta: {
           title: "设备信息",
         },
@@ -54,18 +54,18 @@ export const routes: RouteRecordRaw[] = [
   },
 
   {
-    path: "/statusMonitoring",
-    name: "statusMonitoring",
-    component: () => import("../views/index/index.vue"),
+    path: "/stautsMonitor",
+    name: "stautsMonitor",
+    component: () => import("../views/stautsMonitor/index.vue"),
     meta: {
       title: "状态监测",
       icon: () => h("div", { class: "i-icons:state  w-10 h-10" }),
     },
   },
   {
-    path: "/systemSettings",
-    name: "systemSettings",
-    component: () => import("../views/index/index.vue"),
+    path: "/systemSetting",
+    name: "systemSetting",
+    component: () => import("../views/systemSetting/index.vue"),
     meta: {
       title: "系统设置",
       icon: () => h("div", { class: "i-icons:settings  w-10 h-10" }),

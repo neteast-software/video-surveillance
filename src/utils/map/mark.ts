@@ -1,6 +1,7 @@
 import * as Cesium from "cesium";
 import Color from "cesium/Source/Core/Color";
 import Viewer from "cesium/Source/Widgets/Viewer/Viewer";
+import { ref } from "vue";
 const points = [
   {
     name: "点1",
@@ -83,9 +84,8 @@ export function addDemoGraphic1(viewer: Viewer) {
   });
 }
 
-let bouncingEntity = null;
-let bounceInterval = null;
-
+let bouncingEntity: any = null;
+let bounceInterval: any = null;
 function startBounce(entity, position) {
   if (bounceInterval) {
     clearInterval(bounceInterval);
@@ -123,6 +123,19 @@ function stopBounce(entity, position) {
   entity.label.show = false; // 隐藏标签
 }
 
+export const bubblePosition = ref([0, 0]); // 弹窗位置（相对于屏幕）
+export const bubbleVisible = ref(false);
+// 计算 Cesium 3D 坐标在屏幕上的位置
+export function calculateScreenPosition(
+  viewer: Cesium.Viewer,
+  position: Cesium.Cartesian3
+) {
+  const screenPosition = Cesium.SceneTransforms.wgs84ToWindowCoordinates(
+    viewer.scene,
+    position
+  );
+  return screenPosition ? [screenPosition.x, screenPosition.y] : [0, 0];
+}
 export function setupClickHandler(viewer: Viewer) {
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 
@@ -135,19 +148,35 @@ export function setupClickHandler(viewer: Viewer) {
         const cartographic = Cesium.Cartographic.fromCartesian(position);
         const longitude = Cesium.Math.toDegrees(cartographic.longitude);
         const latitude = Cesium.Math.toDegrees(cartographic.latitude);
-
-        // Start bouncing if not already bouncing
+        bubblePosition.value = calculateScreenPosition(viewer, position);
+        bubbleVisible.value = true;
+        console.log("bubblePosition", bubblePosition.value);
+        // 取消选中上一个实体并开始新的
         if (bouncingEntity !== entity) {
-          startBounce(entity, [longitude, latitude, 0]);
+          if (bounceInterval) {
+            clearInterval(bounceInterval);
+            bouncingEntity = null;
+          }
+          bouncingEntity = entity;
         }
       }
     } else {
-      // Clicked outside any entities; stop current bouncing
       if (bouncingEntity) {
-        stopBounce(bouncingEntity, bouncingEntity.originalPosition);
+        bouncingEntity = null;
+        bubbleVisible.value = false;
       }
     }
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+}
+
+// 地图移动时更新 PointBubble 的位置
+export function updateBubblePosition(viewer: Cesium.Viewer) {
+  if (!bouncingEntity) return;
+  const position = bouncingEntity.position.getValue(Cesium.JulianDate.now());
+  const screenPosition = calculateScreenPosition(viewer, position);
+  if (screenPosition) {
+    bubblePosition.value = screenPosition;
+  }
 }
 
 // 动态扩散圆的实现

@@ -1,6 +1,5 @@
 <template>
-  <div class="w-full relative">
-    <!-- :class="{ pb100: isFullscreen, pb60: !isFullscreen }" -->
+  <div class="w-full relative h-full">
     <div class="absolute top-0 left-0 w-full h-full">
       <template v-if="id">
         <template v-if="!rebooting">
@@ -90,7 +89,6 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import positionImg from "@/icons/position.svg";
 import WebRTCPlayer from "@/components/video/WebRTCPlayer.vue";
 import HlsPlayer from "@/components/video/HlsPlayer.vue";
@@ -103,7 +101,6 @@ import {
 import { CMD } from "./helper";
 import { nextTick, onMounted, provide, ref, watch } from "vue";
 import {
-  getVideoEncode,
   setPresetPoint,
   gotoPresetPoint,
   getPresetPoint,
@@ -192,29 +189,6 @@ async function clearPreset(nvrId: number, channelId: number) {
   window.$message?.success("清除预置点成功");
   havePreset.value = false;
 }
-// const codecType = ref(-1);
-// async function getCodec() {
-//     if (!props.id) return;
-//     const { data } = await getVideoEncode(props.nvrId, props.channelId);
-//     console.log('获取到的codec', data);
-//     codecType.value = data;
-// }
-// onMounted(getCodec);
-
-// const sources = computed(() => [
-//     {
-//         src: props.src,
-//         type: props.type
-//     }
-// ]);
-// async function addPreset() {
-//     try {
-//         await setPresetPoint(props.nvrId);
-//         window.$message?.success('添加预置点成功');
-//     } catch (error) {
-//         window.$message?.error('添加预置点失败');
-//     }
-// }
 </script>
 
 <style scoped>

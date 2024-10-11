@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full px-2.5 py-4 bg rounded-2 relative">
+  <div class="h-full px-2.5 py-4 bg relative border-r-(2px solid greyLine)">
     <div class="flex-col justify-between gap-3 h-full">
       <header class="flex-center bg-greyBg rounded-2 p-2 min-w-48 mb-4.5">
         <img :src="user" class="w-7.5 h-7.5 rounded-full" alt="" />
@@ -16,7 +16,7 @@
           <div class="text-3 text-lightGrey mb-6">菜单</div>
           <NMenu
             :options="menuOptions"
-            default-value="index"
+            :value="menuKey"
             @update:value="handleMenuSelect"
           />
         </div>
@@ -62,13 +62,15 @@
           </div>
         </div>
       </NScrollbar>
-      <div class="w-10 min-h-10 bg-white rounded-2 flex-center">
+      <div
+        class="w-10 min-h-10 bg-white rounded-2 flex-center cursor-pointer z-1 hover:scale-106 transition"
+      >
         <div class="i-icons:export w-6 h-6 text-lightGrey"></div>
       </div>
     </div>
     <img
       src="../assets/imgs/sidebar-bg.png"
-      class="absolute bottom-0 left-0 w-full"
+      class="absolute bottom-0 left-0 w-full z-0"
       alt=""
     />
   </div>
@@ -81,17 +83,23 @@ import {
   NTooltip,
   NProgress,
   NMenu,
-  MenuOption,
   NScrollbar,
 } from "naive-ui";
 import user from "../assets/imgs/user.png";
 import { createMenu } from "../utils/other/createMenu";
 import { routes } from "../router";
 import { useRouter, useRoute } from "vue-router";
+import { computed, ref } from "vue";
 const router = useRouter();
+const route = useRoute();
 function handleMenuSelect(key: string) {
+  console.log("key", key);
   router.push(key);
 }
+const menuKey = computed(() => {
+  return router.currentRoute.value.path as string;
+});
+
 const menuOptions = createMenu(routes);
 
 const options = [

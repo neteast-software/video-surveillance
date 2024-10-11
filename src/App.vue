@@ -1,13 +1,23 @@
 <template>
-    <LkNaiveProvider class="fill-parent bg-#F6F8F9 h-full flex-col text-basic">
-      <navbar></navbar>
-      <main class="flex flex-h-rest mb-5">
-        <sidebar></sidebar>
-        <div class="flex-w-rest">
-          <router-view class="fill-parent"></router-view>
-        </div>
-      </main>
-    </LkNaiveProvider>
+  <LkNaiveProvider
+    class="fill-parent bg-#F6F8F9 h-full flex-col text-basic"
+    :naive-theme-overrides="themeOverrides"
+  >
+    <navbar></navbar>
+    <main class="flex flex-h-rest">
+      <sidebar></sidebar>
+      <div class="flex-w-rest">
+        <router-view v-slot="{ Component }" class="relative">
+          <transition name="fade" mode="out-in">
+            <component
+              :is="Component"
+              class="absolute top-0 left-0 w-full h-full"
+            />
+          </transition>
+        </router-view>
+      </div>
+    </main>
+  </LkNaiveProvider>
 </template>
 
 <script setup lang="ts">
@@ -39,4 +49,27 @@ const themeOverrides = {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.fade-enter-from {
+  opacity: 0;
+  transform: translatex(6px);
+}
+
+.fade-enter-to {
+  opacity: 1;
+  transform: translatex(0);
+}
+.fade-leave-from {
+  opacity: 1;
+  transform: translatex(0);
+}
+.fade-leave-to {
+  opacity: 0;
+  transform: translatex(6px);
+}
+</style>

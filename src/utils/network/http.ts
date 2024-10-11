@@ -4,13 +4,7 @@ import { Ref, unref, watch, reactive } from "vue";
 import { clearUrl } from "../other";
 import { baseUrl, timeout } from "@/presets";
 import storage from "../other/storage";
-import { encrypt, md5 } from "../crypto";
-// import { ElNotification } from 'element-plus';
-
-// const baseUrl = 'http://192.168.3.106:8080';
-// const baseUrl = '/api';
-// const baseUrl = 'http://127.0.0.1:8080';
-// const { data } = useFetch('1', {});
+import { md5 } from "../crypto";
 const invalidMethods = [
   "get",
   "GET",
@@ -214,35 +208,7 @@ class Requestor {
     await p;
     return result;
   }
-  // public async fetch<T = any>(
-  //     uri: string,
-  //     method: RequestMethods = 'get',
-  //     params?: Record<string, any>,
-  //     options?: RequestOptions
-  // ): HttpReturn<T> {
-  //     const lowerMethod = method.toLowerCase() as 'get' | 'post' | 'put' | 'delete';
-  //     if (!invalidMethods.includes(lowerMethod)) return Promise.reject('网络请求方法错误');
-  //     const url = lowerMethod === 'get' ? this.getUrl(uri, unref(params)) : this.getUrl(uri);
-  //     const payload = lowerMethod === 'get' ? undefined : unref(params);
-  //     console.log('请求', url, payload);
-  //     const requestKey = md5({ ...payload, url });
-  //     const { withoutLock } = options || {};
-  //     if (!withoutLock) {
-  //         if (this.locks[requestKey]) {
-  //             return Promise.reject('重复的请求，请稍后');
-  //         }
-  //         this.locks[requestKey] = true;
-  //     }
-  //     const result = await this.useRequest<T>(url, { ...options })
-  //         [lowerMethod](payload)
-  //         .json();
-  //     const p = this.postFetch<any>(result);
-  //     p.finally(() => {
-  //         delete this.locks[requestKey];
-  //     });
-  //     await p;
-  //     return result;
-  // }
+
   private async postFetch<T extends ResponseData>(result: UseFetchReturn<T>) {
     const { data, error, response } = result;
     // result.onFetchError((res) => {

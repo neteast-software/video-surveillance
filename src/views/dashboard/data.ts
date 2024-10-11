@@ -63,6 +63,7 @@ export const menuOptions = ref([
 ]);
 export const dataList = ref([
   {
+    id: 1,
     name: "设备地点名称",
     type: "H264",
     status: "故障",
@@ -70,6 +71,7 @@ export const dataList = ref([
     resolution: "1920*1080",
   },
   {
+    id: 2,
     name: "设备地点名称",
     type: "H264",
     status: "故障",
@@ -77,6 +79,7 @@ export const dataList = ref([
     resolution: "1920*1080",
   },
   {
+    id: 3,
     name: "设备地点名称",
     type: "H264",
     status: "故障",
@@ -84,6 +87,7 @@ export const dataList = ref([
     resolution: "1920*1080",
   },
   {
+    id: 4,
     name: "设备地点名称",
     type: "H264",
     status: "故障",
@@ -91,6 +95,7 @@ export const dataList = ref([
     resolution: "1920*1080",
   },
   {
+    id: 5,
     name: "设备地点名称",
     type: "H264",
     status: "故障",

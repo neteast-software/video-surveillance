@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative flex-center">
     <Icon
       :icon="roundedDiamond"
       :width="100"
@@ -8,7 +8,7 @@
     <NButton
       quaternary
       circle
-      class="!absolute left-1/2 -translate-x-1/2 top-[2%]"
+      class="!absolute left-1/2 -translate-x-1/2 top-[5%]"
       @mousedown="$emit('command', 'TILT_UP', 0)"
       @mouseup="$emit('command', 'TILT_UP', 1)"
     >
@@ -26,7 +26,7 @@
     <NButton
       quaternary
       circle
-      class="!absolute left-1/2 -translate-x-1/2 bottom-[2%]"
+      class="!absolute left-1/2 -translate-x-1/2 bottom-[5%]"
       @mousedown="$emit('command', 'TILT_DOWN', 0)"
       @mouseup="$emit('command', 'TILT_DOWN', 1)"
     >
