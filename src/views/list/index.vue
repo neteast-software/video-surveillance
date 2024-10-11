@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import {Viewer} from 'linker-ui'
+import {Viewer} from 'linker-uii'
 </script>
 
 <style scoped>

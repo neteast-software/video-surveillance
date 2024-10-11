@@ -41,9 +41,9 @@ importers:
       echarts:
         specifier: ^5.4.2
         version: 5.5.1
-      linker-ui:
-        specifier: workspace:*
-        version: link:packages/linker-ui
+      linker-uii:
+        specifier: ^0.3.0
+        version: 0.3.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2))
       recordrtc:
         specifier: ^5.6.2
         version: 5.6.2
@@ -875,55 +875,46 @@ packages:
     resolution: {integrity: sha512-j63YtCIRAzbO+gC2L9dWXRh5BFetsv0j0va0Wi9epXDgU/XUi5dJKo4USTttVyK7fGw2nPWK0PbAvyliz50SCQ==}
     cpu: [arm]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-arm-musleabihf@4.22.4':
     resolution: {integrity: sha512-dJnWUgwWBX1YBRsuKKMOlXCzh2Wu1mlHzv20TpqEsfdZLb3WoJW2kIEsGwLkroYf24IrPAvOT/ZQ2OYMV6vlrg==}
     cpu: [arm]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-arm64-gnu@4.22.4':
     resolution: {integrity: sha512-AdPRoNi3NKVLolCN/Sp4F4N1d98c4SBnHMKoLuiG6RXgoZ4sllseuGioszumnPGmPM2O7qaAX/IJdeDU8f26Aw==}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-musl@4.22.4':
     resolution: {integrity: sha512-Gl0AxBtDg8uoAn5CCqQDMqAx22Wx22pjDOjBdmG0VIWX3qUBHzYmOKh8KXHL4UpogfJ14G4wk16EQogF+v8hmA==}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-powerpc64le-gnu@4.22.4':
     resolution: {integrity: sha512-3aVCK9xfWW1oGQpTsYJJPF6bfpWfhbRnhdlyhak2ZiyFLDaayz0EP5j9V1RVLAAxlmWKTDfS9wyRyY3hvhPoOg==}
     cpu: [ppc64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-gnu@4.22.4':
     resolution: {integrity: sha512-ePYIir6VYnhgv2C5Xe9u+ico4t8sZWXschR6fMgoPUK31yQu7hTEJb7bCqivHECwIClJfKgE7zYsh1qTP3WHUA==}
     cpu: [riscv64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-s390x-gnu@4.22.4':
     resolution: {integrity: sha512-GqFJ9wLlbB9daxhVlrTe61vJtEY99/xB3C8e4ULVsVfflcpmR6c8UZXjtkMA6FhNONhj2eA5Tk9uAVw5orEs4Q==}
     cpu: [s390x]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.22.4':
     resolution: {integrity: sha512-87v0ol2sH9GE3cLQLNEy0K/R0pz1nvg76o8M5nhMR0+Q+BBGLnb35P0fVz4CQxHYXaAOhE8HhlkaZfsdUOlHwg==}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-x64-musl@4.22.4':
     resolution: {integrity: sha512-UV6FZMUgePDZrFjrNGIWzDo/vABebuXBhJEqrHxrGiU6HikPy0Z3LfdtciIttEUQfuDdCn8fqh7wiFJjCNwO+g==}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-win32-arm64-msvc@4.22.4':
     resolution: {integrity: sha512-BjI+NVVEGAXjGWYHz/vv0pBqfGoUH0IGZ0cICTn7kB9PyjrATSkX+8WkguNjWoj2qSr1im/+tTGRaY+4/PdcQw==}
@@ -2081,6 +2072,12 @@ packages:
 
   lerc@2.0.0:
     resolution: {integrity: sha512-7qo1Mq8ZNmaR4USHHm615nEW2lPeeWJ3bTyoqFbd35DLx0LUH7C6ptt5FDCTAlbIzs3+WKrk5SkJvw8AFDE2hg==}
+
+  linker-uii@0.3.0:
+    resolution: {integrity: sha512-7Js8NEuYBRpOB943UbdY9vTjGAhk2913hQN4DlvUakRhNqcNyjRc09W1aQ/MmuYtVpDspiyErzSAdA/JF365WA==}
+    peerDependencies:
+      naive-ui: ^2.39.0
+      vue: ^3.4.37
 
   load-tsconfig@0.2.5:
     resolution: {integrity: sha512-IXO6OCs9yg8tMKzfPZ1YmheJbZCiEsnBdcB03l0OcfK9prKnJb96siuHCr5Fl37/yo9DnKU+TLpxzTUspw9shg==}
@@ -4175,6 +4172,11 @@ snapshots:
       '@wangeditor/editor': 5.1.23
       vue: 3.5.8(typescript@5.2.2)
 
+  '@wangeditor/editor-for-vue@5.1.12(@wangeditor/editor@5.1.23)(vue@3.5.8(typescript@5.6.2))':
+    dependencies:
+      '@wangeditor/editor': 5.1.23
+      vue: 3.5.8(typescript@5.6.2)
+
   '@wangeditor/editor@5.1.23':
     dependencies:
       '@uppy/core': 2.3.4
@@ -4952,6 +4954,34 @@ snapshots:
   ktx-parse@0.4.5: {}
 
   lerc@2.0.0: {}
+
+  linker-uii@0.3.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2)):
+    dependencies:
+      '@iconify-json/heroicons': 1.2.0
+      '@iconify/types': 2.0.0
+      '@iconify/vue': 4.1.2(vue@3.5.8(typescript@5.6.2))
+      '@types/crypto-js': 4.2.2
+      '@videojs-player/vue': 1.0.0(@types/video.js@7.3.58)(video.js@7.20.1)(vue@3.5.8(typescript@5.6.2))
+      '@vueuse/core': 11.1.0(vue@3.5.8(typescript@5.6.2))
+      '@wangeditor/editor': 5.1.23
+      '@wangeditor/editor-for-vue': 5.1.12(@wangeditor/editor@5.1.23)(vue@3.5.8(typescript@5.6.2))
+      colord: 2.9.3
+      crypto-js: 4.2.0
+      date-fns: 3.6.0
+      event-source-polyfill: 1.0.31
+      lodash-es: 4.17.21
+      naive-ui: 2.40.1(vue@3.5.8(typescript@5.6.2))
+      qs: 6.13.0
+      recordrtc: 5.6.2
+      uuid: 10.0.0
+      video-surveillance: 'link:'
+      video.js: 7.20.1
+      vue: 3.5.8(typescript@5.6.2)
+      vue-router: 4.4.5(vue@3.5.8(typescript@5.6.2))
+      xlsx: 0.18.5
+    transitivePeerDependencies:
+      - '@types/video.js'
+      - '@vue/composition-api'
 
   load-tsconfig@0.2.5: {}
 
