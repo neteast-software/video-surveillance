@@ -24,9 +24,12 @@
       </div>
     </NPopselect>
     <div class="absolute top-0 left-0 w-full h-full z-0">
-      <CesiumTianditu></CesiumTianditu>
+      <CesiumTianditu v-model:zoomLevel="zoomLevel"></CesiumTianditu>
       <PointBubble></PointBubble>
-      <MapControls class="absolute right-7.5 bottom-7.5 z-1"></MapControls>
+      <MapControls
+        v-model:zoomLevel="zoomLevel"
+        class="absolute right-7.5 bottom-7.5 z-1"
+      ></MapControls>
     </div>
   </div>
 </template>
@@ -38,7 +41,8 @@ import { bubblePosition } from "@/utils/map/mark";
 import { NPopselect, SelectRenderLabel, NCheckbox } from "naive-ui";
 import { h, ref } from "vue";
 import PointBubble from "./pointBubble.vue";
-import MapControls from "./mapControls.vue";
+import MapControls from "../../components/map/mapControls.vue";
+const zoomLevel = ref(500);
 const selectValue = ref("设备类型");
 const selectState = ref(false);
 const options = [

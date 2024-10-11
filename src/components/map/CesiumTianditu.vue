@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import type { Ref } from "vue";
 import * as Cesium from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
@@ -15,14 +15,23 @@ import {
   updateBubblePosition,
 } from "@/utils/map/mark";
 import { setAntialias, updateBuildingVisibility } from "@/utils/map/index";
-
+const props = defineProps({
+  zoomLevel: Number,
+});
+const emit = defineEmits(["update:zoomLevel"]);
+const currentHeading = ref(0); // 当前的方位角
+const currentPitch = ref(-30); // 当前的俯仰角
 const viewer: Ref<Cesium.Viewer | null> = ref(null);
 //3D建筑物
 const tileset = new Cesium.Cesium3DTileset({
   url: "/model/tileset.json",
 });
 
-const Cartesian = Cesium.Cartesian3.fromDegrees(119.297, 26.07, 500);
+const Cartesian = Cesium.Cartesian3.fromDegrees(
+  119.297,
+  26.07,
+  props.zoomLevel
+);
 
 onMounted(() => {
   Cesium.Ion.defaultAccessToken = cesiumtoken;
@@ -45,8 +54,8 @@ onMounted(() => {
   });
   viewer.value.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
 
-  // viewer.value.scene.screenSpaceCameraController.maximumZoomDistance = 100000; //最大缩放距离
-  // viewer.value.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
+  viewer.value.scene.screenSpaceCameraController.maximumZoomDistance = 10000; //最大缩放距离
+  viewer.value.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
   viewer.value.scene.primitives.add(tileset); //添加3D建筑物
 
   //相机
@@ -54,8 +63,8 @@ onMounted(() => {
     destination: Cartesian, //初始位置
     orientation: {
       //初始方向
-      heading: Cesium.Math.toRadians(0),
-      pitch: Cesium.Math.toRadians(-30),
+      heading: Cesium.Math.toRadians(currentHeading.value),
+      pitch: Cesium.Math.toRadians(currentPitch.value),
       roll: Cesium.Math.toRadians(0),
     },
   });
@@ -75,6 +84,32 @@ onMounted(() => {
 window.addEventListener("resize", function () {
   setAntialias(viewer.value);
 });
+// 更新相机视图
+const updateCamera = (zoomLevel: number) => {
+  if (!viewer.value) return;
+  const camera = viewer.value.camera;
+  currentHeading.value = camera.heading;
+  currentPitch.value = camera.pitch;
+  console.log("zoomLevel", zoomLevel);
+  if (viewer.value) {
+    viewer.value.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(119.297, 26.07, zoomLevel),
+      orientation: {
+        heading: currentHeading.value,
+        pitch: currentPitch.value,
+        roll: 0,
+      },
+    });
+  }
+};
+watch(
+  () => props.zoomLevel,
+  (newZoom) => {
+    if (newZoom) {
+      updateCamera(newZoom);
+    }
+  }
+);
 </script>
 
 <style scoped>

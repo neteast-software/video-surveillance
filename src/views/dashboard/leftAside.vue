@@ -67,13 +67,7 @@
           class="h-full"
         >
           <div class="fill-parent relative">
-            <img
-              v-if="dataList.length === 0"
-              src="../../assets/imgs/defaultImg.png"
-              class="w-75 h-75 absolute left-1/2 -translate-x-1/2 mt-12"
-              alt=""
-            />
-            <NScrollbar v-else>
+            <NScrollbar  v-if="dataList.length !== 0">
               <div
                 v-for="data in dataList"
                 class="bg-#F5F9FF rounded-1 p-5  flex gap-4 mb-5 transition duration-300 border-(2 white solid) lt-laptop-(p-3)"
@@ -87,7 +81,7 @@
                 />
                 <div class="flex-w-rest flex-col justify-between">
                   <div class="flex-between">
-                    <div class="text-4.5">{{ data.name }}</div>
+                    <div class="text-4.5 text-basic">{{ data.name }}</div>
                     <span class="text-lightGrey">{{ data.type }}</span>
                   </div>
                   <div class="flex-between text-#8A92A6 h-11">
@@ -113,6 +107,12 @@
                 </div>
               </div>
             </NScrollbar>
+            <img
+              v-else
+              src="../../assets/imgs/defaultImg.png"
+              class="w-75 h-75 absolute left-1/2 -translate-x-1/2 mt-12"
+              alt=""
+            />
           </div>
         </n-tab-pane>
       </NTabs>
@@ -140,9 +140,9 @@ const clickList = ref(1); // 点击列表项
 </script>
 
 <style scoped>
-input::placeholder {
+/* input::placeholder {
   color: #cccccc;
-}
+} */
 :deep(.n-tabs-tab__label) {
   @apply text-4.5 
 }
