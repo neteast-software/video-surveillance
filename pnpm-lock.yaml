@@ -42,8 +42,8 @@ importers:
         specifier: ^5.4.2
         version: 5.5.1
       linker-uii:
-        specifier: ^0.3.0
-        version: 0.3.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2))
+        specifier: ^0.7.0
+        version: 0.7.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2))
       recordrtc:
         specifier: ^5.6.2
         version: 5.6.2
@@ -2073,8 +2073,8 @@ packages:
   lerc@2.0.0:
     resolution: {integrity: sha512-7qo1Mq8ZNmaR4USHHm615nEW2lPeeWJ3bTyoqFbd35DLx0LUH7C6ptt5FDCTAlbIzs3+WKrk5SkJvw8AFDE2hg==}
 
-  linker-uii@0.3.0:
-    resolution: {integrity: sha512-7Js8NEuYBRpOB943UbdY9vTjGAhk2913hQN4DlvUakRhNqcNyjRc09W1aQ/MmuYtVpDspiyErzSAdA/JF365WA==}
+  linker-uii@0.7.0:
+    resolution: {integrity: sha512-P8Ag4qvoclquLXUG9VFXMtWJhD6kPJd0CgLLAaYD52z3YYntd5e8niU4FQevp4arJQ1SFJtimPJNhghaIXS95g==}
     peerDependencies:
       naive-ui: ^2.39.0
       vue: ^3.4.37
@@ -4955,7 +4955,7 @@ snapshots:
 
   lerc@2.0.0: {}
 
-  linker-uii@0.3.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2)):
+  linker-uii@0.7.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2)):
     dependencies:
       '@iconify-json/heroicons': 1.2.0
       '@iconify/types': 2.0.0
