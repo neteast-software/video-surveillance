@@ -15,6 +15,8 @@ import {
   updateBubblePosition,
 } from "@/utils/map/mark";
 import { setAntialias, updateBuildingVisibility } from "@/utils/map/index";
+import { useEventBus } from "@vueuse/core";
+import { zoomKey, zoomUpdateKey } from "@/config/eventBus";
 const props = defineProps({
   zoomLevel: Number,
 });
@@ -71,6 +73,7 @@ onMounted(() => {
 
   viewer.value.scene.screenSpaceCameraController.maximumZoomDistance = 10000; //最大缩放距离
   viewer.value.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
+  // viewer.value.scene.screenSpaceCameraController.enableZoom = false
   viewer.value.scene.primitives.add(tileset); //添加3D建筑物
 
   //相机
@@ -96,7 +99,7 @@ function onResize() {
   setAntialias(viewer.value);
 }
 // 更新相机视图
-const updateCamera = (zoomLevel: number) => {
+const updateCamera = (zoomLevel: number, oldZoomLevel: number) => {
   if (!viewer.value) return;
   const camera = viewer.value.camera;
   currentHeading.value = camera.heading;
@@ -107,10 +110,8 @@ const updateCamera = (zoomLevel: number) => {
       destination: Cesium.Cartesian3.fromDegrees(119.297, 26.07, zoomLevel),
       orientation: {
         heading: currentHeading.value,
-        pitch: currentPitch.value,
+        pitch: currentPitch.value - (zoomLevel - oldZoomLevel) * 0.0001,
         roll: 0,
-        // direction: camera.direction,
-        // up: camera.up
       },
     });
     // viewer.value.camera.flyTo({
@@ -118,14 +119,26 @@ const updateCamera = (zoomLevel: number) => {
     // })
   }
 };
-watch(
-  () => props.zoomLevel,
-  (newZoom) => {
-    if (newZoom) {
-      updateCamera(newZoom);
-    }
+const zoomBus = useEventBus(zoomKey)
+const zoomUpdateBus = useEventBus(zoomUpdateKey)
+zoomBus.on( ([zoomLevel, oldZoomLevel]) => {
+  updateCamera(zoomLevel, oldZoomLevel);
+});
+function onZoomLevelChange() {
+  if (viewer.value) {
+    const level = viewer.value.camera.positionCartographic.height
+    console.log('level', level)
+    zoomUpdateBus.emit(Math.round(level))
   }
-);
+}
+// watch(
+//   () => props.zoomLevel,
+//   (newZoom, oldZoom) => {
+//     if (newZoom) {
+//       updateCamera(newZoom, oldZoom);
+//     }
+//   }
+// );
 
 window.addEventListener("resize", onResize);
 
@@ -138,7 +151,18 @@ function removeEventListener() {
   }
   window.removeEventListener("resize", onResize);
 }
+<<<<<<< HEAD
 onBeforeUnmount(removeEventListener);
+=======
+function clearEventBus() {
+  zoomBus.reset()
+  zoomUpdateBus.reset()
+}
+onBeforeUnmount(() => {
+  removeEventListener()
+  clearEventBus()
+})
+>>>>>>> 1ca43ad8e8e43184447eb1cec77a397495d1be07
 </script>
 
 <style scoped>
