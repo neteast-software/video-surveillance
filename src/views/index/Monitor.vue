@@ -47,6 +47,7 @@
                 >切换H264</ControlButton
               >
             </template>
+            <slot></slot>
           </WebRTCPlayer>
         </template>
         <template v-else>

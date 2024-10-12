@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, unref } from "vue";
+import { onBeforeUnmount, onMounted, ref, unref, watch } from "vue";
 import type { Ref } from "vue";
 import * as Cesium from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
@@ -101,6 +101,7 @@ const updateCamera = (zoomLevel: number) => {
   const camera = viewer.value.camera;
   currentHeading.value = camera.heading;
   currentPitch.value = camera.pitch;
+  
   console.log("zoomLevel", zoomLevel);
   if (viewer.value) {
     viewer.value.camera.setView({
@@ -109,8 +110,13 @@ const updateCamera = (zoomLevel: number) => {
         heading: currentHeading.value,
         pitch: currentPitch.value,
         roll: 0,
+        // direction: camera.direction,
+        // up: camera.up
       },
     });
+    // viewer.value.camera.flyTo({
+    //   destination: Cesium.Cartesian3.fromDegrees(119.297, 26.07),
+    // })
   }
 };
 watch(
