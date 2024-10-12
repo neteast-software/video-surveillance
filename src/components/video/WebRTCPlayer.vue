@@ -7,13 +7,7 @@
       <div class="w-2.5 h-2.5 rounded-full bg-error mr-2"></div>
       <span class="text-white text-xs">{{ recordDuration }}</span>
     </div>
-    <div class="w-full h-full bg-black">
-      <!-- <img
-        v-if="!videoIsReady || webRTCError"
-        src="../../assets/imgs/text/text.png"
-        class="w-full h-full"
-        alt=""
-      /> -->
+    <div class="w-full h-full relative">
       <video
         :muted="isMuted"
         :controls="false"

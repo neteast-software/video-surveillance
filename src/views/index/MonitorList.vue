@@ -32,14 +32,49 @@
         @update:value="status = $event"
         clearable
       ></NSelect>
-      <NSelect
+      <!-- <NSelect
         style="width: 128px; background: transparent"
         :value="filter || undefined"
         :options="options"
         placeholder="设备nvr"
         @update:value="filter = $event"
         clearable
-      ></NSelect>
+      ></NSelect> -->
+      <NPopover
+        trigger="click"
+        placement="bottom"
+        v-model:show="popoverVisible"
+      >
+        <template #trigger>
+          <div
+            class="border-(1 solid greyLine) w-32 h-full rounded-1 text-#C2C2C2 flex-y-center justify-between px-2 cursor-pointer hover-border-primary truncate"
+            :class="{
+              'text-basic': filter !== '',
+            }"
+          >
+            <!-- :class="{ 'text-basic': filter === 0 || filter }" -->
+            {{
+              options.find((option) => option.value === filter)
+                ? options.find((option) => option.value === filter)?.label
+                : "设备nvr"
+            }}
+            <div class="i-icons:arrow w-4 h-4 rotate-180"></div>
+          </div>
+        </template>
+        <div class="py-3 w-400px max-h-300px flex-col">
+          <span class="text-(lightGrey 3)"> 选择设备NVR </span>
+          <div class="grid grid-cols-2 gap-2 mt-3 overflow-auto flex-h-rest">
+            <div
+              class="border-(1 solid greyLine) rounded-2 h-9 px-4 flex-y-center truncate"
+              v-for="option in options"
+              @click="(filter = option.value || 0), (popoverVisible = false)"
+              :class="{ popActive: filter === option.value }"
+            >
+              {{ option.label }}
+            </div>
+          </div>
+        </div>
+      </NPopover>
       <NSelect
         style="width: 128px; background: transparent"
         v-model:value="labels"
@@ -127,8 +162,8 @@ withDefaults(defineProps<Props>(), {});
 defineEmits<{
   select: [indexCode: string];
 }>();
-
 const monitorBus = useEventBus(pickMonitorKey);
+const popoverVisible = ref(false);
 
 function onPickMonitor(nvrId: number, nvrName: string, ch: ChannelItem) {
   if (!ch.online) return;
@@ -142,15 +177,6 @@ function onPickMonitor(nvrId: number, nvrName: string, ch: ChannelItem) {
   });
 }
 
-// watch(
-//     () => props.regionId,
-//     (newRegionId) => {
-//         initMonitorList(newRegionId);
-//     }
-// );
-
-// const layoutMode = ref<'list' | 'group'>('list');
-
 const options = ref<SelectOption[]>([]);
 const labelOptions = ref<SelectOption[]>([]);
 const filter = ref<number | string>("");
@@ -161,49 +187,7 @@ const statusOptions = ref<SelectOption[]>([
   { label: "离线", value: MonitorStatus.OFFLINE },
 ]);
 const labels = ref<string[]>([]);
-// const deviceList = ref<NVRItem[]>([]);
-const deviceList = ref<NVRItem[]>([
-  // {
-  //   id: 1000016,
-  //   name: "EPC-1北头岭隧道",
-  //   online: false,
-  //   channels: [
-  //     {
-  //       channelName: "北头岭兰花山隧道口",
-  //       channelNum: "1",
-  //       id: 106,
-  //       imgAddr: "/static/capture/ffd8b5b24d6bfe8d279be9749e4570cd.jpg",
-  //       labels: ["EPC-1", "隧道"],
-  //       online: true,
-  //       rtspPort: 554,
-  //     },
-  //     {
-  //       channelName: "2#拌和站1#机皮带",
-  //       channelNum: "2",
-  //       id: 107,
-  //       imgAddr: "/static/capture/29084d21f7c48497ed1a1261c00a8f9f.jpg",
-  //       labels: ["EPC-1", "隧道"],
-  //       online: false,
-  //       rtspPort: 554,
-  //     },
-  //   ],
-  // },
-  // {
-  //   id: 1000017,
-  //   name: "EPC-1标2#拌合站",
-  //   online: false,
-  //   channels: [
-  //     {
-  //       channelName: "2#拌和站1#机配料机",
-  //       channelNum: "1",
-  //       id: 106,
-  //       labels: ["EPC-1", "隧道"],
-  //       online: true,
-  //       rtspPort: 554,
-  //     },
-  //   ],
-  // },
-]);
+const deviceList = ref<NVRItem[]>([]);
 
 const filteredDeviceList = computed(() => {
   const f = filter.value;
@@ -266,6 +250,7 @@ async function initMonitorList() {
     });
   });
   options.value = [
+    { label: "全部", value: 0 },
     ...deviceList.value.map((nvr) => ({ label: nvr.name, value: nvr.id })),
   ];
   labelOptions.value = [...labelSet].map((label) => ({ label, value: label }));
@@ -304,5 +289,8 @@ function haveCommonLabel(arr1: string[], arr2: string[]) {
 }
 :deep(.n-button:focus) {
   background-color: #3563ef;
+}
+.popActive {
+  @apply bg-primaryBg text-primary;
 }
 </style>

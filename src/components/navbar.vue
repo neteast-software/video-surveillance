@@ -26,7 +26,10 @@
         ref="fsWrapper"
         id="fullscreen"
       >
-        <div class="i-icons:fullscreen w-5 h-5"></div>
+        <div
+          class="w-5 h-5"
+          :class="isFullscreen ? 'i-icons:quitscreen' : 'i-icons:fullscreen'"
+        ></div>
         {{ isFullscreen ? "退出" : "全屏" }}
       </div>
     </aside>
