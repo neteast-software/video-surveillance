@@ -43,6 +43,7 @@
                 </div>
               </NPopover>
             </template>
+          <div class="w-full h-full absolute left-0 top-0 hover:bg-red"></div>
           </Monitor>
         </template>
       </draggable>

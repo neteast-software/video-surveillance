@@ -7,6 +7,7 @@ import {
 import { ref, nextTick, h } from "vue";
 
 export const routes: RouteRecordRaw[] = [
+  { path: '/', redirect: '/index' },
   {
     path: "/index",
     name: "index",

@@ -16,6 +16,7 @@
         class="w-full h-full"
         style="object-fit: fill"
       ></video>
+      <slot></slot>
       <NSpin
         v-if="!videoIsReady || webRTCError"
         class="absolute-center"
