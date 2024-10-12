@@ -5,7 +5,10 @@ import presetIconify from "unocss-preset-iconify";
 
 export default defineNeteastConfig({
   presets: [
-    presetIconify([{ dir: "src/icons", palette: false, onDemand: false }]),
+    presetIconify([
+      { dir: "src/icons", palette: false, onDemand: false },
+      { dir: "src/assets/palette", palette: true, onDemand: false },
+    ]),
   ],
   theme: {
     colors: {

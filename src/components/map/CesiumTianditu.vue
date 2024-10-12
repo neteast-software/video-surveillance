@@ -35,8 +35,8 @@ const Cartesian = Cesium.Cartesian3.fromDegrees(
 function onZoomLevelChange() {
   if (viewer.value) {
     // const level = viewer.value.camera.positionCartographic.height
-    const level = viewer.value.scene.globe
-    console.log('level', level)
+    const level = viewer.value.scene.globe;
+    console.log("level", level);
   }
 }
 
@@ -66,7 +66,7 @@ onMounted(() => {
     shadows: false,
     imageryProvider: newtdtMap("cva"),
   });
-  viewer.value.camera.changed.addEventListener(onZoomLevelChange)
+  viewer.value.camera.changed.addEventListener(onZoomLevelChange);
   viewer.value.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
 
   viewer.value.scene.screenSpaceCameraController.maximumZoomDistance = 10000; //最大缩放距离
@@ -94,14 +94,13 @@ onMounted(() => {
 
 function onResize() {
   setAntialias(viewer.value);
-};
+}
 // 更新相机视图
 const updateCamera = (zoomLevel: number) => {
   if (!viewer.value) return;
   const camera = viewer.value.camera;
   currentHeading.value = camera.heading;
   currentPitch.value = camera.pitch;
-  
   console.log("zoomLevel", zoomLevel);
   if (viewer.value) {
     viewer.value.camera.setView({
@@ -128,19 +127,18 @@ watch(
   }
 );
 
-
 window.addEventListener("resize", onResize);
 
 function removeEventListener() {
-  const cesium = unref(viewer)
+  const cesium = unref(viewer);
   if (cesium) {
-    cesium.camera.changed.removeEventListener(onZoomLevelChange)
-    cesium.scene.camera.changed.removeEventListener(updateBuilding)
-    cesium.scene.postRender.removeEventListener(updateBubble)
+    cesium.camera.changed.removeEventListener(onZoomLevelChange);
+    cesium.scene.camera.changed.removeEventListener(updateBuilding);
+    cesium.scene.postRender.removeEventListener(updateBubble);
   }
-  window.removeEventListener("resize", onResize)
+  window.removeEventListener("resize", onResize);
 }
-onBeforeUnmount(removeEventListener)
+onBeforeUnmount(removeEventListener);
 </script>
 
 <style scoped>

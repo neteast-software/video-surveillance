@@ -1,4 +1,3 @@
-// import type { LineChartData } from "./index";
 export interface MonitorListItem {
   id: number;
   name: string;
@@ -28,7 +27,6 @@ export interface GetRegionPersonFlowResult {
     dataBody: {
       title: string;
       abscissa: string[];
-      //   dataList: LineChartData[];
     };
   };
 }

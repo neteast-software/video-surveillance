@@ -69,3 +69,12 @@ button:hover {
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 } */
+.dataframe {
+  @apply border-(1 solid greyLine) rounded-1 p-5 flex-col;
+  h1 {
+    @apply text-4 font-600 m-0 mb-4;
+  }
+}
+.blue-gradient {
+  background: linear-gradient(180deg, #f3f9fc 0%, rgba(245, 249, 255, 0) 100%);
+}

@@ -85,7 +85,7 @@ import {
   NMenu,
   NScrollbar,
 } from "naive-ui";
-import user from "../assets/imgs/user.png";
+import user from "@/assets/imgs/user.png";
 import { createMenu } from "../utils/other/createMenu";
 import { routes } from "../router";
 import { useRouter, useRoute } from "vue-router";

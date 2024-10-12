@@ -43,7 +43,10 @@
                 </div>
               </NPopover>
             </template>
-          <div class="w-full h-full absolute left-0 top-0 hover:bg-red"></div>
+            <div
+              v-show="gridCount !== 1"
+              class="w-full h-full absolute left-0 top-0 mask"
+            ></div>
           </Monitor>
         </template>
       </draggable>
@@ -198,5 +201,20 @@ const activeMonitor = ref(-1);
   height: 100%;
   left: 0;
   top: 0;
+}
+.mask:hover {
+  background: radial-gradient(
+      70% 70% at 50% 50%,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.8) 89%,
+      #ffffff 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0) 16%,
+      rgba(0, 0, 0, 0) 82%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
 }
 </style>
