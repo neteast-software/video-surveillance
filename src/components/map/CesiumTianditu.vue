@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onBeforeUnmount, onMounted, ref, unref } from "vue";
 import type { Ref } from "vue";
 import * as Cesium from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
@@ -32,6 +32,20 @@ const Cartesian = Cesium.Cartesian3.fromDegrees(
   26.07,
   props.zoomLevel
 );
+function onZoomLevelChange() {
+  if (viewer.value) {
+    // const level = viewer.value.camera.positionCartographic.height
+    const level = viewer.value.scene.globe
+    console.log('level', level)
+  }
+}
+
+function updateBuilding() {
+  if (viewer.value) updateBubblePosition(viewer.value);
+}
+function updateBubble() {
+  if (viewer.value) updateBubblePosition(viewer.value);
+}
 
 onMounted(() => {
   Cesium.Ion.defaultAccessToken = cesiumtoken;
@@ -52,6 +66,7 @@ onMounted(() => {
     shadows: false,
     imageryProvider: newtdtMap("cva"),
   });
+  viewer.value.camera.changed.addEventListener(onZoomLevelChange)
   viewer.value.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
 
   viewer.value.scene.screenSpaceCameraController.maximumZoomDistance = 10000; //最大缩放距离
@@ -72,18 +87,14 @@ onMounted(() => {
   addDemoGraphic1(viewer.value);
   setupClickHandler(viewer.value);
   // 监听相机变化显示建筑
-  viewer.value.scene.camera.changed.addEventListener(() =>
-    updateBuildingVisibility(viewer.value, tileset)
-  );
+  viewer.value.scene.camera.changed.addEventListener(updateBuilding);
   setAntialias(viewer.value); //抗锯齿
-  viewer.value.scene.postRender.addEventListener(() => {
-    if (viewer.value) updateBubblePosition(viewer.value);
-  });
+  viewer.value.scene.postRender.addEventListener(updateBubble);
 });
 
-window.addEventListener("resize", function () {
+function onResize() {
   setAntialias(viewer.value);
-});
+};
 // 更新相机视图
 const updateCamera = (zoomLevel: number) => {
   if (!viewer.value) return;
@@ -110,6 +121,20 @@ watch(
     }
   }
 );
+
+
+window.addEventListener("resize", onResize);
+
+function removeEventListener() {
+  const cesium = unref(viewer)
+  if (cesium) {
+    cesium.camera.changed.removeEventListener(onZoomLevelChange)
+    cesium.scene.camera.changed.removeEventListener(updateBuilding)
+    cesium.scene.postRender.removeEventListener(updateBubble)
+  }
+  window.removeEventListener("resize", onResize)
+}
+onBeforeUnmount(removeEventListener)
 </script>
 
 <style scoped>
