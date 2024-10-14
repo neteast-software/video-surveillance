@@ -75,6 +75,7 @@ export function addDemoGraphic1(viewer: Viewer) {
       },
       billboard: {
         image: point.image,
+        scale: 1.3,
         horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
       },
@@ -150,6 +151,7 @@ export function setupClickHandler(viewer: Viewer) {
         const latitude = Cesium.Math.toDegrees(cartographic.latitude);
         bubblePosition.value = calculateScreenPosition(viewer, position);
         bubbleVisible.value = true;
+        entity.billboard.scale = 1.5;
         console.log("bubblePosition", bubblePosition.value);
         // 取消选中上一个实体并开始新的
         if (bouncingEntity !== entity) {
@@ -162,6 +164,7 @@ export function setupClickHandler(viewer: Viewer) {
       }
     } else {
       if (bouncingEntity) {
+        bouncingEntity.billboard.scale = 1.3;
         bouncingEntity = null;
         bubbleVisible.value = false;
       }

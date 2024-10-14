@@ -1,12 +1,12 @@
 <template>
-  <div class="flex-col gap-4 h-full w-28% min-w-100">
+  <div class="flex-col gap-4 h-full w-24% min-w-100">
     <header class="bg-white w-full rounded-2px pt-6 pb-2.5">
-      <div class="mx-6 flex justify-between lt-laptop-(mx-3)">
-        <div v-for="data in options" class="flex-center w-1/4">
-          <img :src="data.icon" alt="" class="w-8 h-8 lt-laptop-(w-7 h-7)" />
-          <div class="ml-3 text-4 tracking-normal flex-w-rest lt-laptop-(text-3)">
+      <div class="mx-6 flex justify-between  lt-laptop-(mx-3)">
+        <div v-for="data in options" class="flex-center" @click="FilterList(data.id)">
+          <img :src="data.icon" alt="" class="w-7 h-7 lt-laptop-(w-7 h-7)" />
+          <div class="ml-2  tracking-normal  lt-laptop-(text-3)">
             {{ data.label }}
-            <div class="text-7 font-700 leading-7.5 mt-1 overflow-hidden lt-laptop-(text-6)">
+            <div class="text-6 font-700 leading-7.5 mt-1 overflow-hidden lt-laptop-(text-6)">
               {{ data.value }}
             </div>
           </div>
@@ -40,9 +40,10 @@
     </header>
     <div
       v-show="showList"
-      class="w-full flex-col flex-h-rest bg-white rounded-2px p-7.5 lt-laptop-(p-5)"
+      class="w-full flex-col flex-h-rest bg-white rounded-2px p-7.5 lt-laptop-(p-5) relative"
     >
-      <header class="flex justify-between mb-6">
+      <img src="../../assets/imgs/deviceListBg.png" class="absolute right-0 top-0 h-37 z-0"  />
+      <header class="flex justify-between mb-6 relative">
         <div class="text-4.5 flex-center font-600">
           <div class="w-1 h-4 bg-primary rounded-2px mr-2"></div>
           设备列表
@@ -52,17 +53,19 @@
           @click="showList = false"
         ></div>
       </header>
-      <NTabs animated class="flex-h-rest">
-        <template #suffix>
+      <NTabs animated  
+      v-model:value="tabCache"
+      class="flex-h-rest" >
+        <!-- <template #suffix>
           <NSelect
             v-model:value="selectlist"
             :options="options"
             class="w-32 text-4"
           ></NSelect>
-        </template>
+        </template> -->
         <n-tab-pane
           v-for="option in menuOptions"
-          :name="option.label"
+          :name="option.key"
           :tab="option.label"
           class="h-full"
         >
@@ -76,23 +79,23 @@
               >
                 <img
                   src="../../assets/imgs/text/listImg.png"
-                  class="w-25 h-25 rounded-1 lt-laptop-(w-22 h-22)"
+                  class="w-22 h-22 rounded-1 lt-laptop-(w-20 h-20)"
                   alt=""
                 />
                 <div class="flex-w-rest flex-col justify-between">
                   <div class="flex-between">
-                    <div class="text-4.5 text-basic">{{ data.name }}</div>
+                    <div class="text-4 text-basic">{{ data.name }}</div>
                     <span class="text-lightGrey">{{ data.type }}</span>
                   </div>
                   <div class="flex-between text-#8A92A6 h-11">
                     <div class="flex-col flex-center">
-                      <div class="text-(basic 4.5) font-700 flex-center">
+                      <div class="text-(basic 4) font-700 flex-center">
                         {{ data.onlineTime }}
                       </div>
                       在线时长
                     </div>
                     <div class="flex-col flex-center">
-                      <div class="text-(basic 4.5) font-700 flex-center lt-laptop-(text-4)">
+                      <div class="text-(basic 4) font-700 flex-center lt-laptop-(text-4)">
                         {{ data.resolution }}
                       </div>
                       分辨率
@@ -136,7 +139,13 @@ const selectValue = ref("设备事件"); // 头部下拉框选中值
 const selectlist = ref(); // 列表下拉框选中值
 const selectState = ref(false); // 下拉框状态
 const showList = ref(true); // 列表显示状态
+const tabCache = ref(1); // tab选中值
 const clickList = ref(1); // 点击列表项
+function FilterList(label: number) {
+  tabCache.value = label;
+  showList.value = true;
+};
+
 </script>
 
 <style scoped>
@@ -144,7 +153,8 @@ const clickList = ref(1); // 点击列表项
   color: #cccccc;
 } */
 :deep(.n-tabs-tab__label) {
-  @apply text-4.5 
+  @apply text-4 
+  /* font-weight: 600; */
 }
 :deep(.n-tabs-bar) {
   display: none;

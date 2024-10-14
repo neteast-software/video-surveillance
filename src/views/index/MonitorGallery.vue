@@ -203,7 +203,8 @@ const activeMonitor = ref(-1);
   top: 0;
 }
 .mask:hover {
-  background: radial-gradient(
+  border: 4px solid #4dc591;
+  /* background: radial-gradient(
       70% 70% at 50% 50%,
       rgba(255, 255, 255, 0) 0%,
       rgba(255, 255, 255, 0.8) 89%,
@@ -215,6 +216,6 @@ const activeMonitor = ref(-1);
       rgba(0, 0, 0, 0) 16%,
       rgba(0, 0, 0, 0) 82%,
       rgba(0, 0, 0, 0.2) 100%
-    );
+    ); */
 }
 </style>

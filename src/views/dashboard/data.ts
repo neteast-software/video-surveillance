@@ -23,21 +23,25 @@ export const selectDatas = ref([
 ]);
 export const options = ref([
   {
+    id: 1,
     label: "总数",
     value: 56,
     icon: totelIcon,
   },
   {
+    id: 2,
     label: "在线",
     value: 36,
     icon: onlineIcon,
   },
   {
+    id: 3,
     label: "异常",
     value: 5,
     icon: abnormalIcon,
   },
   {
+    id: 4,
     label: "离线",
     value: 20,
     icon: OfflineIcon,
@@ -53,11 +57,11 @@ export const menuOptions = ref([
     key: 2,
   },
   {
-    label: "离线",
+    label: "异常",
     key: 3,
   },
   {
-    label: "异常",
+    label: "离线",
     key: 4,
   },
 ]);

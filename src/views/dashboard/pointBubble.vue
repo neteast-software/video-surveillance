@@ -3,10 +3,15 @@
     v-if="bubbleVisible"
     class="bg-white bg px-7.5 py-8 rounded-1 z-1 absolute text-4 transition"
     :style="{
-      top: `${bubblePosition[1] - 400}px`,
+      top: `${bubblePosition[1] - 420}px`,
       left: `${bubblePosition[0] - 300}px`,
     }"
   >
+    <img
+      src="../../assets/imgs/cardImg.png"
+      alt=""
+      class="absolute right-5 bottom-15"
+    />
     <header class="flex-y-center gap-3 mb-5">
       <div class="text-4.5 font-600">设备故障</div>
       <div class="py-1.5 px-2.5 bg-#FFF0D4 rounded-2px text-#FF7648">

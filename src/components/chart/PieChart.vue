@@ -20,12 +20,6 @@ import { DatasetSource } from "./index";
 export type PieSource = DatasetSource | { name: string; value: number }[];
 export type { PieSeriesOption } from "echarts/charts";
 const { colorPrimary, colorBg, colorText } = useTheme();
-const defaultGrid: GridComponentOption = {
-  left: "5%",
-  right: "5%",
-  bottom: "15%",
-  top: "15%",
-};
 const defaultLegend: LegendComponentOption = {
   icon: "emptyCircle",
   bottom: 0,
@@ -66,7 +60,7 @@ const defaultTooltip = computed<TooltipComponentOption>(() => {
 
 const defaultOption = computed<PieSeriesOption>(() => ({
   type: "pie",
-  radius: ["50%", "70%"],
+  // radius: ["50%", "70%"],
   center: ["50%", "40%"],
   startAngle: 15,
   itemStyle: {

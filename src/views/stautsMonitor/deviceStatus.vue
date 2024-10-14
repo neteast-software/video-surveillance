@@ -45,10 +45,10 @@
           :legend="legend"
           :seriesOption="seriesOption"
         ></PieChart>
-        <div class="absolute left-22 top-27 flex-(col center)">
+        <!-- <div class="absolute left-22 top-27 flex-(col center)">
           <div class="text-(primary 7.5) font-700">5656</div>
           总数
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -101,7 +101,7 @@ const legend = reactive<LegendComponentOption>({
   top: "middle",
 });
 const seriesOption = reactive({
-  radius: ["60%", "95%"],
+  radius: ["0", "90%"],
   center: ["30%", "50%"],
 });
 </script>
