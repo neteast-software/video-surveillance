@@ -19,6 +19,7 @@ import { useEventBus } from "@vueuse/core";
 import { zoomKey, zoomUpdateKey } from "@/config/eventBus";
 const props = defineProps({
   zoomLevel: Number,
+  show3D: Boolean,
 });
 const emit = defineEmits(["update:zoomLevel"]);
 const currentHeading = ref(0); // 当前的方位角
@@ -74,6 +75,7 @@ onMounted(() => {
   viewer.value.scene.screenSpaceCameraController.maximumZoomDistance = 10000; //最大缩放距离
   viewer.value.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
   viewer.value.scene.primitives.add(tileset); //添加3D建筑物
+  tileset.show = props.show3D; //控制3D建筑物的显示
 
   //相机
   viewer.value.camera.setView({
@@ -88,15 +90,25 @@ onMounted(() => {
   //添加标记
   addDemoGraphic1(viewer.value);
   setupClickHandler(viewer.value);
-  // 监听相机变化显示建筑
-  viewer.value.scene.camera.changed.addEventListener(updateBuilding);
+
+  viewer.value.scene.camera.changed.addEventListener(updateBuilding); //更新建筑物
   setAntialias(viewer.value); //抗锯齿
-  viewer.value.scene.postRender.addEventListener(updateBubble);
+  viewer.value.scene.postRender.addEventListener(updateBubble); //更新气泡位置
 });
 
 function onResize() {
   setAntialias(viewer.value);
 }
+watch(
+  () => props.show3D,
+  (newShow3D) => {
+    if (viewer.value) {
+      // 控制 3D 建筑物的显示
+      tileset.show = newShow3D;
+    }
+  },
+  { immediate: true } // 确保组件加载时也同步显示状态
+);
 // 更新相机视图
 const updateCamera = (zoomLevel: number, oldZoomLevel: number) => {
   if (!viewer.value) return;

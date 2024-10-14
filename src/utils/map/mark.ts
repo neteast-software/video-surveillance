@@ -144,6 +144,10 @@ export function setupClickHandler(viewer: Viewer) {
     const pickedObject = viewer.scene.pick(movement.position);
     if (Cesium.defined(pickedObject) && pickedObject.id) {
       const entity = pickedObject.id;
+      if (bouncingEntity && bouncingEntity !== entity) {
+        bouncingEntity.billboard.scale = 1.3; // 恢复缩放
+      }
+
       if (entity && entity.position) {
         const position = entity.position.getValue(Cesium.JulianDate.now());
         const cartographic = Cesium.Cartographic.fromCartesian(position);
@@ -155,10 +159,8 @@ export function setupClickHandler(viewer: Viewer) {
         console.log("bubblePosition", bubblePosition.value);
         // 取消选中上一个实体并开始新的
         if (bouncingEntity !== entity) {
-          if (bounceInterval) {
-            clearInterval(bounceInterval);
-            bouncingEntity = null;
-          }
+          clearInterval(bounceInterval);
+          bouncingEntity = null;
           bouncingEntity = entity;
         }
       }

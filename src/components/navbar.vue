@@ -6,7 +6,10 @@
       <span clas="text-4">国道G228线二、三期项目</span>
     </aside>
     <aside class="flex gap-10 z-1">
-      <div class="flex-between bg-white/30 h-9 rounded-7.5 text-3">
+      <div
+        class="flex-between bg-white/30 h-9 rounded-7.5 text-3"
+        @click="emit('update:showModal', true)"
+      >
         <div class="w-7.5 h-7.5 rounded-full flex-center bg-white ml-1 text-3">
           <NBadge
             :value="BadgeValue"
@@ -48,6 +51,11 @@ import { ref } from "vue";
 import { useFullscreen } from "@vueuse/core";
 const { isFullscreen, toggle } = useFullscreen();
 
+interface Props {
+  showModal: boolean;
+}
+const emit = defineEmits(["update:showModal"]);
+withDefaults(defineProps<Props>(), {});
 const BadgeValue = ref(11);
 </script>
 

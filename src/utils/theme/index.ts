@@ -28,11 +28,13 @@ export const naiveTheme = computed(() => {
 });
 
 function formatRGB(rgb: string) {
+  if (!rgb) return "";
   const rgbArr = rgb.split(" ");
   return `rgb(${rgbArr.join(",")})`;
 }
 function getCssRGB(cssVarName: string) {
   const cssVar = useCssVar(cssVarName);
+  if (!cssVar.value) return "rgb(0, 0, 0)";
   return formatRGB(cssVar.value);
 }
 

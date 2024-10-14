@@ -14,6 +14,7 @@
       <div
         class="flex-between bg-white py-2.5 px-4 h-12 rounded-2px gap-8 text-4 min-w-39 z-1"
       >
+        {{ show3D }}
         {{ selectValue }}
         <div class="bg-#EAEFFD w-7 h-7 rounded-2px flex-center">
           <div
@@ -24,10 +25,14 @@
       </div>
     </NPopselect>
     <div class="absolute top-0 left-0 w-full h-full z-0">
-      <CesiumTianditu v-model:zoomLevel="zoomLevel"></CesiumTianditu>
+      <CesiumTianditu
+        v-model:zoomLevel="zoomLevel"
+        v-model:show3D="show3D"
+      ></CesiumTianditu>
       <PointBubble></PointBubble>
       <MapControls
         v-model:zoomLevel="zoomLevel"
+        v-model:show3D="show3D"
         class="absolute right-7.5 bottom-7.5 z-1"
       ></MapControls>
     </div>
@@ -37,12 +42,12 @@
 <script setup lang="ts">
 import LeftAaside from "@/views/dashboard/leftAside.vue";
 import CesiumTianditu from "@/components/map/CesiumTianditu.vue";
-import { bubblePosition } from "@/utils/map/mark";
 import { NPopselect, SelectRenderLabel, NCheckbox } from "naive-ui";
 import { h, ref } from "vue";
 import PointBubble from "./pointBubble.vue";
 import MapControls from "../../components/map/mapControls.vue";
 const zoomLevel = ref(500);
+const show3D = ref(false);
 const selectValue = ref("设备类型");
 const selectState = ref(false);
 const options = [

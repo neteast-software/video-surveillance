@@ -1,22 +1,7 @@
 <template>
   <div class="">
     <div class="flex justify-between mb-2 space-y-4 sm:space-y-0">
-      <div class="flex space-x-2">
-        <button
-          v-for="(label, range) in timeRanges"
-          :key="range"
-          @click="activeRange = range"
-          :class="[
-            'px-2 py-2 rounded-md ',
-            activeRange === range
-              ? 'bg-[#3563ef] text-white'
-              : 'bg-[#f6f6f7] text-[#8a92a6] border border-[#eaeaea]',
-          ]"
-        >
-          {{ label }}
-        </button>
-      </div>
-      <div class="flex flex-wrap items-center gap-2 text-xs">
+      <!-- <div class="flex flex-wrap items-center gap-2 text-xs">
         <span
           v-for="(range, index) in colorRanges"
           :key="index"
@@ -30,7 +15,7 @@
           ></span>
           <span class="text-[#232d42]">{{ range.min }}-{{ range.max }}</span>
         </span>
-      </div>
+      </div> -->
     </div>
     <div class="grid grid-cols gap-1 mb-2">
       <div v-for="month in 6" :key="`month-${month}`" class="contents">

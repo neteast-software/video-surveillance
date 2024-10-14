@@ -1,5 +1,11 @@
 <template>
   <div class="text-basic">
+    <div
+      class="button hover:scale-106 mb-3"
+      @click="emit('update:show3D', !props.show3D)"
+    >
+      {{ show3D ? "2D" : "3D" }}
+    </div>
     <div class="button hover:scale-106">
       <div class="i-icons:settings icon"></div>
     </div>
@@ -16,7 +22,10 @@
         vertical
         :min="minimumZoom"
         :max="maximumZoom"
-        @update:value="zoomBus.emit([$event * 100, localZoomLevel * 100]);localZoomLevel = $event"
+        @update:value="
+          zoomBus.emit([$event * 100, localZoomLevel * 100]);
+          localZoomLevel = $event;
+        "
       />
       <div class="i-icons:reduce icon" @click="zoomOut"></div>
     </div>
@@ -26,21 +35,22 @@
 <script setup lang="ts">
 import { NSlider } from "naive-ui";
 import { onBeforeUnmount, ref, watch } from "vue";
-import {useEventBus} from '@vueuse/core'
+import { useEventBus } from "@vueuse/core";
 import { zoomKey, zoomUpdateKey } from "@/config/eventBus";
-const emit = defineEmits(["update:zoomLevel"]);
+const emit = defineEmits(["update:zoomLevel", "update:show3D"]);
 const props = defineProps({
   zoomLevel: Number,
+  show3D: Boolean,
 });
 const localZoomLevel = ref((props.zoomLevel || 0) / 100);
 const step = 2;
 const minimumZoom = 2; // 最小缩放距离
 const maximumZoom = 80; // 最大缩放距离
-const zoomBus = useEventBus(zoomKey)
-const zoomUpdateBus = useEventBus(zoomUpdateKey)
+const zoomBus = useEventBus(zoomKey);
+const zoomUpdateBus = useEventBus(zoomUpdateKey);
 zoomUpdateBus.on((zoom) => {
   localZoomLevel.value = zoom / 100;
-})
+});
 function increaseZoom() {
   const oldZoom = localZoomLevel.value;
   localZoomLevel.value = Math.max(minimumZoom, localZoomLevel.value - step);
@@ -52,21 +62,19 @@ function zoomOut() {
   zoomBus.emit([localZoomLevel.value * 100, oldZoom * 100]);
 }
 
-
-
 // 当滑块或按钮改变时，通知父组件更新 zoomLevel
 watch(localZoomLevel, (newZoom) => {
   emit("update:zoomLevel", newZoom * 100);
 });
 onBeforeUnmount(() => {
-  zoomBus.reset()
-  zoomUpdateBus.reset()
-})
+  zoomBus.reset();
+  zoomUpdateBus.reset();
+});
 </script>
 
 <style scoped>
 .button {
-  @apply p-2 bg-white rounded-1 cursor-pointer transition;
+  @apply p-2 bg-white flex-center rounded-1 cursor-pointer transition;
 }
 
 .icon {

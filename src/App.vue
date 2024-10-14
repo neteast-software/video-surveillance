@@ -3,8 +3,15 @@
     class="fill-parent bg-#F6F8F9 h-full flex-col text-basic"
     :naive-theme-overrides="themeOverrides"
   >
-    <navbar></navbar>
+    <navbar v-model:showModal="showModal"></navbar>
     <main class="flex flex-h-rest">
+      <NModal
+        v-model:show="showModal"
+        transform-origin="center"
+        :mask-closable="false"
+      >
+        <notice v-model:showModal="showModal"></notice>
+      </NModal>
       <sidebar></sidebar>
       <div class="flex-w-rest">
         <router-view v-slot="{ Component }" class="relative">
@@ -23,9 +30,12 @@
 <script setup lang="ts">
 import navbar from "./components/navbar.vue";
 import sidebar from "./components/sidebar.vue";
-import {LkNaiveProvider} from 'linker-uii'
+import { LkNaiveProvider } from "linker-uii";
+import { NModal } from "naive-ui";
+import notice from "./components/notice/index.vue";
+import { ref } from "vue";
 // import { getQuery } from "./api/pack";
-
+const showModal = ref(false);
 const themeOverrides = {
   common: {
     primaryColor: "#165DFF",

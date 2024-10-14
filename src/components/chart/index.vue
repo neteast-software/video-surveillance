@@ -14,6 +14,7 @@ import {
   GaugeChart,
   RadarChart,
   ScatterChart,
+  HeatmapChart,
 } from "echarts/charts";
 import type {
   LineSeriesOption,
@@ -22,6 +23,7 @@ import type {
   GaugeSeriesOption,
   RadarSeriesOption,
   ScatterSeriesOption,
+  HeatmapSeriesOption,
 } from "echarts/charts";
 
 // 引入提示框，标题，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
@@ -33,6 +35,7 @@ import {
   DatasetComponent,
   TransformComponent,
   DataZoomComponent,
+  VisualMapComponent,
 } from "echarts/components";
 import type {
   TitleComponentOption,
@@ -59,6 +62,7 @@ echarts.use([
   BarChart,
   PieChart,
   GaugeChart,
+  HeatmapChart,
   TitleComponent,
   TooltipComponent,
   GridComponent,
@@ -66,6 +70,7 @@ echarts.use([
   DatasetComponent,
   TransformComponent,
   DataZoomComponent,
+  VisualMapComponent,
   LabelLayout,
   UniversalTransition,
   CanvasRenderer,
@@ -86,6 +91,7 @@ export type ECOption = ComposeOption<
   | RadarSeriesOption
   | ScatterSeriesOption
   | DataZoomComponentOption
+  | HeatmapSeriesOption
 >;
 const props = defineProps<{
   option: ECOption;
