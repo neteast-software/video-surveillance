@@ -37,6 +37,7 @@ const Cartesian = Cesium.Cartesian3.fromDegrees(
 
 function onZoomLevelChange() {
   if (viewer) {
+    console.log("onZoomLevelChange");
     const level = viewer.camera.positionCartographic.height;
     zoomUpdateBus.emit(Math.round(level));
   }
@@ -80,12 +81,14 @@ onMounted(() => {
     useBrowserRecommendedResolution: true, // 使用浏览器推荐的分辨率
     requestRenderMode: true,
   });
+  // viewer.scene.debugShowFramesPerSecond = true
+
   viewer.scene.globe.maximumScreenSpaceError = 2; // 适当增加误差来提升性能
   // tileset.maximumScreenSpaceError = 99; // 增大此值减少远处模型的加载
   // viewer.scene.requestRenderMode = true; // 请求渲染模式
   // viewer.scene.maximumRenderTimeChange = 0.1; // 限制频繁的重新渲染
 
-  // viewer.scene.postProcessStages.fxaa.enabled = true; // 开启FXAA抗锯齿
+  viewer.scene.postProcessStages.fxaa.enabled = true; // 开启FXAA抗锯齿
   // viewer.imageryLayers.removeAll(); // 移除不必要的图层
 
   // viewer.scene.globe.maximumScreenSpaceError = 1; // 调低误差，增加细节
@@ -121,11 +124,11 @@ onMounted(() => {
 
   viewer.scene.camera.changed.addEventListener(updateBuilding); //更新建筑物
   setAntialias(viewer); //抗锯齿
-  viewer.scene.postRender.addEventListener(updateBubble); //更新气泡位置
+  // viewer.scene.postRender.addEventListener(updateBubble); //更新气泡位置
+  viewer.scene.preRender.addEventListener(updateBubble)
 });
 
 function onResize() {
-  console.log("resize", viewer);
   setAntialias(viewer);
 }
 watch(

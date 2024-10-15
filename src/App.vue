@@ -31,12 +31,12 @@
 import navbar from "./components/navbar.vue";
 import sidebar from "./components/sidebar.vue";
 import { LkNaiveProvider } from "linker-uii";
-import { NModal } from "naive-ui";
+import { GlobalThemeOverrides, NModal } from "naive-ui";
 import notice from "./components/notice/index.vue";
 import { ref } from "vue";
 // import { getQuery } from "./api/pack";
 const showModal = ref(false);
-const themeOverrides = {
+const themeOverrides: GlobalThemeOverrides = {
   common: {
     primaryColor: "#165DFF",
   },
@@ -51,10 +51,14 @@ const themeOverrides = {
         borderFocus: "1px solid #165DFF",
         borderHover: "1px solid #165DFF",
         boxShadowFocus: "0 3px 6px -4px rgba(22,93,255)",
-        optionTextColor: "red",
+        // optionTextColor: "red",
       },
     },
   },
+  Menu: {
+    itemHeight: '36px'
+  }
+  
   // ...
 };
 </script>

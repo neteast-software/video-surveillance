@@ -3,37 +3,42 @@
     class="fill-parent bg-#94BFFF p-7.5 lt-laptop-(p-3) relative overflow-hidden flex justify-between"
   >
     <leftAaside class="z-1"></leftAaside>
-    <NPopselect
-      v-model:value="selectValue"
-      :options="options"
-      :render-label="renderLabel"
-      trigger="hover"
-      :show-checkmark="false"
-      v-model:show="selectState"
-    >
-      <div
-        class="flex-between bg-white py-2.5 px-4 h-12 rounded-2px gap-8 text-4 min-w-39 z-1"
+    
+      <NPopselect
+        v-model:value="selectValue"
+        :options="options"
+        :render-label="renderLabel"
+        trigger="hover"
+        :show-checkmark="false"
+        v-model:show="selectState"
       >
-        {{ selectValue }}
-        <div class="bg-#EAEFFD w-7 h-7 rounded-2px flex-center">
-          <div
-            class="i-icons:arrow w-5 h-5 text-primary transition"
-            :class="{ 'rotate-180': selectState }"
-          ></div>
+      <Transition appear name="slideRight">
+        <div
+          class="flex-between bg-white py-2.5 px-4 h-12 rounded-2px gap-8 text-4 min-w-39 z-1"
+        >
+          {{ selectValue }}
+          <div class="bg-#EAEFFD w-7 h-7 rounded-2px flex-center">
+            <div
+              class="i-icons:arrow w-5 h-5 text-primary transition"
+              :class="{ 'rotate-180': selectState }"
+            ></div>
+          </div>
         </div>
-      </div>
-    </NPopselect>
+      </Transition>
+      </NPopselect>
     <div class="absolute top-0 left-0 w-full h-full z-0">
       <CesiumTianditu
         v-model:zoomLevel="zoomLevel"
         v-model:show3D="show3D"
       ></CesiumTianditu>
       <PointBubble></PointBubble>
-      <MapControls
-        v-model:zoomLevel="zoomLevel"
-        v-model:show3D="show3D"
-        class="absolute right-7.5 bottom-7.5 z-1"
-      ></MapControls>
+      <Transition appear name="slideRight">
+        <MapControls
+          v-model:zoomLevel="zoomLevel"
+          v-model:show3D="show3D"
+          class="absolute right-7.5 bottom-7.5 z-1"
+        ></MapControls>
+      </Transition>
     </div>
   </div>
 </template>

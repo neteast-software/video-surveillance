@@ -134,4 +134,45 @@ const options = [
 :deep(.n-scrollbar-rail__scrollbar) {
   display: none;
 }
+:deep(.n-menu .n-submenu-children) {
+  /* position: relative; */
+  @apply relative;
+}
+:deep(.n-menu .n-submenu-children::before) {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: calc(100% - 24px);
+  background: #DDDDDD;
+  @apply left-11 top-2;
+}
+:deep(.n-menu .n-submenu-children .n-menu-item) {
+  @apply relative;
+}
+:deep(.n-menu .n-submenu-children .n-menu-item::before) {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-image: url('../assets/svgs/angle.svg');
+  background-position: left bottom;
+  background-size: 8px 8px;
+  @apply left-11 top-1/2 -translate-y-1/2;
+}
+:deep(.n-menu .n-submenu-children .n-menu-item-content) {
+  /* margin-left: 12px; */
+  @apply ml-3;
+}
+:deep(.n-menu .n-submenu-children .n-menu-item-content::before) {
+  /* left: 50px; */
+  @apply left-12.5;
+}
+:deep(.n-menu .n-menu-item-content-header) {
+  /* font-size: 16px; */
+  @apply text-4;
+}
+:deep(.n-menu .n-submenu-children .n-menu-item-content-header) {
+  /* font-size: 14px; */
+  @apply text-3.5;
+}
 </style>
