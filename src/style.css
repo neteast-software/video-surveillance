@@ -70,9 +70,9 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 } */
 .dataframe {
-  @apply border-(1 solid greyLine) rounded-1 p-5 flex-col;
+  @apply border-(1 solid greyLine) rounded-1 p-5 flex-col lt-laptop-(p-3);
   h1 {
-    @apply text-4 font-600 m-0 mb-4;
+    @apply text-4 font-600 m-0;
   }
 }
 .blue-gradient {

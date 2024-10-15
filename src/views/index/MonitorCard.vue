@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-47 h-32 rounded overflow-hidden relative laptop:w-40 laptop:h-30 bg-grey shadow-common hover:shadow-common-hover"
+    class="w-47 h-32 lt-laptop-(w-32 h-22) rounded overflow-hidden relative laptop:w-40 laptop:h-30 bg-grey shadow-common hover:shadow-common-hover"
   >
     <!-- :src="origin + monitor.imgAddr" -->
     <NImage

@@ -1,6 +1,6 @@
 <template>
   <div class="dataframe">
-    <header class="flex-y-center justify-between">
+    <header class="flex-y-center justify-between mb-4 lt-laptop-(mb-2)">
       <h1>历史事件列表</h1>
       <div class="i-icons:filter w-6 h-6 cursor-pointer"></div>
     </header>
@@ -33,11 +33,11 @@
     </div>
     <div class="flex-col gap-2.5 flex-h-rest mt-2 overflow-auto">
       <div
-        class="w-full rounded-1 py-4 px-3"
+        class="w-full rounded-1 py-4 px-3 lt-laptop-(py-3 px-2)"
         :class="getClassByType(list.status)"
         v-for="list in lists"
       >
-        <div class="flex-between mb-3">
+        <div class="flex-between mb-3 lt-laptop-(mb-2)">
           <div class="flex-center gap-1">
             <div
               class="i-palette:alerts w-4 h-4"
@@ -48,10 +48,16 @@
           <div class="i-icons:details rotate-90 w-3.5 h-3.5"></div>
         </div>
         <div class="flex-center gap-2">
-          <img src="@/assets/imgs/text/build.png" class="w-20 h-16" alt="" />
-          <div>
-            <span class="text-4">{{ list.name }}</span>
-            <div class="text-greyText">
+          <img
+            src="@/assets/imgs/text/build.png"
+            class="w-20 h-16 lt-laptop-(w-18 h-14)"
+            alt=""
+          />
+          <div class="flex-w-rest overflow-hidden">
+            <div class="text-4 lt-laptop-(text-3.5) truncate">
+              {{ list.name }}
+            </div>
+            <div class="list-desc text-greyText lt-laptop-(text-3)">
               {{ list.desc }}
             </div>
           </div>
@@ -93,7 +99,7 @@ const clickSelect = ref(0);
 const lists = ref([
   {
     time: "2024年10月10日 13：43",
-    name: "这里显示的是事件名称事件名称",
+    name: "这里显示的是事111件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "alerts",
   },
@@ -124,4 +130,18 @@ function getClassByType(status: string) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.list-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; /* 单行文本 */
+}
+
+.list-desc {
+  overflow: hidden;
+  display: -webkit-box; /* 将容器设为盒子模型 */
+  -webkit-line-clamp: 2; /* 限制显示两行 */
+  -webkit-box-orient: vertical; /* 垂直布局 */
+  text-overflow: ellipsis;
+}
+</style>

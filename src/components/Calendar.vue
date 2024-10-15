@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NFloatButton } from "naive-ui";
 import { ref, watch } from "vue";
 
 interface Props {
@@ -90,12 +89,12 @@ function animateCSS(
 </script>
 
 <template>
-  <div class="relative w-full rounded-1 px-5 py-3 shadow-smallcard">
+  <div class="relative w-full rounded-1 p-3 lt-laptop-(px-0)">
     <div ref="animatedElement" class="flex-between">
       <div
         v-for="day in currentWeek"
         :key="day.label"
-        class="flex-(col y-center) bg-#F5F9FF cursor-pointer rounded-7.5 px-2.5 py-3 transition duration-500 hover:bg-primary/10"
+        class="flex-(col y-center) bg-#F5F9FF cursor-pointer rounded-7.5 px-2.5 py-3 transition duration-500 hover:bg-primary/20"
         :class="{ active: activeDate === day.day.getDate() }"
         @click="activeDate = day.day.getDate()"
       >
@@ -105,8 +104,8 @@ function animateCSS(
         >
           {{ day.weekDay }}
         </div>
-        <div class="w-full h-1px bg-greyLine my-2"></div>
-        <div class="text-5 font-700 rounded-full">
+        <div class="w-full h-1px bg-greyLine my-2 lt-laptop-(my-1)"></div>
+        <div class="text-5 font-700 rounded-full lt-laptop-(text-3.5)">
           <!-- :class="{ 'bg-primary': activeDate === day.day.getDate() }" -->
           {{ day.label }}
         </div>

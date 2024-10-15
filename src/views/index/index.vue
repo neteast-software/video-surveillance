@@ -5,7 +5,9 @@
         <MonitorGallery :isFullscreen="isFullscreen"></MonitorGallery>
       </section>
       <div class="h-full w-1px bg-greyLine"></div>
-      <div class="bg-white px-5 py-6 rounded-4 h-full w-27% lt-laptop-(px-3)">
+      <div
+        class="bg-white px-5 py-6 rounded-4 h-full w-27% max-w-420px lt-laptop-(px-3)"
+      >
         <header class="flex-y-center gap-1 text-5 font-600">
           <div class="bg-primary h-16px w-4px rounded-1px"></div>
           设备信息

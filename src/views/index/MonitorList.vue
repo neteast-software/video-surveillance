@@ -3,6 +3,7 @@
     class="py-6 overflow-hidden h-full shadow-common flex flex-col max-w-430px"
   >
     <header class="flex justify-between items-center">
+      {{ selectMonitorCard }}
       <div class="w-full relative">
         <NButton
           type="primary"
@@ -92,7 +93,7 @@
             :key="nvr.id"
             class="border-(2 solid greyLine) rounded-1 py-4 px-3"
           >
-            <h2 class="m-0 mb-4 flex-between text-4">
+            <h2 class="m-0 mb-4 flex-between text-4 lt-laptop-(text-3.5)">
               {{ nvr.name }}({{ nvr.channels?.length }})
               <div class="flex gap-4">
                 <div class="flex-center gap-1 text-#4DC591">
@@ -109,12 +110,19 @@
                 </div> -->
               </div>
             </h2>
-            <section class="flex flex-wrap gap-5 mx-6">
+            <section
+              class="flex flex-wrap gap-5 justify-between lt-laptop-(gap-4 mx-0)"
+            >
               <template v-for="ch in nvr.channels" :key="ch.id">
                 <MonitorCard
                   :nvr-name="nvr.name"
                   :monitor="ch"
                   @click="onPickMonitor(nvr.id, nvr.name, ch)"
+                  :class="
+                    selectMonitorCard === ch.id
+                      ? 'border-(3 solid #4DC591) '
+                      : ''
+                  "
                 ></MonitorCard>
               </template>
             </section>
@@ -164,6 +172,7 @@ defineEmits<{
 }>();
 const monitorBus = useEventBus(pickMonitorKey);
 const popoverVisible = ref(false);
+const selectMonitorCard = ref(0);
 
 function onPickMonitor(nvrId: number, nvrName: string, ch: ChannelItem) {
   if (!ch.online) return;
@@ -175,6 +184,7 @@ function onPickMonitor(nvrId: number, nvrName: string, ch: ChannelItem) {
     channelName: ch.channelName,
     online: ch.online,
   });
+  selectMonitorCard.value = ch.id;
 }
 
 const options = ref<SelectOption[]>([]);

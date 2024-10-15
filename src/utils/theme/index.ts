@@ -34,7 +34,7 @@ function formatRGB(rgb: string) {
 }
 function getCssRGB(cssVarName: string) {
   const cssVar = useCssVar(cssVarName);
-  if (!cssVar.value) return "rgb(0, 0, 0)";
+  if (!cssVar.value) return "rgb(255, 255, 255)";
   return formatRGB(cssVar.value);
 }
 

@@ -30,14 +30,14 @@ export function updateBuildingVisibility(
 export function setAntialias(viewer: Cesium.Viewer | null) {
   console.log(window.document.body.clientWidth, window.devicePixelRatio);
   if (!viewer) return;
-  // if (window.document.body.clientWidth <= 2050) {
-  //   if (window.devicePixelRatio <= 1.25) {
-  //     viewer.resolutionScale = window.devicePixelRatio;
-  //   }
-  //   console.log("<=1920", viewer.resolutionScale);
-  // } else {
-  //   viewer.resolutionScale = 1; // 重置为 1，恢复默认
-  //   console.log(">1920", viewer.resolutionScale);
-  // }
-  viewer.resolutionScale = window.devicePixelRatio;
+  if (window.document.body.clientWidth <= 2050) {
+    if (window.devicePixelRatio <= 1.25) {
+      viewer.resolutionScale = window.devicePixelRatio;
+    }
+    console.log("<=1920", viewer.resolutionScale);
+  } else {
+    viewer.resolutionScale = 1; // 重置为 1，恢复默认
+    console.log(">1920", viewer.resolutionScale);
+  }
+  // viewer.resolutionScale = window.devicePixelRatio;
 }
