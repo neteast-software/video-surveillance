@@ -17,7 +17,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("../views/index/index.vue"),
     meta: {
       title: "首页",
-      icon: () => h("div", { class: "i-icons:home  w-10 h-10" }),
+      icon: () => h("div", { class: "i-icons:home  w-5 h-5" }),
     },
   },
   {
@@ -26,7 +26,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("../views/deviceManagement/index.vue"),
     meta: {
       title: "设备管理",
-      icon: () => h("div", { class: "i-icons:equipment  w-10 h-10" }),
+      icon: () => h("div", { class: "i-icons:equipment  w-5 h-5" }),
     },
     children: [
       {
@@ -53,7 +53,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("../views/dashboard/index.vue"),
     meta: {
       title: "综合看板",
-      icon: () => h("div", { class: "i-icons:dashboard  w-10 h-10" }),
+      icon: () => h("div", { class: "i-icons:dashboard  w-5 h-5" }),
     },
   },
 
@@ -63,7 +63,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("../views/stautsMonitor/index.vue"),
     meta: {
       title: "状态监测",
-      icon: () => h("div", { class: "i-icons:state  w-10 h-10" }),
+      icon: () => h("div", { class: "i-icons:state  w-5 h-5" }),
     },
   },
   {
@@ -72,7 +72,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("../views/systemSetting/index.vue"),
     meta: {
       title: "系统设置",
-      icon: () => h("div", { class: "i-icons:settings  w-10 h-10" }),
+      icon: () => h("div", { class: "i-icons:settings  w-5 h-5" }),
     },
   },
 ];

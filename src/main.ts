@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import "linker-uii/dist/styles/linker-ui.css"
-import "./style.css";
+// import "./style.css";
+import "./style/index.scss"
 import App from "./App.vue";
 import router from "../src/router";
 import "virtual:uno.css";
