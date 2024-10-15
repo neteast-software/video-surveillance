@@ -10,6 +10,8 @@ export const newtdtMap = (layer: string) => {
     style: "light",
     format: "image/jpeg",
     tileMatrixSetID: "GoogleMapsCompatible",
+    maximumLevel: 18,
+    minimumLevel: 0,
   });
 };
 

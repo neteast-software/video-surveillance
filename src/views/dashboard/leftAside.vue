@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-col gap-4 h-full w-24% min-w-100">
+  <div class="flex-col gap-4 h-full w-24%  min-w-102 lt-laptop-(min-w-92)">
     <header class="bg-white w-full rounded-2px pt-6 pb-2.5">
       <div class="mx-6 flex justify-between  lt-laptop-(mx-3)">
         <div v-for="data in options" class="flex-center" @click="FilterList(data.id)">

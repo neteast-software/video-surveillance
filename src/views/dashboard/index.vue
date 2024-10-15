@@ -14,7 +14,6 @@
       <div
         class="flex-between bg-white py-2.5 px-4 h-12 rounded-2px gap-8 text-4 min-w-39 z-1"
       >
-        {{ show3D }}
         {{ selectValue }}
         <div class="bg-#EAEFFD w-7 h-7 rounded-2px flex-center">
           <div

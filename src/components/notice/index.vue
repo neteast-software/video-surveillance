@@ -40,7 +40,7 @@
             class="w-45 h-30"
             alt=""
           />
-          <div class="flex-col justify-between py-1">
+          <div class="flex-col justify-between py-1 w-full">
             <span class="text-4.5 font-600"
               >通知名称通知名称通知名称通知名称通知名称通知名称通知名称通知名称通知名称通知名称通知名称通知名称</span
             >

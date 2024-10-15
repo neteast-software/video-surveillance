@@ -62,17 +62,17 @@ export function addDemoGraphic1(viewer: Viewer) {
         point.position[0],
         point.position[1]
       ),
-      label: {
-        text: point.label,
-        font: "500 30px Helvetica",
-        scale: 0.5,
-        style: Cesium.LabelStyle.FILL,
-        fillColor: Cesium.Color.WHITE,
-        pixelOffset: new Cesium.Cartesian2(0, -60),
-        showBackground: true,
-        disableDepthTestDistance: Number.POSITIVE_INFINITY,
-        show: false,
-      },
+      // label: {
+      //   text: point.label,
+      //   font: "500 30px Helvetica",
+      //   scale: 0.5,
+      //   style: Cesium.LabelStyle.FILL,
+      //   fillColor: Cesium.Color.WHITE,
+      //   pixelOffset: new Cesium.Cartesian2(0, -60),
+      //   showBackground: true,
+      //   disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      //   show: false,
+      // },
       billboard: {
         image: point.image,
         scale: 1.3,
@@ -81,7 +81,7 @@ export function addDemoGraphic1(viewer: Viewer) {
       },
       heightReference: Cesium.HeightReference.NONE,
     });
-    entity.bounceState = false; // 初始状态为不弹跳
+    // entity.bounceState = false; // 初始状态为不弹跳
   });
 }
 
