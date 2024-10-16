@@ -3,15 +3,14 @@
     class="fill-parent bg-#94BFFF p-7.5 lt-laptop-(p-3) relative overflow-hidden flex justify-between"
   >
     <leftAaside class="z-1"></leftAaside>
-    
-      <NPopselect
-        v-model:value="selectValue"
-        :options="options"
-        :render-label="renderLabel"
-        trigger="hover"
-        :show-checkmark="false"
-        v-model:show="selectState"
-      >
+    <NPopselect
+      v-model:value="selectValue"
+      :options="options"
+      :render-label="renderLabel"
+      trigger="hover"
+      :show-checkmark="false"
+      v-model:show="selectState"
+    >
       <Transition appear name="slideRight">
         <div
           class="flex-between bg-white py-2.5 px-4 h-12 rounded-2px gap-8 text-4 min-w-39 z-1"
@@ -25,17 +24,19 @@
           </div>
         </div>
       </Transition>
-      </NPopselect>
+    </NPopselect>
     <div class="absolute top-0 left-0 w-full h-full z-0">
       <CesiumTianditu
         v-model:zoomLevel="zoomLevel"
         v-model:show3D="show3D"
+        v-model:back-origin="backOrigin"
       ></CesiumTianditu>
       <PointBubble></PointBubble>
       <Transition appear name="slideRight">
         <MapControls
           v-model:zoomLevel="zoomLevel"
           v-model:show3D="show3D"
+          v-model:back-origin="backOrigin"
           class="absolute right-7.5 bottom-7.5 z-1"
         ></MapControls>
       </Transition>
@@ -52,6 +53,7 @@ import PointBubble from "./pointBubble.vue";
 import MapControls from "../../components/map/mapControls.vue";
 const zoomLevel = ref(500);
 const show3D = ref(false);
+const backOrigin = ref(false);
 const selectValue = ref("设备类型");
 const selectState = ref(false);
 const options = [

@@ -38,27 +38,30 @@ import { ref } from "vue";
 const showModal = ref(false);
 const themeOverrides: GlobalThemeOverrides = {
   common: {
-    primaryColor: "#165DFF",
+    primaryColor: "#3563EF",
+    infoColor: "#8A92A6",
+    successColor: "#4DC591",
+    warningColor: "#FF7648",
   },
   Input: {
-    borderFocus: "1px solid #165DFF",
-    borderHover: "1px solid #165DFF",
+    borderFocus: "1px solid #3563EF",
+    borderHover: "1px solid #3563EF",
     boxShadowFocus: "0 3px 6px -4px rgba(22,93,255)",
   },
   Select: {
     peers: {
       InternalSelection: {
-        borderFocus: "1px solid #165DFF",
-        borderHover: "1px solid #165DFF",
+        borderFocus: "1px solid #3563EF",
+        borderHover: "1px solid #3563EF",
         boxShadowFocus: "0 3px 6px -4px rgba(22,93,255)",
         // optionTextColor: "red",
       },
     },
   },
   Menu: {
-    itemHeight: '36px'
-  }
-  
+    itemHeight: "36px",
+  },
+
   // ...
 };
 </script>

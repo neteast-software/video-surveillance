@@ -3,6 +3,12 @@ import onlineIcon from "@/assets/svgs/online.svg";
 import abnormalIcon from "@/assets/svgs/abnormal.svg";
 import OfflineIcon from "@/assets/svgs/Offline.svg";
 import { ref } from "vue";
+export interface MapState {
+  zoomLevel: number;
+  show3D: boolean;
+  backOrigin: boolean;
+}
+
 export const selectDatas = ref([
   {
     label: "设备事件",
@@ -78,7 +84,7 @@ export const dataList = ref([
     id: 2,
     name: "设备地点名称",
     type: "H264",
-    status: "故障",
+    status: "正常",
     onlineTime: 12,
     resolution: "1920*1080",
   },
@@ -86,7 +92,7 @@ export const dataList = ref([
     id: 3,
     name: "设备地点名称",
     type: "H264",
-    status: "故障",
+    status: "在线",
     onlineTime: 12,
     resolution: "1920*1080",
   },
@@ -94,7 +100,7 @@ export const dataList = ref([
     id: 4,
     name: "设备地点名称",
     type: "H264",
-    status: "故障",
+    status: "离线",
     onlineTime: 12,
     resolution: "1920*1080",
   },

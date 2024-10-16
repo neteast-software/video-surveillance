@@ -6,11 +6,14 @@
     >
       {{ show3D ? "2D" : "3D" }}
     </div>
-    <div class="button hover:scale-106">
+    <!-- <div class="button hover:scale-106">
       <div class="i-icons:settings icon"></div>
-    </div>
-    <div class="button my-3 hover:scale-106">
-      <div class="i-icons:refresh icon"></div>
+    </div> -->
+    <div
+      class="button my-3 hover:scale-106"
+      @click="emit('update:backOrigin', true)"
+    >
+      <div class="i-icons:backorigin icon"></div>
     </div>
     <div class="button flex-(col center) gap-1">
       <div class="i-icons:add icon" @click="increaseZoom"></div>
@@ -37,10 +40,15 @@ import { NSlider } from "naive-ui";
 import { onBeforeUnmount, ref, watch } from "vue";
 import { useEventBus } from "@vueuse/core";
 import { zoomKey, zoomUpdateKey } from "@/config/eventBus";
-const emit = defineEmits(["update:zoomLevel", "update:show3D"]);
+const emit = defineEmits([
+  "update:zoomLevel",
+  "update:show3D",
+  "update:backOrigin",
+]);
 const props = defineProps({
   zoomLevel: Number,
   show3D: Boolean,
+  backOrigin: Boolean,
 });
 const localZoomLevel = ref((props.zoomLevel || 0) / 100);
 const step = 2;
@@ -76,6 +84,9 @@ onBeforeUnmount(() => {
 .button {
   @apply p-2 bg-white flex-center rounded-1 cursor-pointer transition;
 }
+/* .button:hover {
+  @apply bg-#F4F8FF;
+} */
 
 .icon {
   width: 24px;

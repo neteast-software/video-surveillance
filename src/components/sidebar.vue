@@ -1,7 +1,7 @@
 <template>
   <div class="h-full px-2.5 py-4 bg relative border-r-(2px solid greyLine)">
     <div class="flex-col justify-between gap-3 h-full">
-      <header class="flex-center bg-greyBg rounded-2 p-2 min-w-48 mb-4.5">
+      <header class="flex-center bg-primaryBg rounded-2 p-2 min-w-48 mb-4.5">
         <img :src="user" class="w-7.5 h-7.5 rounded-full" alt="" />
         <div class="text-3.5 flex-w-rest ml-2.5">
           Yaomeier
@@ -38,7 +38,7 @@
                 <n-avatar>+{{ rest }}</n-avatar>
               </template>
             </NAvatarGroup>
-            <div class="w-full bg-greyBg rounded-2 px-2.5 py-4">
+            <div class="w-full bg-primaryLightBg rounded-2 px-2.5 py-4">
               <div>
                 安全帽在线率
                 <n-progress
@@ -139,22 +139,22 @@ const options = [
   @apply relative;
 }
 :deep(.n-menu .n-submenu-children::before) {
-  content: '';
+  content: "";
   position: absolute;
   width: 1px;
   height: calc(100% - 24px);
-  background: #DDDDDD;
+  background: #dddddd;
   @apply left-11 top-2;
 }
 :deep(.n-menu .n-submenu-children .n-menu-item) {
   @apply relative;
 }
 :deep(.n-menu .n-submenu-children .n-menu-item::before) {
-  content: '';
+  content: "";
   position: absolute;
   width: 8px;
   height: 8px;
-  background-image: url('../assets/svgs/angle.svg');
+  background-image: url("../assets/svgs/angle.svg");
   background-position: left bottom;
   background-size: 8px 8px;
   @apply left-11 top-1/2 -translate-y-1/2;

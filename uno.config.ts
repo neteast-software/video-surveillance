@@ -13,9 +13,9 @@ export default defineNeteastConfig({
   theme: {
     colors: {
       primary: "rgb(var(--primary-color))",
-      primaryBg: "rgb(var(--primaryBg-color))",
+      primaryBg: "rgb(var(--primary-bg-color))",
       lightGrey: "rgb(var(--text-lightGrey))",
-      greyBg: "rgb(var(--bg-grey))",
+      primaryLightBg: "rgb(var(--primary-lightBg))",
       greyText: "#8A92A6",
       greyLine: "rgb(var(--border-grey))",
     },

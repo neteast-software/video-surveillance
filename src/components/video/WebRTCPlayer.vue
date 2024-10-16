@@ -96,9 +96,9 @@ import {
 import { v4 as uuidv4 } from "uuid";
 interface Props {
   nvrId: number;
-  channelId: number;
   controls?: boolean;
   clientID?: string;
+  channelNum: number;
 }
 const props = withDefaults(defineProps<Props>(), {
   clientID: uuidv4(),
@@ -184,7 +184,6 @@ function createPc() {
     }
   };
   pc.onconnectionstatechange = () => {
-    console.log("onconnectionstatechange", pc?.connectionState);
     const state = pc?.connectionState;
     if (!state) return;
     switch (state) {
@@ -213,7 +212,6 @@ const endTime = ref(format(endOfDay(new Date()), "yyyy-MM-dd HH:mm:ss"));
 
 const webRTCError = ref("");
 async function negotiate(ts: number) {
-  console.log("协商前", ts, lastTimeStamp);
   webRTCError.value = "";
   const offer = await pc!.createOffer();
   await pc!.setLocalDescription(offer);
@@ -222,7 +220,7 @@ async function negotiate(ts: number) {
     if (isRecord.value) {
       data = await getRecordVideo(
         props.nvrId,
-        props.channelId,
+        props.channelNum,
         btoa(pc!.localDescription!.sdp),
         unref(startTime),
         unref(endTime),
@@ -241,7 +239,7 @@ async function negotiate(ts: number) {
     } else {
       data = await getRealtimeVideo(
         props.nvrId,
-        props.channelId,
+        props.channelNum,
         btoa(pc!.localDescription!.sdp)
       );
     }
@@ -258,7 +256,6 @@ async function negotiate(ts: number) {
     videoIsReady.value = true;
     return;
   }
-  console.log("获得answer", ts, lastTimeStamp);
   if (ts < lastTimeStamp) return;
   const answer = atob(data.answer);
   pc!.setRemoteDescription(

@@ -16,18 +16,19 @@
     "@vueuse/components": "^10.4.1",
     "@vueuse/core": "^11.1.0",
     "cesium": "1.99",
+    "cesium-navigation-es6": "^3.0.9",
     "colord": "^2.9.3",
     "crypto-js": "^4.1.1",
     "date-fns": "^2.30.0",
     "echarts": "^5.4.2",
+    "linker-uii": "^0.7.0",
     "recordrtc": "^5.6.2",
     "uuid": "^9.0.1",
     "video.js": "7.20.1",
     "vite-plugin-cesium": "^1.2.22",
     "vue": "^3.4.37",
     "vue-router": "4",
-    "vuedraggable": "^4.1.0",
-    "linker-uii": "^0.7.0"
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@iconify/tools": "^3.0.6",

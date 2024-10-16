@@ -7,49 +7,49 @@ const points = [
     name: "点1",
     label: "这是点1",
     position: [119.3, 26.078],
-    image: "/img/blue.svg",
+    image: "/img/online-monitor.svg",
   },
   {
     name: "点2",
     label: "这是点2",
     position: [119.3001, 26.076],
-    image: "/img/red.svg",
+    image: "/img/offline-monitor.svg",
   },
   {
     name: "点3",
     label: "这是点3",
     position: [119.2938, 26.078],
-    image: "/img/yellow.svg",
+    image: "/img/abnormal-monitor.svg",
   },
   {
     name: "点4",
     label: "这是点4",
     position: [119.2936, 26.08],
-    image: "/img/orange.svg",
+    image: "/img/key-projects.svg",
   },
   {
     name: "点5",
     label: "这是点5",
     position: [119.29503, 26.08031],
-    image: "/img/red.svg",
+    image: "/img/online-helmet.svg",
   },
   {
     name: "点6",
     label: "这是点6",
     position: [119.29722, 26.07691],
-    image: "/img/yellow.svg",
+    image: "/img/abnormal-helmet.svg",
   },
   {
     name: "点7",
     label: "这是点7",
     position: [119.29563, 26.0765],
-    image: "/img/orange.svg",
+    image: "/img/offline-helmet.svg",
   },
   {
     name: "点8",
     label: "这是点8",
     position: [119.29672, 26.07579],
-    image: "/img/blue.svg",
+    image: "/img/key-projects.svg",
   },
 ];
 //添加标记点
@@ -75,7 +75,7 @@ export function addDemoGraphic1(viewer: Viewer) {
       // },
       billboard: {
         image: point.image,
-        scale: 1.3,
+        scale: 1,
         horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
       },
@@ -145,7 +145,7 @@ export function setupClickHandler(viewer: Viewer) {
     if (Cesium.defined(pickedObject) && pickedObject.id) {
       const entity = pickedObject.id;
       if (bouncingEntity && bouncingEntity !== entity) {
-        bouncingEntity.billboard.scale = 1.3; // 恢复缩放
+        bouncingEntity.billboard.scale = 1; // 恢复缩放
       }
 
       if (entity && entity.position) {
@@ -155,7 +155,7 @@ export function setupClickHandler(viewer: Viewer) {
         const latitude = Cesium.Math.toDegrees(cartographic.latitude);
         bubblePosition.value = calculateScreenPosition(viewer, position);
         bubbleVisible.value = true;
-        entity.billboard.scale = 1.5;
+        entity.billboard.scale = 1.1;
         console.log("bubblePosition", bubblePosition.value);
         // 取消选中上一个实体并开始新的
         if (bouncingEntity !== entity) {
@@ -166,7 +166,7 @@ export function setupClickHandler(viewer: Viewer) {
       }
     } else {
       if (bouncingEntity) {
-        bouncingEntity.billboard.scale = 1.3;
+        bouncingEntity.billboard.scale = 1;
         bouncingEntity = null;
         bubbleVisible.value = false;
       }

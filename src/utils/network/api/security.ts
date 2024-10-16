@@ -113,19 +113,18 @@ export const getDevicesList = async () => {
 // 播放试试视频流
 export const getRealtimeVideo = async (
   nvrId: number,
-  channelId: number,
+  channelNum: number,
   offer: string
 ) => {
-  const { data } = await pack.post(`/video/play/${nvrId}/${channelId}`, {
+  const { data } = await pack.post(`/video/play/${nvrId}/${channelNum}`, {
     offer,
   });
-  console.log("可减少对肌肤", data);
   return data.value!;
 };
 
 export const getRecordVideo = async (
   nvrId: number,
-  channelId: number,
+  channelNum: number,
   offer: string,
   startTime: string,
   endTime: string,
@@ -133,7 +132,7 @@ export const getRecordVideo = async (
   ts?: number,
   scale = 1.0
 ) => {
-  const { data } = await pack.post(`/video/backPlay/${nvrId}/${channelId}`, {
+  const { data } = await pack.post(`/video/backPlay/${nvrId}/${channelNum}`, {
     offer,
     startTime,
     endTime,
@@ -196,17 +195,17 @@ export const stopControl = async (
 };
 
 // 播放hls
-export const postVideoStreamHls = async (nvrId: number, channelId: number) => {
+export const postVideoStreamHls = async (nvrId: number, channelNum: number) => {
   const { data } = await pack.post<{ data: { uri: string; port: number } }>(
-    `/video/playHls/${nvrId}/${channelId}`
+    `/video/playHls/${nvrId}/${channelNum}`
   );
   return data.value;
 };
 
 // 获取视频编码格式
-export const getVideoEncode = async (nvrId: number, channelId: number) => {
+export const getVideoEncode = async (nvrId: number, channelNum: number) => {
   const { data } = await pack.post<{ data: number }>(
-    `/video/getVideoEncoding/${nvrId}/${channelId}`
+    `/video/getVideoEncoding/${nvrId}/${channelNum}`
   );
   return data.value;
 };
@@ -214,13 +213,13 @@ export const getVideoEncode = async (nvrId: number, channelId: number) => {
 // 设置预置点
 export const setPresetPoint = async (
   nvrId: number,
-  channelId: number,
+  channelNum: number,
   command = 8,
   index = 1
 ) => {
   await pack.post("/ptz/setPreset", {
     id: nvrId,
-    channel: channelId,
+    channel: channelNum,
     command,
     index,
   });
@@ -229,13 +228,13 @@ export const setPresetPoint = async (
 // 去预置点
 export const gotoPresetPoint = async (
   nvrId: number,
-  channelId: number,
+  channelNum: number,
   command = 39,
   index = 1
 ) => {
   await pack.post("/ptz/setPreset", {
     id: nvrId,
-    channel: channelId,
+    channel: channelNum,
     command,
     index,
   });
@@ -244,39 +243,39 @@ export const gotoPresetPoint = async (
 // 清除预置点
 export const clearPresetPoint = async (
   nvrId: number,
-  channelId: number,
+  channelNum: number,
   command = 9,
   index = 1
 ) => {
   await pack.post("/ptz/setPreset", {
     id: nvrId,
-    channel: channelId,
+    channel: channelNum,
     command,
     index,
   });
 };
 
 // 获取预置点信息
-export const getPresetPoint = async (nvrId: number, channelId: number) => {
+export const getPresetPoint = async (nvrId: number, channelNum: number) => {
   const { data } = await pack.get(
-    `/hikDevices/getChannelPreset/${nvrId}/${channelId}`
+    `/hikDevices/getChannelPreset/${nvrId}/${channelNum}`
   );
   return data.value!;
 };
 
 // 获取设备通道视频编码信息
-export const getChannelEncode = async (nvrId: number, channelId: number) => {
+export const getChannelEncode = async (nvrId: number, channelNum: number) => {
   const { data } = await pack.get<{ data: { encType: number } }>(
-    `/config/getChannelVideoEncType/${nvrId}/${channelId}`
+    `/config/getChannelVideoEncType/${nvrId}/${channelNum}`
   );
   return data.value!;
 };
 
 // 设置设备通道视频编码信息
-export const setChannelEncode = async (id: number, channelId: number) => {
+export const setChannelEncode = async (id: number, channelNum: number) => {
   const { data } = await pack.post("/config/setChannelVideoEncType", {
     id: Number(id),
-    channelId: Number(channelId),
+    channelId: Number(channelNum),
     videoEncType: 1,
   });
   return data.value!;

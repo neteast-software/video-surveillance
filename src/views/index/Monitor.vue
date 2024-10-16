@@ -10,12 +10,12 @@
             class="rounded overflow-hidden"
             :clientID="id"
             :nvrId="nvrId"
-            :channelId="channelId"
-            @set-preset="setPreset(nvrId, channelId)"
-            @to-preset="gotoPresetPoint(nvrId, channelId)"
-            @clear-preset="clearPreset(nvrId, channelId)"
+            :channel-num="channelNum"
+            @set-preset="setPreset(nvrId, channelNum)"
+            @to-preset="gotoPresetPoint(nvrId, channelNum)"
+            @clear-preset="clearPreset(nvrId, channelNum)"
             @command="
-              (cmd, flag) => cloudControl(nvrId, channelId, CMD[cmd], flag)
+              (cmd, flag) => cloudControl(nvrId, channelNum, CMD[cmd], flag)
             "
           >
             <template
@@ -43,7 +43,7 @@
               <ControlButton
                 v-if="!isH264"
                 :icon="translate"
-                @click="setH264Codec(nvrId, channelId)"
+                @click="setH264Codec(nvrId, channelNum)"
                 >切换H264</ControlButton
               >
             </template>
@@ -64,10 +64,10 @@
           v-else
           :controls="controls"
           :nvr-id="nvrId"
-          :channel-id="channelId"
+          :channelNum="channelNum"
           :clientID="id"
           @command="
-            (cmd, flag) => cloudControl(nvrId, channelId, CMD[cmd], flag)
+            (cmd, flag) => cloudControl(nvrId, channelNum, CMD[cmd], flag)
           "
         ></HlsPlayer>
       </template>
@@ -116,11 +116,11 @@ const { confirmDialog } = useDialogAsync();
 interface Props {
   id: string;
   nvrId: number;
-  channelId: number;
   nvrName: string;
   chName: string;
   controls?: boolean;
   isFullscreen?: boolean;
+  channelNum: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
@@ -130,7 +130,7 @@ const havePreset = ref(false);
 provide("havePreset", havePreset);
 async function initData() {
   if (!props.nvrId) return;
-  const res = await getPresetPoint(props.nvrId, props.channelId);
+  const res = await getPresetPoint(props.nvrId, props.channelNum);
   havePreset.value = !!res.data?.preset;
 }
 onMounted(initData);
@@ -138,14 +138,14 @@ const isH264 = ref(true);
 async function getCodec() {
   if (!props.nvrId) return;
   if (!props.controls) return;
-  const { data } = await getChannelEncode(props.nvrId, props.channelId);
+  const { data } = await getChannelEncode(props.nvrId, props.channelNum);
   const { encType } = data;
   isH264.value = encType === 1;
   console.log("获取到的codec", encType, isH264.value);
 }
 watch(() => props.controls, getCodec);
-async function setH264Codec(nvrId: number, channelId: number) {
-  await setChannelEncode(nvrId, channelId);
+async function setH264Codec(nvrId: number, channelNum: number) {
+  await setChannelEncode(nvrId, channelNum);
   await confirmDialog({
     type: "success",
     title: "确认",
@@ -179,14 +179,14 @@ async function restartNVR(id: number) {
   }
 }
 
-async function setPreset(nvrId: number, channelId: number) {
-  await setPresetPoint(nvrId, channelId);
+async function setPreset(nvrId: number, channelNum: number) {
+  await setPresetPoint(nvrId, channelNum);
   window.$message?.success("设置预置点成功");
   havePreset.value = true;
 }
 
-async function clearPreset(nvrId: number, channelId: number) {
-  await clearPresetPoint(nvrId, channelId);
+async function clearPreset(nvrId: number, channelNum: number) {
+  await clearPresetPoint(nvrId, channelNum);
   window.$message?.success("清除预置点成功");
   havePreset.value = false;
 }

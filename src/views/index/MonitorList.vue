@@ -2,8 +2,7 @@
   <section
     class="py-6 overflow-hidden h-full shadow-common flex flex-col max-w-430px"
   >
-    <header class="flex justify-between items-center">
-      {{ selectMonitorCard }}
+    <header class="flex justify-between items-center px-5 lt-laptop-(px-3)">
       <div class="w-full relative">
         <NButton
           type="primary"
@@ -23,7 +22,7 @@
       </div>
     </header>
     <header
-      class="flex justify-between items-center gap-x-6 lt-laptop-(gap-x-2)"
+      class="flex justify-between items-center px-5 gap-x-6 lt-laptop-(gap-x-2 px-3)"
     >
       <NSelect
         style="width: 128px; background: transparent"
@@ -44,6 +43,7 @@
       <NPopover
         trigger="click"
         placement="bottom"
+        :show-arrow="false"
         v-model:show="popoverVisible"
       >
         <template #trigger>
@@ -62,7 +62,7 @@
             <div class="i-icons:arrow w-4 h-4 rotate-180"></div>
           </div>
         </template>
-        <div class="py-3 w-400px max-h-300px flex-col">
+        <div class="py-3 w-360px max-h-300px flex-col">
           <span class="text-(lightGrey 3)"> 选择设备NVR </span>
           <div class="grid grid-cols-2 gap-2 mt-3 overflow-auto flex-h-rest">
             <div
@@ -87,7 +87,7 @@
     </header>
     <section class="h-0 flex-1">
       <NScrollbar>
-        <main class="flex-col gap-3">
+        <main class="flex-col gap-3 px-5 lt-laptop-(px-3)">
           <div
             v-for="nvr in filteredDeviceList"
             :key="nvr.id"
@@ -148,7 +148,7 @@ import {
 } from "naive-ui";
 import MonitorCard from "./MonitorCard.vue";
 
-import { computed, h, onMounted, ref } from "vue";
+import { computed, h, onMounted, ref, watch } from "vue";
 import {
   getDevicesList,
   NVRItem,
@@ -165,8 +165,9 @@ enum MonitorStatus {
 }
 interface Props {
   regionId: number;
+  activeMonitor: number;
 }
-withDefaults(defineProps<Props>(), {});
+const props = withDefaults(defineProps<Props>(), {});
 defineEmits<{
   select: [indexCode: string];
 }>();
@@ -180,12 +181,19 @@ function onPickMonitor(nvrId: number, nvrName: string, ch: ChannelItem) {
     key: uuidv4(),
     nvrId,
     nvrName,
-    channelId: ch.channelNum,
+    channelId: ch.id,
     channelName: ch.channelName,
     online: ch.online,
+    channelNum: Number(ch.channelNum),
   });
   selectMonitorCard.value = ch.id;
 }
+watch(
+  () => props.activeMonitor,
+  (val) => {
+    selectMonitorCard.value = val;
+  }
+);
 
 const options = ref<SelectOption[]>([]);
 const labelOptions = ref<SelectOption[]>([]);
@@ -252,9 +260,10 @@ async function initMonitorList() {
         key: uuidv4(),
         nvrId: nvr.id,
         nvrName: nvr.name,
-        channelId: ch.channelNum,
+        channelId: ch.id,
         channelName: ch.channelName,
         online: ch.online,
+        channelNum: Number(ch.channelNum),
       });
       len++;
     });
@@ -301,6 +310,6 @@ function haveCommonLabel(arr1: string[], arr2: string[]) {
   background-color: #3563ef;
 }
 .popActive {
-  @apply bg-primaryBg text-primary;
+  @apply bg-primaryLightBg text-primary;
 }
 </style>

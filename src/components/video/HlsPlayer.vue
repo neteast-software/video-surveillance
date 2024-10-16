@@ -48,7 +48,8 @@ import {
 interface Props {
   id: string;
   nvrId: number;
-  channelId: number;
+  channelNum: number;
+  // channelId: number;
   controls: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {});
@@ -85,7 +86,7 @@ const sources = computed<VideoPlayerProps["sources"]>(() => {
   ];
 });
 async function initVideo() {
-  // const { data } = await postVideoStreamHls(props.nvrId, props.channelId);
+  // const { data } = await postVideoStreamHls(props.nvrId, props.channelNum);
   console.log("初始化播放器", data);
   url.value = `http://127.0.0.1:${data.port}${data.uri}`;
 }

@@ -29,6 +29,7 @@ export function updateBuildingVisibility(
 //抗锯齿优化
 export function setAntialias(viewer: Cesium.Viewer | null) {
   if (!viewer) return;
+
   if (window.document.body.clientWidth <= 2050) {
     if (window.devicePixelRatio <= 1.25) {
       viewer.resolutionScale = window.devicePixelRatio;

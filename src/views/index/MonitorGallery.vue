@@ -12,14 +12,13 @@
         <template #item="{ element: item, index }">
           <Monitor
             :is-fullscreen="isFullscreen"
-            :class="{ active: activeMonitor === index }"
             :id="item.key"
             :controls="gridCount === 1"
             :nvr-id="item.nvrId"
             :nvr-name="item.nvrName"
             :channel-id="item.channelId"
             :ch-name="item.channelName"
-            @click="activeMonitor = index"
+            :channel-num="item.channelNum"
             @dblclick="pickMonitor(index)"
             @contextmenu.prevent="delMonitor(index)"
           >
@@ -58,11 +57,12 @@
         :channel-id="0"
         nvr-name=""
         ch-name=""
+        :channel-num="0"
       ></Monitor>
     </template>
+    <!-- v-motion-slide-bottom -->
     <MonitorSlider
       ref="historyBar"
-      v-motion-slide-bottom
       v-on-click-outside="() => (showHistory = false)"
       v-if="showHistory"
       class="absolute bottom-0 left-0 w-full z-50"
@@ -103,10 +103,12 @@ import { useDialogAsync } from "@/components/dialog";
 import ControlButton from "@/components/video/ControlButton.vue";
 interface Props {
   isFullscreen: boolean;
+  activeMonitor: number;
 }
 withDefaults(defineProps<Props>(), {
   isFullscreen: false,
 });
+const emit = defineEmits(["update:activeMonitor"]);
 const { confirmDialog } = useDialogAsync();
 const gridOptions = [
   { num: 4, icon: grid4 },
@@ -130,32 +132,12 @@ const monitorList = computed({
 watch(monitorList, (val) => {
   console.log("monitorList改变", val);
 });
-async function initMonitorList() {
-  sourceList.value = [
-    // {
-    //   key: "123",
-    //   nvrId: 1,
-    //   nvrName: "EPC-1北头岭隧道",
-    //   channelId: 1,
-    //   channelName: "北头岭隧道掌子面",
-    //   online: true,
-    // },
-    // {
-    //   key: "123",
-    //   nvrId: 2,
-    //   nvrName: "EPC-1北头岭隧道",
-    //   channelId: 1,
-    //   channelName: "北头岭隧道掌子面",
-    //   online: true,
-    // },
-  ];
-}
-onMounted(initMonitorList);
 function pickMonitor(index: number) {
   const item = sourceList.value.splice(index, 1)[0];
   if (!item) return;
   sourceList.value.unshift(item);
   gridCount.value = 1;
+  emit("update:activeMonitor", item.channelId);
 }
 
 async function delMonitor(index: number) {
@@ -184,8 +166,6 @@ async function addMonitor(monitor: MonitorItem | MonitorItem[]) {
 }
 const monitorBus = useEventBus(pickMonitorKey);
 monitorBus.on(addMonitorLock);
-
-const activeMonitor = ref(-1);
 </script>
 
 <style scoped>

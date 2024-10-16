@@ -1,6 +1,6 @@
 import * as Cesium from "cesium";
 import { tdtKey, subdomains, tdtUrl } from "./env";
-
+// var scale = new T.Control.Scale();
 //加载天地图
 export const newtdtMap = (layer: string) => {
   return new Cesium.WebMapTileServiceImageryProvider({

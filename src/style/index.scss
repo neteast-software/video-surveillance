@@ -1,11 +1,9 @@
-
-
-@import 'slide.scss';
+@import "slide.scss";
 :root {
   /* #3563EF */
   --primary-color: 53 99 239;
-  /*#E2E8F0 */
-  --primaryBg-color: 226 232 240;
+  //#DFEBFF
+  --primary-bg-color: 225 234 246;
   /* #232D42 */
   --text-basic: 35 45 66;
   /* #8A92A6 */
@@ -14,9 +12,22 @@
   --text-lightGrey: 160 174 192;
   /* #EEEEEE*/
   --border-grey: 238 238 238;
-  /* #EFF3F7*/
-  --bg-grey: 239 243 247;
+  /* #F4F8FF*/
+  --primary-lightBg: 244 248 255;
   --n-item-color-active-hover: #ff0 !important;
+  //状态颜色
+  // #4DC591
+  --success-color: 77 197 145;
+  // #E8FFF5
+  --success-bg-color: 232 255 245;
+  // #FF7648
+  --warning-color: 255 118 72;
+  // #FFF0D4
+  --warning-bg-color: 255 240 212;
+  // #8A92A6
+  --info-color: 138 146 166;
+  // #D4D7DF
+  --info-bg-color: 212 215 223;
 }
 * {
   box-sizing: border-box;
@@ -73,9 +84,9 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 } */
 .dataframe {
-  @apply border-(1 solid greyLine) rounded-1 p-5 flex-col;
+  @apply border-(1 solid greyLine) rounded-1 p-5 flex-col lt-laptop-(p-3);
   h1 {
-    @apply text-4 font-600 m-0 mb-4;
+    @apply text-4 font-600 m-0;
   }
 }
 .blue-gradient {

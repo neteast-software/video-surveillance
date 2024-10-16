@@ -16,11 +16,13 @@ import {
 import { setAntialias, updateBuildingVisibility } from "@/utils/map/index";
 import { useEventBus } from "@vueuse/core";
 import { zoomKey, zoomUpdateKey } from "@/config/eventBus";
+import CesiumNavigation from "cesium-navigation-es6";
 const props = defineProps({
   zoomLevel: Number,
   show3D: Boolean,
+  backOrigin: Boolean,
 });
-const emit = defineEmits(["update:zoomLevel"]);
+const emit = defineEmits(["update:zoomLevel", "update:backOrigin"]);
 const currentHeading = ref(0); // 当前的方位角
 const currentPitch = ref(-30); // 当前的俯仰角
 let viewer: Cesium.Viewer | null = null;
@@ -49,7 +51,6 @@ function updateBuilding() {
 function updateBubble() {
   if (viewer) updateBubblePosition(viewer);
 }
-
 onMounted(() => {
   Cesium.Ion.defaultAccessToken = cesiumtoken;
   viewer = new Cesium.Viewer("cesiumContainer", {
@@ -68,35 +69,14 @@ onMounted(() => {
     showRenderLoopErrors: false,
     shadows: false,
     imageryProvider: newtdtMap("cva"),
-    terrainProvider: new Cesium.EllipsoidTerrainProvider(),
-    // terrainProvider: Cesium.createWorldTerrain(), //地形
-    scene3DOnly: true, //只显示3D场景
-    // skyAtmosphere: false, //天空
-    // contextOptions: {
-    //   willReadFrequently: true, // 优化 Canvas 操作
-    //   antialias: true, // 启用抗锯齿
-    // },
-    // requestRenderMode: true, // 启用请求渲染模式
-    // maximumRenderTimeChange: 1000, // 渲染时间的最大变化
+    terrainProvider: new Cesium.EllipsoidTerrainProvider(), //地形
+    // scene3DOnly: true, //只显示3D场景
+    // sceneMode: Cesium.SceneMode.SCENE2D, //2d模式
     useBrowserRecommendedResolution: true, // 使用浏览器推荐的分辨率
     requestRenderMode: true,
   });
-  // viewer.scene.debugShowFramesPerSecond = true
-
   viewer.scene.globe.maximumScreenSpaceError = 2; // 适当增加误差来提升性能
-  // tileset.maximumScreenSpaceError = 99; // 增大此值减少远处模型的加载
-  // viewer.scene.requestRenderMode = true; // 请求渲染模式
-  // viewer.scene.maximumRenderTimeChange = 0.1; // 限制频繁的重新渲染
-
   viewer.scene.postProcessStages.fxaa.enabled = true; // 开启FXAA抗锯齿
-  // viewer.imageryLayers.removeAll(); // 移除不必要的图层
-
-  // viewer.scene.globe.maximumScreenSpaceError = 1; // 调低误差，增加细节
-  // viewer.useBrowserRecommendedResolution = true; // 使用浏览器推荐的分辨率
-  // viewer.scene.moon.show = false;
-  // viewer.scene.fog.enabled = false;
-  // viewer.scene.sun.show = false;
-  // viewer.scene.skyBox.show = false;
 
   viewer.camera.changed.addEventListener(onZoomLevelChange);
   viewer.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
@@ -105,10 +85,9 @@ onMounted(() => {
   viewer.scene.primitives.add(tileset); //添加3D建筑物
   tileset.show = props.show3D; //控制3D建筑物的显示
 
-  // tileset.cullWithChildrenBounds = true; // 只加载视野中的模型，优化性能
-  // tileset.cullRequestsWhileMoving = true; // 只加载视野中的模型，优化性能
+  //切换成2d模式
+  // viewer.scene.morphTo2D(0);
 
-  // viewer.scene.globe.baseColor = Cesium.Color.BLACK; // 地形之外显示黑色，避免渲染远景
   //相机
   viewer.camera.setView({
     destination: Cartesian, //初始位置
@@ -125,7 +104,15 @@ onMounted(() => {
   viewer.scene.camera.changed.addEventListener(updateBuilding); //更新建筑物
   setAntialias(viewer); //抗锯齿
   // viewer.scene.postRender.addEventListener(updateBubble); //更新气泡位置
-  viewer.scene.preRender.addEventListener(updateBubble)
+  viewer.scene.preRender.addEventListener(updateBubble);
+
+  // 添加比例尺控件
+  new CesiumNavigation(viewer, {
+    enableCompass: false, // 指南针
+    enableZoomControls: false, // 缩放控件
+    enableDistanceLegend: true, // 启用比例尺
+    enableCompassOuterRing: false, // 启用外环指南针
+  });
 });
 
 function onResize() {
@@ -141,6 +128,29 @@ watch(
   },
   { immediate: true } // 确保组件加载时也同步显示状态
 );
+//回到原点
+function backOrigin() {
+  if (viewer) {
+    viewer.camera.flyTo({
+      destination: Cartesian, //初始位置
+      orientation: {
+        //初始方向
+        heading: Cesium.Math.toRadians(currentHeading.value),
+        pitch: Cesium.Math.toRadians(currentPitch.value),
+        roll: Cesium.Math.toRadians(0),
+      },
+      duration: 1.5,
+    });
+  }
+}
+watch(
+  () => props.backOrigin,
+  () => {
+    emit("update:backOrigin", false);
+    backOrigin();
+  }
+);
+
 // 更新相机视图
 const updateCamera = (zoomLevel: number, oldZoomLevel: number) => {
   if (!viewer) return;
@@ -200,5 +210,17 @@ onBeforeUnmount(() => {
   top: 10px;
   left: 10px;
   z-index: 999;
+}
+:deep(.distance-legend-label) {
+  /* color: black !important; */
+  @apply text-basic;
+}
+:deep(.distance-legend-scale-bar) {
+  border-left: 1px solid #232d42;
+  border-right: 1px solid #232d42;
+  border-bottom: 1px solid #232d42;
+}
+:deep(.distance-legend) {
+  right: 66px;
 }
 </style>

@@ -13,6 +13,7 @@ export interface MonitorItem {
   channelId: number | string;
   channelName: string;
   online: boolean;
+  channelNum: number;
 }
 export interface MonitorRegionOption {
   rigionName: string;

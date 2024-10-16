@@ -17,7 +17,6 @@
           :pattern="pattern"
           :data="treeData"
           block-line
-          :render-prefix="renderPrefix"
           :render-suffix="renderSuffix"
           @update:selected-keys="updateCheckedKeys"
           :default-expanded-keys="defaultExpandedKeys"

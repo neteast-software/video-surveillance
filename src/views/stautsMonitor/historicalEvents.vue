@@ -2,7 +2,7 @@
   <div class="dataframe">
     <header class="flex-y-center justify-between mb-4 lt-laptop-(mb-2)">
       <h1>历史事件列表</h1>
-      <div class="i-icons:filter w-6 h-6 cursor-pointer"></div>
+      <!-- <div class="i-icons:filter w-6 h-6 cursor-pointer"></div> -->
     </header>
     <div class="flex gap-3">
       <div

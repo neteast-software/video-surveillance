@@ -29,6 +29,9 @@ importers:
       cesium:
         specifier: '1.99'
         version: 1.99.0
+      cesium-navigation-es6:
+        specifier: ^3.0.9
+        version: 3.0.9
       colord:
         specifier: ^2.9.3
         version: 2.9.3
@@ -1503,6 +1506,9 @@ packages:
 
   caniuse-lite@1.0.30001664:
     resolution: {integrity: sha512-AmE7k4dXiNKQipgn7a2xg558IRqPN3jMQY/rOsbxDhrd0tyChwbITBfiwtnqz8bi2M5mIWbxAYBvk7W7QBUS2g==}
+
+  cesium-navigation-es6@3.0.9:
+    resolution: {integrity: sha512-tRMABMc4Le6fMxPvlC+pw6UyP7pm7tG1QrwRepIGzoRQDqO9o6f0SOt1zdbghDn8blY2u8sNWInfs5RaQ/+VEA==}
 
   cesium@1.99.0:
     resolution: {integrity: sha512-bVN7Bskd9PVhQe9Ak9DEr7wEckbCJc0UPq58MKWGWAkQfiYob8odh6luqY5Yz26trr3tWwni1xWjsCe94y37jw==}
@@ -4349,6 +4355,10 @@ snapshots:
       set-function-length: 1.2.2
 
   caniuse-lite@1.0.30001664: {}
+
+  cesium-navigation-es6@3.0.9:
+    dependencies:
+      cesium: 1.99.0
 
   cesium@1.99.0:
     dependencies:
