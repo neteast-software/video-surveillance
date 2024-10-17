@@ -34,7 +34,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       onlineTime: 12,
       resolution: "1920*1080",
       coding: "H.264",
-      position: [119.3, 26.078],
+      position: [119.60175, 25.75811],
       image: "/img/online-monitor.svg",
     },
     {
@@ -45,7 +45,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       onlineTime: 12,
       resolution: "1920*1080",
       coding: "H.264",
-      position: [119.3001, 26.076],
+      position: [119.59718, 25.74615],
       image: "/img/offline-monitor.svg",
     },
     {
@@ -56,7 +56,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       onlineTime: 12,
       resolution: "1920*1080",
       coding: "H.264",
-      position: [119.2938, 26.078],
+      position: [119.58967, 25.71834],
       image: "/img/abnormal-monitor.svg",
     },
     {
@@ -67,7 +67,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       onlineTime: 12,
       resolution: "1920*1080",
       coding: "H.264",
-      position: [119.2936, 26.08],
+      position: [119.59825, 25.75018],
       image: "/img/key-projects.svg",
     },
     {
@@ -78,7 +78,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       onlineTime: 12,
       resolution: "1920*1080",
       coding: "H.264",
-      position: [119.29503, 26.08031],
+      position: [119.59308, 25.73191],
       image: "/img/online-helmet.svg",
     },
     {
@@ -89,7 +89,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       onlineTime: 12,
       resolution: "1920*1080",
       coding: "H.264",
-      position: [119.29722, 26.07691],
+      position: [119.59846, 25.79142],
       image: "/img/abnormal-helmet.svg",
     },
     {
@@ -100,7 +100,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       onlineTime: 12,
       resolution: "1920*1080",
       coding: "H.264",
-      position: [119.29563, 26.0765],
+      position: [119.60283, 25.77433],
       image: "/img/offline-helmet.svg",
     },
     {
@@ -111,7 +111,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       onlineTime: 12,
       resolution: "1920*1080",
       coding: "H.264",
-      position: [119.29672, 26.07579],
+      position: [119.59251, 25.7262],
       image: "/img/key-projects.svg",
     },
   ]);

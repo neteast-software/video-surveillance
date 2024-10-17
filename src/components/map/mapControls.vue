@@ -17,11 +17,12 @@
     </div>
     <div class="button flex-(col center) gap-1">
       <div class="i-icons:add icon" @click="increaseZoom"></div>
+      <!-- :tooltip="false" -->
+
       <NSlider
         :value="localZoomLevel"
         reverse
         style="height: 240px"
-        :tooltip="false"
         vertical
         :min="minimumZoom"
         :max="maximumZoom"
@@ -50,29 +51,32 @@ const props = defineProps({
   show3D: Boolean,
   backOrigin: Boolean,
 });
-const localZoomLevel = ref((props.zoomLevel || 0) / 100);
+//倍数
+const Level = 100;
+
+const localZoomLevel = ref((props.zoomLevel || 0) / Level);
 const step = 2;
 const minimumZoom = 2; // 最小缩放距离
-const maximumZoom = 80; // 最大缩放距离
+const maximumZoom = 100; // 最大缩放距离
 const zoomBus = useEventBus(zoomKey);
 const zoomUpdateBus = useEventBus(zoomUpdateKey);
 zoomUpdateBus.on((zoom) => {
-  localZoomLevel.value = zoom / 100;
+  localZoomLevel.value = zoom / Level;
 });
 function increaseZoom() {
   const oldZoom = localZoomLevel.value;
   localZoomLevel.value = Math.max(minimumZoom, localZoomLevel.value - step);
-  zoomBus.emit([localZoomLevel.value * 100, oldZoom * 100]);
+  zoomBus.emit([localZoomLevel.value * Level, oldZoom * Level]);
 }
 function zoomOut() {
   const oldZoom = localZoomLevel.value;
   localZoomLevel.value = Math.min(maximumZoom, localZoomLevel.value + step);
-  zoomBus.emit([localZoomLevel.value * 100, oldZoom * 100]);
+  zoomBus.emit([localZoomLevel.value * Level, oldZoom * Level]);
 }
 
 // 当滑块或按钮改变时，通知父组件更新 zoomLevel
 watch(localZoomLevel, (newZoom) => {
-  emit("update:zoomLevel", newZoom * 100);
+  emit("update:zoomLevel", newZoom * Level);
 });
 onBeforeUnmount(() => {
   zoomBus.reset();

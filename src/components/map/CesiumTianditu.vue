@@ -20,6 +20,9 @@ import { zoomKey, zoomUpdateKey } from "@/config/eventBus";
 import CesiumNavigation from "cesium-navigation-es6";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
+import { ClickToGetLocation } from "@/utils/map/ClickToGetLocation";
+import { addAllPath } from "@/utils/map/path";
+
 const deviceInfo = useDeviceInfoStore();
 const { filteredDataList } = storeToRefs(deviceInfo);
 
@@ -30,18 +33,14 @@ const props = defineProps({
 });
 const emit = defineEmits(["update:zoomLevel", "update:backOrigin"]);
 const currentHeading = ref(0); // 当前的方位角
-const currentPitch = ref(-30); // 当前的俯仰角
+const currentPitch = ref(-90); // 当前的俯仰角
 let viewer: Cesium.Viewer | null = null;
-//3D建筑物
-const tileset = new Cesium.Cesium3DTileset({
-  url: "/model/tileset.json",
-});
+// // 3D建筑物
+// const tileset = new Cesium.Cesium3DTileset({
+//   url: "/model/tileset.json",
+// });
 
-const Cartesian = Cesium.Cartesian3.fromDegrees(
-  119.297,
-  26.07,
-  props.zoomLevel
-);
+const Cartesian = Cesium.Cartesian3.fromDegrees(119.6, 25.75, props.zoomLevel);
 
 function onZoomLevelChange() {
   if (viewer) {
@@ -77,7 +76,7 @@ onMounted(() => {
     imageryProvider: newtdtMap("cva"),
     terrainProvider: new Cesium.EllipsoidTerrainProvider(), //地形
     // scene3DOnly: true, //只显示3D场景
-    // sceneMode: Cesium.SceneMode.SCENE2D, //2d模式
+    sceneMode: Cesium.SceneMode.SCENE2D, //2d模式
     useBrowserRecommendedResolution: true, // 使用浏览器推荐的分辨率
     requestRenderMode: true,
   });
@@ -86,14 +85,14 @@ onMounted(() => {
 
   viewer.camera.changed.addEventListener(onZoomLevelChange);
   viewer.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
-  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 100000; //最大缩放距离
+  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 25000; //最大缩放距离
   viewer.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
-  viewer.scene.primitives.add(tileset); //添加3D建筑物
-  tileset.show = props.show3D; //控制3D建筑物的显示
-
+  // viewer.scene.primitives.add(tileset); //添加3D建筑物
+  // tileset.show = props.show3D; //控制3D建筑物的显示
   //切换成2d模式
   // viewer.scene.morphTo2D(0);
 
+  ClickToGetLocation(viewer); //点击获取位置
   //相机
   viewer.camera.setView({
     destination: Cartesian, //初始位置
@@ -105,6 +104,7 @@ onMounted(() => {
     },
   });
   addDemoGraphic1(viewer); //添加标记
+  addAllPath(viewer); // 添加轨迹路线
   setupClickHandler(viewer); //点击事件
 
   viewer.scene.camera.changed.addEventListener(updateBuilding); //更新建筑物
@@ -130,7 +130,9 @@ watch(
   () => props.show3D,
   (newShow3D) => {
     if (viewer) {
-      tileset.show = newShow3D;
+      //将地图变为2D模式
+      newShow3D ? viewer.scene.morphTo3D(0) : viewer.scene.morphTo2D(0);
+      // tileset.show = newShow3D;
     }
   },
   { immediate: true } // 确保组件加载时也同步显示状态
@@ -172,10 +174,9 @@ const updateCamera = (zoomLevel: number, oldZoomLevel: number) => {
   const camera = viewer.camera;
   currentHeading.value = camera.heading;
   currentPitch.value = camera.pitch;
-  console.log("zoomLevel", zoomLevel);
   if (viewer) {
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(119.297, 26.07, zoomLevel),
+      destination: Cesium.Cartesian3.fromDegrees(119.6, 25.67, zoomLevel),
       orientation: {
         heading: currentHeading.value,
         pitch: currentPitch.value - (zoomLevel - oldZoomLevel) * 0.0001,

@@ -5,7 +5,6 @@
     <LeftAside class="z-1"></LeftAside>
     <RightAside class="z-1"></RightAside>
     <div class="absolute top-0 left-0 w-full h-full z-0">
-      {{ curdeviceType }} {{ curDeviceStatus }}
       <CesiumTianditu
         v-model:zoomLevel="zoomLevel"
         v-model:show3D="show3D"
@@ -32,7 +31,7 @@ import { ref } from "vue";
 import PointBubble from "./pointBubble.vue";
 import MapControls from "@/components/map/mapControls.vue";
 
-const zoomLevel = ref(500);
+const zoomLevel = ref(22000);
 const show3D = ref(false);
 const backOrigin = ref(false);
 
