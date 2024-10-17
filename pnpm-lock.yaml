@@ -47,6 +47,9 @@ importers:
       linker-uii:
         specifier: ^0.7.0
         version: 0.7.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2))
+      pinia:
+        specifier: ^2.2.4
+        version: 2.2.4(typescript@5.6.2)(vue@3.5.8(typescript@5.6.2))
       recordrtc:
         specifier: ^5.6.2
         version: 5.6.2
@@ -2364,6 +2367,18 @@ packages:
   picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
+
+  pinia@2.2.4:
+    resolution: {integrity: sha512-K7ZhpMY9iJ9ShTC0cR2+PnxdQRuwVIsXDO/WIEV/RnMC/vmSoKDTKW/exNQYPI+4ij10UjXqdNiEHwn47McANQ==}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.3.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
 
   pkcs7@1.0.4:
     resolution: {integrity: sha512-afRERtHn54AlwaF2/+LFszyAANTCggGilmcmILUzEjvs3XgFZT+xE6+QWQcAGmu4xajy+Xtj7acLOPdx5/eXWQ==}
@@ -5290,6 +5305,14 @@ snapshots:
   picocolors@1.1.0: {}
 
   picomatch@2.3.1: {}
+
+  pinia@2.2.4(typescript@5.6.2)(vue@3.5.8(typescript@5.6.2)):
+    dependencies:
+      '@vue/devtools-api': 6.6.4
+      vue: 3.5.8(typescript@5.6.2)
+      vue-demi: 0.14.10(vue@3.5.8(typescript@5.6.2))
+    optionalDependencies:
+      typescript: 5.6.2
 
   pkcs7@1.0.4:
     dependencies:

@@ -10,6 +10,7 @@ import { cesiumtoken } from "@/utils/map/env";
 import { newtdtMap } from "@/utils/map/modify";
 import {
   addDemoGraphic1,
+  removeAllEntities,
   setupClickHandler,
   updateBubblePosition,
 } from "@/utils/map/mark";
@@ -17,6 +18,11 @@ import { setAntialias, updateBuildingVisibility } from "@/utils/map/index";
 import { useEventBus } from "@vueuse/core";
 import { zoomKey, zoomUpdateKey } from "@/config/eventBus";
 import CesiumNavigation from "cesium-navigation-es6";
+import { useDeviceInfoStore } from "@/stores/deviceInfo";
+import { storeToRefs } from "pinia";
+const deviceInfo = useDeviceInfoStore();
+const { filteredDataList } = storeToRefs(deviceInfo);
+
 const props = defineProps({
   zoomLevel: Number,
   show3D: Boolean,
@@ -80,7 +86,7 @@ onMounted(() => {
 
   viewer.camera.changed.addEventListener(onZoomLevelChange);
   viewer.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
-  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 10000; //最大缩放距离
+  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 100000; //最大缩放距离
   viewer.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
   viewer.scene.primitives.add(tileset); //添加3D建筑物
   tileset.show = props.show3D; //控制3D建筑物的显示
@@ -118,11 +124,12 @@ onMounted(() => {
 function onResize() {
   setAntialias(viewer);
 }
+
+// 控制 3D 建筑物的显示
 watch(
   () => props.show3D,
   (newShow3D) => {
     if (viewer) {
-      // 控制 3D 建筑物的显示
       tileset.show = newShow3D;
     }
   },
@@ -150,6 +157,14 @@ watch(
     backOrigin();
   }
 );
+
+//更新标记点
+watch(filteredDataList, () => {
+  if (!viewer) return;
+  console.log("filteredDataList", filteredDataList);
+  removeAllEntities(viewer);
+  addDemoGraphic1(viewer);
+});
 
 // 更新相机视图
 const updateCamera = (zoomLevel: number, oldZoomLevel: number) => {

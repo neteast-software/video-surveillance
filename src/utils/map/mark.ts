@@ -1,131 +1,51 @@
 import * as Cesium from "cesium";
 import Color from "cesium/Source/Core/Color";
 import Viewer from "cesium/Source/Widgets/Viewer/Viewer";
-import { ref } from "vue";
-const points = [
-  {
-    name: "点1",
-    label: "这是点1",
-    position: [119.3, 26.078],
-    image: "/img/online-monitor.svg",
-  },
-  {
-    name: "点2",
-    label: "这是点2",
-    position: [119.3001, 26.076],
-    image: "/img/offline-monitor.svg",
-  },
-  {
-    name: "点3",
-    label: "这是点3",
-    position: [119.2938, 26.078],
-    image: "/img/abnormal-monitor.svg",
-  },
-  {
-    name: "点4",
-    label: "这是点4",
-    position: [119.2936, 26.08],
-    image: "/img/key-projects.svg",
-  },
-  {
-    name: "点5",
-    label: "这是点5",
-    position: [119.29503, 26.08031],
-    image: "/img/online-helmet.svg",
-  },
-  {
-    name: "点6",
-    label: "这是点6",
-    position: [119.29722, 26.07691],
-    image: "/img/abnormal-helmet.svg",
-  },
-  {
-    name: "点7",
-    label: "这是点7",
-    position: [119.29563, 26.0765],
-    image: "/img/offline-helmet.svg",
-  },
-  {
-    name: "点8",
-    label: "这是点8",
-    position: [119.29672, 26.07579],
-    image: "/img/key-projects.svg",
-  },
-];
+import { ref, watch } from "vue";
+import { useDeviceInfoStore } from "@/stores/deviceInfo";
+import { storeToRefs } from "pinia";
+const deviceInfo = useDeviceInfoStore();
+const { filteredDataList, curdeviceListId } = storeToRefs(deviceInfo);
+
+let entities: any = [];
+let selectEntity: any = null; // 正在选中的实体
+// let bounceInterval: any = null; // 弹跳动画的定时器
+
+export const bubblePosition = ref([0, 0]); // 弹窗位置（相对于屏幕）
+export const bubbleVisible = ref(false); // 弹窗是否显示
+
 //添加标记点
 export function addDemoGraphic1(viewer: Viewer) {
-  points.forEach((point) => {
+  if (filteredDataList.value.length === 0) return;
+  filteredDataList.value.forEach((point) => {
     if (!viewer) return;
     const entity = viewer.entities.add({
       name: point.name,
+      id: String(point.id),
       position: Cesium.Cartesian3.fromDegrees(
         point.position[0],
         point.position[1]
       ),
-      // label: {
-      //   text: point.label,
-      //   font: "500 30px Helvetica",
-      //   scale: 0.5,
-      //   style: Cesium.LabelStyle.FILL,
-      //   fillColor: Cesium.Color.WHITE,
-      //   pixelOffset: new Cesium.Cartesian2(0, -60),
-      //   showBackground: true,
-      //   disableDepthTestDistance: Number.POSITIVE_INFINITY,
-      //   show: false,
-      // },
       billboard: {
         image: point.image,
         scale: 1,
         horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
       },
-      heightReference: Cesium.HeightReference.NONE,
+      // heightReference: Cesium.HeightReference.NONE, // 不随地形高度变化
     });
+    entities.push(entity);
     // entity.bounceState = false; // 初始状态为不弹跳
   });
 }
-
-let bouncingEntity: any = null;
-let bounceInterval: any = null;
-function startBounce(entity, position) {
-  if (bounceInterval) {
-    clearInterval(bounceInterval);
-    if (bouncingEntity) {
-      stopBounce(bouncingEntity, bouncingEntity.originalPosition);
-    }
-  }
-  bouncingEntity = entity;
-  entity.originalPosition = [...position];
-  const addHei = 10;
-  let direction = 1;
-  const bounceHeight = 0.5;
-
-  entity.label.show = true; // 显示标签
-
-  bounceInterval = setInterval(() => {
-    const currentPosition = Cesium.Cartographic.fromCartesian(
-      entity.position.getValue(Cesium.JulianDate.now())
-    );
-    const newHeight =
-      (addHei / 2) * Math.sin(((Date.now() % 1000) / 1000) * 2 * Math.PI);
-    entity.position = Cesium.Cartesian3.fromDegrees(
-      Cesium.Math.toDegrees(currentPosition.longitude),
-      Cesium.Math.toDegrees(currentPosition.latitude),
-      newHeight
-    );
-  }, 30);
+export function removeAllEntities(viewer: Viewer) {
+  entities.forEach((entity: any) => {
+    viewer.entities.remove(entity);
+  });
+  // 清空实体列表
+  entities = [];
 }
 
-function stopBounce(entity, position) {
-  clearInterval(bounceInterval);
-  bounceInterval = null;
-  entity.position = Cesium.Cartesian3.fromDegrees(position[0], position[1], 0);
-  bouncingEntity = null;
-  entity.label.show = false; // 隐藏标签
-}
-
-export const bubblePosition = ref([0, 0]); // 弹窗位置（相对于屏幕）
-export const bubbleVisible = ref(false);
 // 计算 Cesium 3D 坐标在屏幕上的位置
 export function calculateScreenPosition(
   viewer: Cesium.Viewer,
@@ -137,6 +57,12 @@ export function calculateScreenPosition(
   );
   return screenPosition ? [screenPosition.x, screenPosition.y] : [0, 0];
 }
+// 处理实体缩放
+function scaleEntity(entity: any, scale: number) {
+  if (entity && entity.billboard) {
+    entity.billboard.scale = scale;
+  }
+}
 export function setupClickHandler(viewer: Viewer) {
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 
@@ -144,40 +70,59 @@ export function setupClickHandler(viewer: Viewer) {
     const pickedObject = viewer.scene.pick(movement.position);
     if (Cesium.defined(pickedObject) && pickedObject.id) {
       const entity = pickedObject.id;
-      if (bouncingEntity && bouncingEntity !== entity) {
-        bouncingEntity.billboard.scale = 1; // 恢复缩放
+
+      // 恢复上一个选中实体的缩放
+      if (selectEntity && selectEntity !== entity) {
+        scaleEntity(selectEntity, 1);
       }
 
       if (entity && entity.position) {
         const position = entity.position.getValue(Cesium.JulianDate.now());
-        const cartographic = Cesium.Cartographic.fromCartesian(position);
-        const longitude = Cesium.Math.toDegrees(cartographic.longitude);
-        const latitude = Cesium.Math.toDegrees(cartographic.latitude);
         bubblePosition.value = calculateScreenPosition(viewer, position);
         bubbleVisible.value = true;
-        entity.billboard.scale = 1.1;
-        console.log("bubblePosition", bubblePosition.value);
-        // 取消选中上一个实体并开始新的
-        if (bouncingEntity !== entity) {
-          clearInterval(bounceInterval);
-          bouncingEntity = null;
-          bouncingEntity = entity;
-        }
+        curdeviceListId.value = entity.id; // 更新当前选中的设备ID
+        // 更新当前选中的实体并缩放
+        selectEntity = entity;
+        scaleEntity(selectEntity, 1.1);
       }
     } else {
-      if (bouncingEntity) {
-        bouncingEntity.billboard.scale = 1;
-        bouncingEntity = null;
+      // 如果没有选中实体，则恢复之前的实体状态
+      if (selectEntity) {
+        scaleEntity(selectEntity, 1);
+        selectEntity = null;
         bubbleVisible.value = false;
+        curdeviceListId.value = 0; // 重置设备ID
       }
     }
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 }
 
+// 监听设备列表 ID 的变化并处理选中状态
+watch(curdeviceListId, (newId) => {
+  entities.forEach((entity: any) => {
+    if (entity.id == newId) {
+      console.log("选中实体", entity);
+      selectEntity = entity; // 更新选中实体
+      scaleEntity(selectEntity, 1.1); // 缩放选中实体
+      bubbleVisible.value = true; // 显示气泡
+    } else {
+      // 恢复未选中实体的缩放
+      if (entity.billboard) {
+        entity.billboard.scale = 1; // 恢复缩放
+      }
+    }
+  });
+
+  // 当没有选中实体时，隐藏气泡
+  if (!newId) {
+    bubbleVisible.value = false; // 隐藏气泡
+  }
+});
+
 // 地图移动时更新 PointBubble 的位置
 export function updateBubblePosition(viewer: Cesium.Viewer) {
-  if (!bouncingEntity) return;
-  const position = bouncingEntity.position.getValue(Cesium.JulianDate.now());
+  if (!selectEntity) return;
+  const position = selectEntity.position.getValue(Cesium.JulianDate.now());
   const screenPosition = calculateScreenPosition(viewer, position);
   if (screenPosition) {
     bubblePosition.value = screenPosition;
