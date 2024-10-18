@@ -104,8 +104,9 @@ import ControlButton from "@/components/video/ControlButton.vue";
 interface Props {
   isFullscreen: boolean;
   activeMonitor: number;
+  deviceId: number;
 }
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   isFullscreen: false,
 });
 const emit = defineEmits(["update:activeMonitor"]);
@@ -166,6 +167,12 @@ async function addMonitor(monitor: MonitorItem | MonitorItem[]) {
 }
 const monitorBus = useEventBus(pickMonitorKey);
 monitorBus.on(addMonitorLock);
+
+onMounted(() => {
+  if (props.deviceId) {
+    gridCount.value = 1;
+  }
+});
 </script>
 
 <style scoped>

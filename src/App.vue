@@ -61,6 +61,16 @@ const themeOverrides: GlobalThemeOverrides = {
   Menu: {
     itemHeight: "36px",
   },
+  Tag: {
+    textColorPrimary: "#3563EF",
+    colorPrimary: "#DFEBFF",
+    textColorInfo: "#8A92A6",
+    colorInfo: "#D4D7DF",
+    textColorSuccess: "#4DC591",
+    colorSuccess: "#E8FFF5",
+    textColorWarning: "#FF7648",
+    colorWarning: "#FFF0D4",
+  },
 
   // ...
 };

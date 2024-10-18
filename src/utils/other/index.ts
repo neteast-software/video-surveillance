@@ -68,3 +68,18 @@ export function downloadFile(data: Blob | string, filename: string) {
   a.click();
   URL.revokeObjectURL(a.href);
 }
+
+export function FilterStatus(typeValue: number) {
+  switch (typeValue) {
+    case 0:
+      return "primary";
+    case 1:
+      return "success";
+    case 2:
+      return "info";
+    case 3:
+      return "warning";
+    default:
+      return "info";
+  }
+}

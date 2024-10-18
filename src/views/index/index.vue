@@ -5,6 +5,7 @@
         <MonitorGallery
           :isFullscreen="isFullscreen"
           v-model:activeMonitor="activeMonitor"
+          :deviceId="deviceId"
         ></MonitorGallery>
       </section>
       <div class="h-full w-1px bg-greyLine"></div>
@@ -53,12 +54,16 @@ import { NButton, NSpin } from "naive-ui";
 import { login as loginApi, heartBeat } from "@/utils/network/api/security";
 import storage from "@/utils/other/storage";
 import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
+
 const mounted = useMounted();
 const monitorWrap = ref<HTMLElement>();
 const { height } = useElementSize(monitorWrap);
 const { isFullscreen, enter } = useFullscreen(monitorWrap);
 const rigionId = ref(0);
 const router = useRouter();
+const route = useRoute();
+
 const activeMonitor = ref(0); // 当前选中的监控
 
 const isLogin = ref(false);
@@ -79,6 +84,14 @@ onMounted(async () => {
     isLogin.value = true;
   } catch (error) {
     login();
+  }
+});
+
+const deviceId = ref();
+onMounted(() => {
+  deviceId.value = route.query.deviceId || "";
+  if (deviceId.value) {
+    // isFullscreen.value = true;
   }
 });
 </script>

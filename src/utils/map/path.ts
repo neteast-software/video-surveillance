@@ -27,11 +27,15 @@ const SpecificPathData2 = [
   [119.59241, 25.73153, 0],
 ];
 const SpecificPathData3 = [
-  [119.58747, 25.71574, 0],
+  [119.5841, 25.70713, 0],
+  [119.5803, 25.69974, 0],
+];
+const SpecificPathData4 = [
   [119.5854, 25.71019, 0],
+  [119.57941, 25.69867, 0],
 ];
 // 样条插值函数
-function generateSmoothPath(positions: [Cesium.Cartesian3]) {
+function generateSmoothPath(positions: Cesium.Cartesian3[]) {
   const spline = new Cesium.CatmullRomSpline({
     times: positions.map((_, index) => index), // 给每个点一个时间戳（整数索引）
     points: positions,
@@ -53,7 +57,7 @@ export function addPath(viewer: Cesium.Viewer) {
   const smoothPositions = generateSmoothPath(positions);
   // 添加实体，使用平滑的路径点
   viewer.entities.add({
-    name: "smooth line",
+    name: "smoothline",
     polyline: {
       positions: smoothPositions, // 使用平滑插值后的坐标
       width: 10, // 路线宽度
@@ -107,13 +111,18 @@ function addSpecificPath(
 
 //添加标签
 const cardData1 = {
-  position: [119.587, 25.712],
-  text: "MK8+029.92\n旗北路下穿通道\n全长630米",
+  position: [119.6, 25.75],
+  text: "MK1+916.60\n战前路高架桥\n全长465米",
 };
 const cardData2 = {
   position: [119.5945, 25.733],
   text: "MK4+833.00\n大东海高架桥\n全长685米",
 };
+const cardData3 = {
+  position: [119.583, 25.7],
+  text: "MK8+029.92\n旗北路下穿通道\n全长630米",
+};
+
 function drawCard(
   viewer: Cesium.Viewer,
   position: [number, number],
@@ -144,4 +153,5 @@ export function addAllPath(viewer: Cesium.Viewer) {
   addPath(viewer);
   drawCard(viewer, cardData1.position, cardData1.text);
   drawCard(viewer, cardData2.position, cardData2.text);
+  drawCard(viewer, cardData3.position, cardData3.text);
 }

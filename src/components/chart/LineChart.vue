@@ -39,6 +39,13 @@ const defaultXAxis: XAXisComponentOption = {
     verticalAlign: "bottom",
     color: "#838EB6",
   },
+  splitLine: {
+    show: true,
+    lineStyle: {
+      type: "dashed",
+      color: "#E2E8F0",
+    },
+  },
 };
 const defaultYAxis: YAXisComponentOption = {
   type: "value",
@@ -53,9 +60,10 @@ const defaultYAxis: YAXisComponentOption = {
     color: "#838EB6",
   },
   splitLine: {
+    show: true,
     lineStyle: {
-      color: ["rgba(85, 110, 153, 0.08)"],
-      width: 0.5,
+      type: "dashed",
+      color: "#E2E8F0",
     },
   },
 };

@@ -33,20 +33,10 @@
     </div>
     <div class="flex-col gap-2.5 flex-h-rest mt-2 overflow-auto">
       <div
-        class="w-full rounded-1 py-4 px-3 lt-laptop-(py-3 px-2)"
+        class="w-full rounded-1 py-3.5 px-3 lt-laptop-(py-3 px-2)"
         :class="getClassByType(list.status)"
         v-for="list in lists"
       >
-        <div class="flex-between mb-3 lt-laptop-(mb-2)">
-          <div class="flex-center gap-1">
-            <div
-              class="i-palette:alerts w-4 h-4"
-              :class="`i-palette:${list.status}`"
-            ></div>
-            <span class="text-greyText">{{ list.time }}</span>
-          </div>
-          <div class="i-icons:details rotate-90 w-3.5 h-3.5"></div>
-        </div>
         <div class="flex-center gap-2">
           <img
             src="@/assets/imgs/text/build.png"
@@ -54,8 +44,15 @@
             alt=""
           />
           <div class="flex-w-rest overflow-hidden">
-            <div class="text-4 lt-laptop-(text-3.5) truncate">
-              {{ list.name }}
+            <div class="text-4 lt-laptop-(text-3.5) flex-y-center gap-1">
+              <div class="flex-(y-center w-rest) gap-1">
+                <div
+                  class="i-palette:alerts w-4 h-4"
+                  :class="`i-palette:${list.status}`"
+                ></div>
+                <div class="truncate flex-w-rest">{{ list.name }}</div>
+              </div>
+              <span class="text-(3 greyText)">13:43</span>
             </div>
             <div class="list-desc text-greyText lt-laptop-(text-3)">
               {{ list.desc }}
@@ -71,6 +68,7 @@
 import LineChart from "@/components/chart/LineChart.vue";
 import Calendar from "@/components/Calendar.vue";
 import { ref } from "vue";
+// import { getClassByType } from "@/utils/other/index";
 
 const backToday = ref(false);
 const source = [
@@ -115,6 +113,18 @@ const lists = ref([
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "noequip",
   },
+  {
+    time: "2024年10月10日 13：43",
+    name: "这里显示的是事件名称事件名称",
+    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
+    status: "noequip",
+  },
+  {
+    time: "2024年10月10日 13：43",
+    name: "这里显示的是事件名称事件名称",
+    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
+    status: "noequip",
+  },
 ]);
 function getClassByType(status: string) {
   switch (status) {
@@ -137,11 +147,5 @@ function getClassByType(status: string) {
   white-space: nowrap; /* 单行文本 */
 }
 
-.list-desc {
-  overflow: hidden;
-  display: -webkit-box; /* 将容器设为盒子模型 */
-  -webkit-line-clamp: 2; /* 限制显示两行 */
-  -webkit-box-orient: vertical; /* 垂直布局 */
-  text-overflow: ellipsis;
-}
+
 </style>

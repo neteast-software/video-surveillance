@@ -17,15 +17,17 @@
         </div>
       </header>
       <div
-        class="w-full flex-col flex-h-rest bg-white rounded-2px py-7.5 lt-laptop-(p-5) relative"
+        class="w-full flex-col flex-h-rest bg-white rounded-2px py-7.5 lt-laptop-(py-5) relative"
       >
         <img
           src="../../assets/imgs/deviceListBg.png"
           class="absolute right-0 top-0 h-37 z-0"
         />
-        <header class="text-4.5 flex-y-center font-600 mb-4 px-7.5 z-1">
+        <header
+          class="text-4.5 flex-y-center font-600 mb-4 px-7.5 lt-laptop-(px-5) z-1"
+        >
           <div class="w-1 h-4 bg-primary rounded-2px mr-2"></div>
-          设备列表{{ curdeviceListId }}
+          设备列表
         </header>
         <NTabs
           animated
@@ -42,7 +44,7 @@
             <div class="fill-parent relative">
               <NScrollbar
                 ref="scrollbar"
-                class="px-7.5"
+                class="px-7.5 lt-laptop-(px-5)"
                 v-if="filteredDataList.length !== 0"
               >
                 <div
@@ -63,7 +65,7 @@
                       <div class="text-4 text-basic">{{ data.name }}</div>
                       <span class="text-lightGrey">{{ data.coding }}</span>
                     </div>
-                    <div class="flex-between text-#8A92A6 h-11">
+                    <div class="flex-between text-greyText h-11">
                       <div class="flex-col flex-center">
                         <div class="text-(basic 4) font-700 flex-center">
                           {{ data.onlineTime }}
@@ -120,6 +122,7 @@
 import { computed, nextTick, ref, watch } from "vue";
 import { NTag, NTabs, NTabPane, NScrollbar, ScrollbarInst } from "naive-ui";
 import { options } from "./data";
+import { FilterStatus } from "@/utils/other/index";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 const deviceInfo = useDeviceInfoStore();
@@ -130,21 +133,6 @@ const {
   filteredDataList,
   DeviceStatus,
 } = storeToRefs(deviceInfo);
-
-function FilterStatus(typeValue: number) {
-  switch (typeValue) {
-    case 0:
-      return "primary";
-    case 1:
-      return "success";
-    case 2:
-      return "info";
-    case 3:
-      return "warning";
-    default:
-      return "info";
-  }
-}
 
 // const scrollbar = ref<ScrollbarInst | null>(null);
 // // 监听 curdeviceListId 的变化并滚动到对应项

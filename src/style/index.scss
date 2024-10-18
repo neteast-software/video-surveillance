@@ -76,9 +76,9 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  /* border-color: #646cff; */
-}
+// button:hover {
+/* border-color: #646cff; */
+// }
 /* button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -91,4 +91,11 @@ button:focus-visible {
 }
 .blue-gradient {
   background: linear-gradient(180deg, #f3f9fc 0%, rgba(245, 249, 255, 0) 100%);
+}
+.list-desc {
+  overflow: hidden;
+  display: -webkit-box; /* 将容器设为盒子模型 */
+  -webkit-line-clamp: 2; /* 限制显示两行 */
+  -webkit-box-orient: vertical; /* 垂直布局 */
+  text-overflow: ellipsis;
 }

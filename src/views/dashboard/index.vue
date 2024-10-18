@@ -4,20 +4,12 @@
   >
     <LeftAside class="z-1"></LeftAside>
     <RightAside class="z-1"></RightAside>
+    <equipDetails v-show="showDetails"></equipDetails>
     <div class="absolute top-0 left-0 w-full h-full z-0">
-      <CesiumTianditu
-        v-model:zoomLevel="zoomLevel"
-        v-model:show3D="show3D"
-        v-model:back-origin="backOrigin"
-      ></CesiumTianditu>
+      <CesiumTianditu></CesiumTianditu>
       <PointBubble></PointBubble>
       <Transition appear name="slideRight">
-        <MapControls
-          v-model:zoomLevel="zoomLevel"
-          v-model:show3D="show3D"
-          v-model:back-origin="backOrigin"
-          class="absolute right-7.5 bottom-7.5 z-1"
-        ></MapControls>
+        <MapControls class="absolute right-7.5 bottom-7.5 z-1"></MapControls>
       </Transition>
     </div>
   </div>
@@ -27,18 +19,24 @@
 import LeftAside from "./leftAside.vue";
 import RightAside from "./rightAside.vue";
 import CesiumTianditu from "@/components/map/CesiumTianditu.vue";
-import { ref } from "vue";
+import { onBeforeUnmount } from "vue";
 import PointBubble from "./pointBubble.vue";
 import MapControls from "@/components/map/mapControls.vue";
-
-const zoomLevel = ref(22000);
-const show3D = ref(false);
-const backOrigin = ref(false);
-
+import equipDetails from "@/components/other/equipDetails.vue";
+import { bubbleVisible } from "@/utils/map/mark";
+import { useMapInfoStore } from "@/stores/mapInfo";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
+const mapInfo = useMapInfoStore();
+const { showDetails } = storeToRefs(mapInfo);
 const deviceInfo = useDeviceInfoStore();
-const { curdeviceType, curDeviceStatus } = storeToRefs(deviceInfo);
+const { curdeviceListId } = storeToRefs(deviceInfo);
+
+onBeforeUnmount(() => {
+  curdeviceListId.value = 0;
+  bubbleVisible.value = false;
+  showDetails.value = false;
+});
 </script>
 
 <style scoped></style>

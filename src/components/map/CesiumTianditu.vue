@@ -22,16 +22,13 @@ import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 import { ClickToGetLocation } from "@/utils/map/ClickToGetLocation";
 import { addAllPath } from "@/utils/map/path";
+import { useMapInfoStore } from "@/stores/mapInfo";
 
+const mapInfo = useMapInfoStore();
+const { zoomLevel, show3D, backOrigin } = storeToRefs(mapInfo);
 const deviceInfo = useDeviceInfoStore();
 const { filteredDataList } = storeToRefs(deviceInfo);
 
-const props = defineProps({
-  zoomLevel: Number,
-  show3D: Boolean,
-  backOrigin: Boolean,
-});
-const emit = defineEmits(["update:zoomLevel", "update:backOrigin"]);
 const currentHeading = ref(0); // 当前的方位角
 const currentPitch = ref(-90); // 当前的俯仰角
 let viewer: Cesium.Viewer | null = null;
@@ -40,7 +37,7 @@ let viewer: Cesium.Viewer | null = null;
 //   url: "/model/tileset.json",
 // });
 
-const Cartesian = Cesium.Cartesian3.fromDegrees(119.6, 25.75, props.zoomLevel);
+const Cartesian = Cesium.Cartesian3.fromDegrees(119.6, 25.75, zoomLevel.value);
 
 function onZoomLevelChange() {
   if (viewer) {
@@ -85,7 +82,7 @@ onMounted(() => {
 
   viewer.camera.changed.addEventListener(onZoomLevelChange);
   viewer.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
-  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 25000; //最大缩放距离
+  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 30000; //最大缩放距离
   viewer.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
   // viewer.scene.primitives.add(tileset); //添加3D建筑物
   // tileset.show = props.show3D; //控制3D建筑物的显示
@@ -127,7 +124,7 @@ function onResize() {
 
 // 控制 3D 建筑物的显示
 watch(
-  () => props.show3D,
+  () => show3D.value,
   (newShow3D) => {
     if (viewer) {
       //将地图变为2D模式
@@ -138,7 +135,7 @@ watch(
   { immediate: true } // 确保组件加载时也同步显示状态
 );
 //回到原点
-function backOrigin() {
+function backToOrigin() {
   if (viewer) {
     viewer.camera.flyTo({
       destination: Cartesian, //初始位置
@@ -153,10 +150,11 @@ function backOrigin() {
   }
 }
 watch(
-  () => props.backOrigin,
+  () => backOrigin.value,
   () => {
-    emit("update:backOrigin", false);
-    backOrigin();
+    // emit("update:backOrigin", false);
+    backOrigin.value = false;
+    backToOrigin();
   }
 );
 

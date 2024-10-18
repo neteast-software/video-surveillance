@@ -55,6 +55,7 @@ export function calculateScreenPosition(
     viewer.scene,
     position
   );
+  console.log("screenPosition", screenPosition);
   return screenPosition ? [screenPosition.x, screenPosition.y] : [0, 0];
 }
 // 处理实体缩放
@@ -66,7 +67,7 @@ function scaleEntity(entity: any, scale: number) {
 export function setupClickHandler(viewer: Viewer) {
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 
-  handler.setInputAction((movement) => {
+  handler.setInputAction((movement: any) => {
     const pickedObject = viewer.scene.pick(movement.position);
     if (Cesium.defined(pickedObject) && pickedObject.id) {
       const entity = pickedObject.id;
@@ -75,7 +76,6 @@ export function setupClickHandler(viewer: Viewer) {
       if (selectEntity && selectEntity !== entity) {
         scaleEntity(selectEntity, 1);
       }
-
       if (entity && entity.position) {
         const position = entity.position.getValue(Cesium.JulianDate.now());
         bubblePosition.value = calculateScreenPosition(viewer, position);
