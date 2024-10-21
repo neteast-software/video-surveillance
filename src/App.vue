@@ -71,6 +71,18 @@ const themeOverrides: GlobalThemeOverrides = {
     textColorWarning: "#FF7648",
     colorWarning: "#FFF0D4",
   },
+  Button: {
+    borderHover: "1px solid #3563EF",
+    textColorHover: "#3563EF",
+    borderFocus: "1px solid #3563EF",
+    textColorFocus: "#3563EF",
+    borderPressed: "1px solid #3563EF",
+    textColorPressed: "#3563EF",
+  },
+  Popselect: {
+    extraTextColor: "#3563EF",
+    railColor: "#3563EF",
+  },
 
   // ...
 };

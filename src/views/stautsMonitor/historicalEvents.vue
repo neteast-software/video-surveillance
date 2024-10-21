@@ -18,10 +18,13 @@
     <div class="w-full h-1px bg-greyLine my-4"></div>
     <div>
       <header class="flex-y-center justify-between font-600">
-        <div class="flex-center gap-2">
-          2024年10月
-          <div class="i-icons:date w-4 h-4 text-greyText"></div>
-        </div>
+        <NDatePicker
+          :is-date-disabled="disablePreviousDate"
+          v-model:value="timestamp"
+          format="yyyy年MM月dd"
+          type="date"
+          style="width: 150px"
+        />
         <span class="cursor-pointer text-primary" @click="backToday = true"
           >今日</span
         >
@@ -29,46 +32,71 @@
       <Calendar
         :back-today="backToday"
         @back-today="backToday = $event"
+        v-model:timestamp="timestamp"
+        :events="events"
       ></Calendar>
     </div>
-    <div class="flex-col gap-2.5 flex-h-rest mt-2 overflow-auto">
-      <div
-        class="w-full rounded-1 py-3.5 px-3 lt-laptop-(py-3 px-2)"
-        :class="getClassByType(list.status)"
-        v-for="list in lists"
-      >
-        <div class="flex-center gap-2">
-          <img
-            src="@/assets/imgs/text/build.png"
-            class="w-20 h-16 lt-laptop-(w-18 h-14)"
-            alt=""
-          />
-          <div class="flex-w-rest overflow-hidden">
-            <div class="text-4 lt-laptop-(text-3.5) flex-y-center gap-1">
-              <div class="flex-(y-center w-rest) gap-1">
-                <div
-                  class="i-palette:alerts w-4 h-4"
-                  :class="`i-palette:${list.status}`"
-                ></div>
-                <div class="truncate flex-w-rest">{{ list.name }}</div>
+    <Transition appear name="slideBottom">
+      <div class="relative flex-h-rest">
+        <div
+          class="flex-col gap-2.5 h-full mt-2 overflow-auto transition"
+          v-if="filterLists.length > 0"
+        >
+          <div
+            class="w-full rounded-1 py-3.5 px-3 lt-laptop-(py-3 px-2)"
+            :class="getClassByType(list.status)"
+            v-for="list in filterLists"
+          >
+            <div class="flex-center gap-2">
+              <img
+                src="@/assets/imgs/text/build.png"
+                class="w-20 h-16 lt-laptop-(w-18 h-14)"
+                alt=""
+              />
+              <div class="flex-w-rest overflow-hidden">
+                <div class="text-4 lt-laptop-(text-3.5) flex-y-center gap-1">
+                  <div class="flex-(y-center w-rest) gap-1">
+                    <div
+                      class="i-palette:alerts w-4 h-4"
+                      :class="`i-palette:${list.status}`"
+                    ></div>
+                    <div class="truncate flex-w-rest">{{ list.name }}</div>
+                  </div>
+                  <span class="text-(3 greyText)">{{ list.time }}</span>
+                </div>
+                <div class="list-desc text-greyText lt-laptop-(text-3)">
+                  {{ list.desc }}
+                </div>
               </div>
-              <span class="text-(3 greyText)">13:43</span>
-            </div>
-            <div class="list-desc text-greyText lt-laptop-(text-3)">
-              {{ list.desc }}
             </div>
           </div>
         </div>
+        <div
+          class="absolute left-1/2 -translate-x-1/2 mt-12 flex-col flex-center transition"
+          v-else
+        >
+          <img
+            src="../../assets/imgs/defaultImg.png"
+            class="w-75 h-75"
+            alt=""
+          />
+          <span class="text-greyText -mt-6"> 暂无数据 </span>
+        </div>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
 import LineChart from "@/components/chart/LineChart.vue";
 import Calendar from "@/components/Calendar.vue";
-import { ref } from "vue";
-// import { getClassByType } from "@/utils/other/index";
+import { computed, ref } from "vue";
+import { NDatePicker } from "naive-ui";
+// import "v-calendar/style.css";
+// import { DatePicker } from "v-calendar";
+
+import { format } from "date-fns";
+const timestamp = ref(new Date().getTime()); // 当前时间戳
 
 const backToday = ref(false);
 const source = [
@@ -96,36 +124,77 @@ const selectData = ["全部", "监控", "安全帽"];
 const clickSelect = ref(0);
 const lists = ref([
   {
-    time: "2024年10月10日 13：43",
+    data: "2024-10-21",
+    time: "13:43",
     name: "这里显示的是事111件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "alerts",
   },
   {
-    time: "2024年10月10日 13：43",
+    data: "2024-10-21",
+    time: "13:43",
     name: "这里显示的是事件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "equip",
   },
   {
-    time: "2024年10月10日 13：43",
+    data: "2024-10-21",
+    time: "13:43",
     name: "这里显示的是事件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "noequip",
   },
   {
-    time: "2024年10月10日 13：43",
+    data: "2024-10-21",
+    time: "13:43",
     name: "这里显示的是事件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "noequip",
   },
   {
-    time: "2024年10月10日 13：43",
+    data: "2024-10-21",
+    time: "13:43",
+    name: "这里显示的是事件名称事件名称",
+    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
+    status: "noequip",
+  },
+  {
+    data: "2024-10-17",
+    time: "13:43",
+    name: "这里显示的是事件名称事件名称",
+    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
+    status: "noequip",
+  },
+  {
+    data: "2024-10-14",
+    time: "13:43",
     name: "这里显示的是事件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "noequip",
   },
 ]);
+
+const filterLists = computed(() => {
+  if (!lists.value) return [];
+  const date = format(new Date(timestamp.value), "yyyy-MM-dd");
+  return lists.value.filter((item) => item.data === date);
+});
+
+const events = computed(() => {
+  const addedEvents: Record<string, boolean> = {};
+  return lists.value.reduce<{ date: string; status: string }[]>((acc, item) => {
+    const key = `${item.data}-${item.status}`;
+    if (item.status && !addedEvents[key]) {
+      addedEvents[key] = true;
+      acc.push({ date: item.data, status: item.status });
+    }
+    return acc;
+  }, []);
+});
+
+const disablePreviousDate = (ts: number) => {
+  return ts > Date.now();
+};
 function getClassByType(status: string) {
   switch (status) {
     case "alerts":
@@ -146,6 +215,11 @@ function getClassByType(status: string) {
   text-overflow: ellipsis;
   white-space: nowrap; /* 单行文本 */
 }
-
-
+:deep(.n-input .n-input__border, .n-input .n-input__state-border),
+:deep(.n-input .n-input__state-border) {
+  display: none;
+}
+:deep(.n-input .n-input__input-el) {
+  font-size: 16px;
+}
 </style>

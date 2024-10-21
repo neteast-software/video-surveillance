@@ -1,23 +1,28 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-
+import { useMessage } from "naive-ui";
+const message = useMessage();
 interface Props {
   backToday?: boolean;
+  timestamp?: number;
+  events?: Array<{ date: string; status: string }>;
 }
 const props = withDefaults(defineProps<Props>(), {
   backToday: false,
 });
-const emits = defineEmits(["backToday"]);
+const emits = defineEmits(["backToday", "update:timestamp"]);
 
 watch(
   () => props.backToday,
-  () => {
-    goToToday();
+  (newVal, oldVal) => {
+    if (newVal && newVal !== oldVal) {
+      goToToday();
+    }
   }
 );
 
-// 初始化日期
 const currentDate = ref(new Date()); // 当前日期
+// 初始化日期
 const activeDate = ref(new Date().getDate());
 // 获取当前星期一的日期
 function getMonday(d: Date) {
@@ -37,11 +42,18 @@ function getCurrentWeek(date: Date) {
     day.setDate(monday.getDate() + i);
     week.push({
       day,
-      label: day.toISOString().split("T")[0].split("-")[2], // 获取日期的“天”
+      label: String(day.getDate()).padStart(2, "0"), // 确保 label 是两位数
       weekDay: ["日", "一", "二", "三", "四", "五", "六"][day.getDay()], // 获取日期的“星期”
     });
   }
   return week;
+}
+function clickActiveDay(day: { day: Date }) {
+  const today = new Date();
+  if (day.day > today) return message.warning("不能选择未来日期");
+  activeDate.value = day.day.getDate();
+  currentDate.value = day.day;
+  emits("update:timestamp", day.day.getTime());
 }
 
 const animatedElement = ref<HTMLElement>();
@@ -59,6 +71,7 @@ function moveCalendar(direction: "prev" | "next") {
 function goToToday() {
   const today = new Date();
   currentDate.value = today;
+  emits("update:timestamp", today.getTime());
   activeDate.value = today.getDate();
   currentWeek.value = getCurrentWeek(currentDate.value);
   if (animatedElement.value) {
@@ -66,6 +79,43 @@ function goToToday() {
   }
   emits("backToday", false);
 }
+// 更新当前日期和星期
+function updateActiveDateAndWeek(date: Date) {
+  activeDate.value = date.getDate();
+  // 判断新日期是否在当前显示周内
+  const mondayOfCurrentWeek = getMonday(currentDate.value);
+  const sundayOfCurrentWeek = new Date(mondayOfCurrentWeek);
+  sundayOfCurrentWeek.setDate(mondayOfCurrentWeek.getDate() + 6);
+
+  if (date < mondayOfCurrentWeek || date > sundayOfCurrentWeek) {
+    // 新日期不在当前周，切换到新周
+    currentDate.value = date;
+    currentWeek.value = getCurrentWeek(date);
+  }
+}
+
+watch(
+  () => props.timestamp,
+  (newTimestamp) => {
+    if (newTimestamp) {
+      const newDate = new Date(newTimestamp);
+      updateActiveDateAndWeek(newDate); // 更新 activeDate 和当前周
+    }
+  }
+);
+
+// 标记点计算：计算某天的事件数量
+function hasEvents(day: string) {
+  if (!props.events) return false;
+  return props.events.some((event) => event.date.split("-")[2] === day);
+}
+
+// 计算某一天的事件数量
+function getEvents(day: string) {
+  if (!props.events) return [];
+  return props.events.filter((event) => event.date.split("-")[2] === day);
+}
+
 // animate.css动画
 function animateCSS(
   element: HTMLElement,
@@ -94,29 +144,34 @@ function animateCSS(
       <div
         v-for="day in currentWeek"
         :key="day.label"
-        class="flex-(col y-center) bg-#F5F9FF cursor-pointer rounded-7.5 px-2.5 py-3 transition duration-500 hover:bg-primary/20"
-        :class="{ active: activeDate === day.day.getDate() }"
-        @click="activeDate = day.day.getDate()"
+        class="flex-(col y-center) bg-#F5F9FF cursor-pointer rounded-7.5 py-3 px-1.5 transition duration-500 hover:bg-primary/20"
+        @click="clickActiveDay(day)"
+        :class="{ 'bg-primary/20': activeDate === day.day.getDate() }"
       >
-        <div
-          class="text-greyText"
-          :class="{ 'text-white': activeDate === day.day.getDate() }"
-        >
+        <div class="text-greyText">
+          <!-- :class="{ 'text-white': activeDate === day.day.getDate() }" -->
           {{ day.weekDay }}
         </div>
         <div class="w-full h-1px bg-greyLine my-2 lt-laptop-(my-1)"></div>
-        <div class="text-5 font-700 rounded-full lt-laptop-(text-3.5)">
-          <!-- :class="{ 'bg-primary': activeDate === day.day.getDate() }" -->
+        <div
+          class="text-5 font-700 rounded-full lt-laptop-(text-3.5) w-8 flex-center lt-laptop-(w-6) transition"
+          :class="{ active: activeDate === day.day.getDate() }"
+        >
           {{ day.label }}
+        </div>
+        <div class="mt-2px flex gap-2px" v-if="hasEvents(day.label)">
+          <div
+            v-for="event in getEvents(day.label)"
+            :class="{
+              'bg-warning': event.status === 'alerts',
+              'bg-success': event.status === 'equip',
+              'bg-info': event.status === 'noequip',
+            }"
+            class="w-1 h-1 rounded-full"
+          ></div>
         </div>
       </div>
     </div>
-    <!-- <NFloatButton :left="-16" shape="circle" @click="moveCalendar('prev')">
-      <div class="i-common:small-arrow h-6 w-6 rotate-180 text-primary"></div>
-    </NFloatButton>
-    <NFloatButton :right="-16" shape="circle" @click="moveCalendar('next')">
-      <div class="i-common:small-arrow h-6 w-6 text-primary"></div>
-    </NFloatButton> -->
   </div>
 </template>
 

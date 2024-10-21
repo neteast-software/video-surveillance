@@ -37,6 +37,10 @@ let viewer: Cesium.Viewer | null = null;
 //   url: "/model/tileset.json",
 // });
 
+// const tileset = new Cesium.Cesium3DTileset({
+//   url: "/map/tileset.json",
+// });
+
 const Cartesian = Cesium.Cartesian3.fromDegrees(119.6, 25.75, zoomLevel.value);
 
 function onZoomLevelChange() {
