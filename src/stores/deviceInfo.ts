@@ -1,3 +1,4 @@
+import { time } from "console";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
@@ -29,6 +30,10 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     {
       id: 1,
       name: "设备地点名称",
+      project: "EPC-1北头岭隧道",
+      address: "福州市鼓楼区鼓东街道道山西路中段96号",
+      number: "001",
+      time: "2021-07-01",
       type: 1,
       status: 1,
       onlineTime: 12,
@@ -40,6 +45,10 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     {
       id: 2,
       name: "设备地点名称",
+      project: "EPC-1北头岭隧道",
+      address: "福州市鼓楼区鼓东街道道山西路中段96号",
+      number: "001",
+      time: "2021-07-01",
       type: 1,
       status: 2,
       onlineTime: 12,
@@ -51,6 +60,10 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     {
       id: 3,
       name: "设备地点名称",
+      project: "EPC-1北头岭隧道",
+      address: "福州市鼓楼区鼓东街道道山西路中段96号",
+      number: "001",
+      time: "2021-07-01",
       type: 1,
       status: 3,
       onlineTime: 12,
@@ -62,6 +75,10 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     {
       id: 4,
       name: "设备地点名称",
+      project: "EPC-1北头岭隧道",
+      address: "福州市鼓楼区鼓东街道道山西路中段96号",
+      number: "001",
+      time: "2021-07-01",
       type: 0,
       status: 0,
       onlineTime: 12,
@@ -73,17 +90,25 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     {
       id: 5,
       name: "设备地点名称",
+      project: "EPC-1北头岭隧道",
+      address: "福州市鼓楼区鼓东街道道山西路中段96号",
+      number: "001",
+      time: "2021-07-01",
       type: 2,
       status: 1,
       onlineTime: 12,
       resolution: "1920*1080",
       coding: "H.264",
-      position: [119.59308, 25.73191],
+      position: [119.58518, 25.70896],
       image: "/img/online-helmet.svg",
     },
     {
       id: 6,
       name: "设备地点名称",
+      project: "EPC-1北头岭隧道",
+      address: "福州市鼓楼区鼓东街道道山西路中段96号",
+      number: "001",
+      time: "2021-07-01",
       type: 2,
       status: 3,
       onlineTime: 12,
@@ -95,6 +120,10 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     {
       id: 7,
       name: "设备地点名称",
+      project: "EPC-1北头岭隧道",
+      address: "福州市鼓楼区鼓东街道道山西路中段96号",
+      number: "001",
+      time: "2021-07-01",
       type: 2,
       status: 2,
       onlineTime: 12,
@@ -106,6 +135,10 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     {
       id: 8,
       name: "设备地点名称",
+      project: "EPC-1北头岭隧道",
+      address: "福州市鼓楼区鼓东街道道山西路中段96号",
+      number: "001",
+      time: "2021-07-01",
       type: 0,
       status: 0,
       onlineTime: 12,
@@ -113,6 +146,13 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       coding: "H.264",
       position: [119.59251, 25.7262],
       image: "/img/key-projects.svg",
+    },
+    {
+      id: 9,
+      name: "项目部",
+      position: [119.59135, 25.73374],
+      image: "/img/project-dep.svg",
+      type: 0,
     },
   ]);
 

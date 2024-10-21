@@ -4,7 +4,7 @@
   >
     <LeftAside class="z-1"></LeftAside>
     <RightAside class="z-1"></RightAside>
-    <equipDetails v-show="showDetails"></equipDetails>
+    <equipDetails v-show="curDetailId !== 0"></equipDetails>
     <div class="absolute top-0 left-0 w-full h-full z-0">
       <CesiumTianditu></CesiumTianditu>
       <PointBubble></PointBubble>
@@ -28,14 +28,14 @@ import { useMapInfoStore } from "@/stores/mapInfo";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 const mapInfo = useMapInfoStore();
-const { showDetails } = storeToRefs(mapInfo);
+const { curDetailId } = storeToRefs(mapInfo);
 const deviceInfo = useDeviceInfoStore();
 const { curdeviceListId } = storeToRefs(deviceInfo);
 
 onBeforeUnmount(() => {
   curdeviceListId.value = 0;
   bubbleVisible.value = false;
-  showDetails.value = false;
+  curDetailId.value = 0;
 });
 </script>
 

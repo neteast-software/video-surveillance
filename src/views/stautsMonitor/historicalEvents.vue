@@ -25,7 +25,10 @@
           type="date"
           style="width: 150px"
         />
-        <span class="cursor-pointer text-primary" @click="backToday = true"
+        <span
+          class="cursor-pointer text-primary"
+          :class="{ 'text-primary/20': timestamp >= Date.now() }"
+          @click="backToday = true"
           >今日</span
         >
       </header>
@@ -71,17 +74,7 @@
             </div>
           </div>
         </div>
-        <div
-          class="absolute left-1/2 -translate-x-1/2 mt-12 flex-col flex-center transition"
-          v-else
-        >
-          <img
-            src="../../assets/imgs/defaultImg.png"
-            class="w-75 h-75"
-            alt=""
-          />
-          <span class="text-greyText -mt-6"> 暂无数据 </span>
-        </div>
+        <listEmpty v-else></listEmpty>
       </div>
     </Transition>
   </div>
@@ -90,6 +83,7 @@
 <script setup lang="ts">
 import LineChart from "@/components/chart/LineChart.vue";
 import Calendar from "@/components/Calendar.vue";
+import listEmpty from "@/components/other/listEmpty.vue";
 import { computed, ref } from "vue";
 import { NDatePicker } from "naive-ui";
 // import "v-calendar/style.css";

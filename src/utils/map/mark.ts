@@ -37,6 +37,20 @@ export function addDemoGraphic1(viewer: Viewer) {
     entities.push(entity);
     // entity.bounceState = false; // 初始状态为不弹跳
   });
+  //单独添加一个项目部
+  // viewer.entities.add({
+  //   name: "项目部",
+  //   id: "99",
+  //   position: Cesium.Cartesian3.fromDegrees(119.59135, 25.73374),
+  //   billboard: {
+  //     image: "/public/img/project-dep.svg",
+  //     scale: 1,
+  //     horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
+  //     verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+  //   },
+  //   // heightReference: Cesium.HeightReference.NONE, // 不随地形高度变化
+  // });
+  // entities.push(entity1);
 }
 export function removeAllEntities(viewer: Viewer) {
   entities.forEach((entity: any) => {
@@ -55,7 +69,6 @@ export function calculateScreenPosition(
     viewer.scene,
     position
   );
-  console.log("screenPosition", screenPosition);
   return screenPosition ? [screenPosition.x, screenPosition.y] : [0, 0];
 }
 // 处理实体缩放
@@ -112,7 +125,6 @@ watch(curdeviceListId, (newId) => {
       }
     }
   });
-
   // 当没有选中实体时，隐藏气泡
   if (!newId) {
     bubbleVisible.value = false; // 隐藏气泡

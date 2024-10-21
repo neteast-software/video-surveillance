@@ -76,22 +76,20 @@ onMounted(() => {
     shadows: false,
     imageryProvider: newtdtMap("cva"),
     terrainProvider: new Cesium.EllipsoidTerrainProvider(), //地形
-    // scene3DOnly: true, //只显示3D场景
-    sceneMode: Cesium.SceneMode.SCENE2D, //2d模式
+    scene3DOnly: false, //只显示3D场景
+    sceneMode: 2, //2d模式
     useBrowserRecommendedResolution: true, // 使用浏览器推荐的分辨率
     requestRenderMode: true,
   });
   viewer.scene.globe.maximumScreenSpaceError = 2; // 适当增加误差来提升性能
   viewer.scene.postProcessStages.fxaa.enabled = true; // 开启FXAA抗锯齿
 
-  viewer.camera.changed.addEventListener(onZoomLevelChange);
+  // viewer.camera.changed.addEventListener(onZoomLevelChange); //监听相机变化
   viewer.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
   viewer.scene.screenSpaceCameraController.maximumZoomDistance = 30000; //最大缩放距离
   viewer.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
   // viewer.scene.primitives.add(tileset); //添加3D建筑物
   // tileset.show = props.show3D; //控制3D建筑物的显示
-  //切换成2d模式
-  // viewer.scene.morphTo2D(0);
 
   ClickToGetLocation(viewer); //点击获取位置
   //相机
@@ -126,14 +124,14 @@ function onResize() {
   setAntialias(viewer);
 }
 
-// 控制 3D 建筑物的显示
+// 控制地图3D的显示
 watch(
   () => show3D.value,
   (newShow3D) => {
     if (viewer) {
-      //将地图变为2D模式
       newShow3D ? viewer.scene.morphTo3D(0) : viewer.scene.morphTo2D(0);
-      // tileset.show = newShow3D;
+      console.log("newShow3D", newShow3D);
+      if (!newShow3D) backToOrigin(); // 切换到2D时回到原点,防止3D视角下的位置偏移
     }
   },
   { immediate: true } // 确保组件加载时也同步显示状态
@@ -173,6 +171,7 @@ watch(filteredDataList, () => {
 // 更新相机视图
 const updateCamera = (zoomLevel: number, oldZoomLevel: number) => {
   if (!viewer) return;
+  console.log("updateCamera");
   const camera = viewer.camera;
   currentHeading.value = camera.heading;
   currentPitch.value = camera.pitch;

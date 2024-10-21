@@ -1,6 +1,6 @@
 <template>
   <div class="dataframe">
-    <h1>探头状态</h1>
+    <h1>安全帽状态</h1>
     <div class="flex gap-6 lt-laptop-(gap-3) mt-3">
       <div
         class="blue-gradient flex flex-y-center gap-9 px-7 p-6 w-full rounded-2 lt-laptop-(gap-4 px-3 py-2)"

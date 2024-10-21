@@ -99,17 +99,7 @@
                   </div>
                 </div>
               </NScrollbar>
-              <div
-                class="absolute left-1/2 -translate-x-1/2 mt-12 flex-col flex-center"
-                v-else
-              >
-                <img
-                  src="../../assets/imgs/defaultImg.png"
-                  class="w-75 h-75"
-                  alt=""
-                />
-                <span class="text-greyText -mt-6"> 暂无数据 </span>
-              </div>
+              <listEmpty v-else></listEmpty>
             </div>
           </n-tab-pane>
         </NTabs>
@@ -121,6 +111,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from "vue";
 import { NTag, NTabs, NTabPane, NScrollbar, ScrollbarInst } from "naive-ui";
+import listEmpty from "@/components/other/listEmpty.vue";
 import { options } from "./data";
 import { FilterStatus } from "@/utils/other/index";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";

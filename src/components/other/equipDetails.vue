@@ -5,9 +5,9 @@
       class="flex-col bg-white h-full w-24% min-w-102 lt-laptop-(min-w-92) py-7.5"
     >
       <header class="flex-between mb-6 px-7.5 lt-laptop-(px-5)">
-        <div class="text-5 font-600">设备详情</div>
+        <div class="text-5 font-600">设备详情{{ curDetailId }}</div>
         <div
-          @click="showDetails = false"
+          @click="curDetailId = 0"
           class="i-icons:close w-6 h-6 text-lightGrey cursor-pointer"
         ></div>
       </header>
@@ -99,11 +99,15 @@
           class="h-full"
         >
           <div class="fill-parent relative">
-            <NScrollbar ref="scrollbar" class="px-7.5 lt-laptop-(px-5)">
+            <NScrollbar
+              ref="scrollbar"
+              class="px-7.5 lt-laptop-(px-5)"
+              v-if="filterLists.length !== 0"
+            >
               <div
                 class="w-full rounded-1 py-4 px-3 lt-laptop-(py-3 px-2) mb-3"
                 :class="getClassByType(list.status)"
-                v-for="list in lists"
+                v-for="list in filterLists"
               >
                 <div class="flex-between mb-3 lt-laptop-(mb-2)">
                   <div class="flex-center gap-1">
@@ -132,16 +136,7 @@
                 </div>
               </div>
             </NScrollbar>
-            <!-- <div
-                class="absolute left-1/2 -translate-x-1/2 mt-12 flex-col flex-center"
-              >
-                <img
-                  src="../../assets/imgs/defaultImg.png"
-                  class="w-75 h-75"
-                  alt=""
-                />
-                <span class="text-greyText -mt-6"> 暂无数据 </span>
-              </div> -->
+            <listEmpty v-else></listEmpty>
           </div>
         </n-tab-pane>
       </NTabs>
@@ -153,13 +148,13 @@
 import { FilterStatus } from "@/utils/other/index";
 import { NTag, NTabs, NTabPane, NScrollbar, NSelect } from "naive-ui";
 import LineChart from "@/components/chart/LineChart.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 // import { getClassByType } from "@/utils/other/index";
 import { useMapInfoStore } from "@/stores/mapInfo";
 import { storeToRefs } from "pinia";
 import { onClickOutside } from "@vueuse/core";
 const mapInfo = useMapInfoStore();
-const { showDetails } = storeToRefs(mapInfo);
+const { curDetailId } = storeToRefs(mapInfo);
 const source = [
   [
     "flow",
@@ -187,7 +182,7 @@ const grid = ref({
   right: 0,
 });
 const selectlist = ref(); // 列表下拉框选中值
-const curEventType = ref(0);
+const curEventType = ref(0); // 当前事件类型
 const eventType = ref([
   {
     id: 0,
@@ -230,26 +225,35 @@ const lists = ref([
     name: "这里显示的是事111件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "alerts",
+    type: 1,
   },
   {
     time: "2024年10月10日 13：43",
     name: "这里显示的是事件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "equip",
+    type: 2,
   },
   {
     time: "2024年10月10日 13：43",
     name: "这里显示的是事件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "noequip",
+    type: 3,
   },
   {
     time: "2024年10月10日 13：43",
     name: "这里显示的是事件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "equip",
+    type: 2,
   },
 ]);
+const filterLists = computed(() => {
+  if (!lists.value) return [];
+  if (curEventType.value === 0) return lists.value;
+  return lists.value.filter((item) => item.type === curEventType.value);
+});
 
 function getClassByType(status: string) {
   switch (status) {

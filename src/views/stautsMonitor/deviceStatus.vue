@@ -63,7 +63,7 @@ import { LegendComponentOption } from "echarts";
 
 const deviceType = [
   { name: "全部", type: "all" },
-  { name: "探头", type: "probe" },
+  { name: "监控", type: "probe" },
   { name: "安全帽", type: "helmet" },
 ] as const;
 const selectType = ref("all");
