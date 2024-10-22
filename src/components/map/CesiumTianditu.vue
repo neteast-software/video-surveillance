@@ -27,8 +27,7 @@ import { useMapInfoStore } from "@/stores/mapInfo";
 const mapInfo = useMapInfoStore();
 const { zoomLevel, show3D, backOrigin } = storeToRefs(mapInfo);
 const deviceInfo = useDeviceInfoStore();
-const { filteredDataList } = storeToRefs(deviceInfo);
-
+const { filteredDataList, curdeviceListId } = storeToRefs(deviceInfo);
 const currentHeading = ref(0); // 当前的方位角
 const currentPitch = ref(-90); // 当前的俯仰角
 let viewer: Cesium.Viewer | null = null;
@@ -86,7 +85,7 @@ onMounted(() => {
 
   // viewer.camera.changed.addEventListener(onZoomLevelChange); //监听相机变化
   viewer.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
-  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 30000; //最大缩放距离
+  // viewer.scene.screenSpaceCameraController.maximumZoomDistance = 30000; //最大缩放距离
   viewer.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
   // viewer.scene.primitives.add(tileset); //添加3D建筑物
   // tileset.show = props.show3D; //控制3D建筑物的显示
@@ -163,7 +162,6 @@ watch(
 //更新标记点
 watch(filteredDataList, () => {
   if (!viewer) return;
-  console.log("filteredDataList", filteredDataList);
   removeAllEntities(viewer);
   addDemoGraphic1(viewer);
 });

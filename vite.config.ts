@@ -22,13 +22,14 @@ export default defineConfig({
   server: {
     port: 1234,
     proxy: {
-      "/api/rtc": {
-        target: "http://127.0.0.1:7979",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
+      // "/api/rtc": {
+      //   target: "http://127.0.0.1:7979",
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/api/, ""),
+      // },
       "/api": {
-        target: "http://220.250.19.58:13402/",
+        // target: "http://220.250.19.58:13402/",
+        target: "http://192.168.3.254:3889", //hj-dev
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

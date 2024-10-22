@@ -1,7 +1,7 @@
 <template>
   <NPopselect
     v-model:value="curDeviceStatus"
-    :options="DeviceStatus"
+    :options="deviceStatus"
     :render-label="renderLabel"
     trigger="hover"
     :show-checkmark="false"
@@ -29,7 +29,7 @@ import { computed, h, ref } from "vue";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 const deviceInfo = useDeviceInfoStore();
-const { DeviceStatus, curDeviceStatus } = storeToRefs(deviceInfo);
+const { deviceStatus, curDeviceStatus } = storeToRefs(deviceInfo);
 
 const selectState = ref(false);
 // 显示设备状态，拼接上“设备”关键字，除了“全部”
@@ -40,7 +40,7 @@ const displayDeviceStatus = computed(() => {
     return "设备状态";
   }
   // 查找 curDeviceStatus 对应的状态对象
-  const selectedStatus = DeviceStatus.value.find(
+  const selectedStatus = deviceStatus.value.find(
     (status) => status.value === curDeviceStatus.value
   );
   // 如果找不到对应的状态或是选择了 "全部" (id 为 0)，返回默认状态

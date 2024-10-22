@@ -6,10 +6,10 @@ import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 const deviceInfo = useDeviceInfoStore();
 const { filteredDataList, curdeviceListId } = storeToRefs(deviceInfo);
+const { getIconByTypeAndStatus } = deviceInfo;
 
 let entities: any = [];
 let selectEntity: any = null; // 正在选中的实体
-// let bounceInterval: any = null; // 弹跳动画的定时器
 
 export const bubblePosition = ref([0, 0]); // 弹窗位置（相对于屏幕）
 export const bubbleVisible = ref(false); // 弹窗是否显示
@@ -23,35 +23,33 @@ export function addDemoGraphic1(viewer: Viewer) {
       name: point.name,
       id: String(point.id),
       position: Cesium.Cartesian3.fromDegrees(
-        point.position[0],
-        point.position[1]
+        Number(point.lng),
+        Number(point.lat)
       ),
       billboard: {
-        image: point.image,
+        image: getIconByTypeAndStatus(point.type, point.status),
         scale: 1,
         horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
       },
-      // heightReference: Cesium.HeightReference.NONE, // 不随地形高度变化
     });
     entities.push(entity);
-    // entity.bounceState = false; // 初始状态为不弹跳
   });
-  //单独添加一个项目部
-  // viewer.entities.add({
-  //   name: "项目部",
-  //   id: "99",
-  //   position: Cesium.Cartesian3.fromDegrees(119.59135, 25.73374),
-  //   billboard: {
-  //     image: "/public/img/project-dep.svg",
-  //     scale: 1,
-  //     horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
-  //     verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-  //   },
-  //   // heightReference: Cesium.HeightReference.NONE, // 不随地形高度变化
-  // });
-  // entities.push(entity1);
 }
+//单独添加一个项目部
+// viewer.entities.add({
+//   name: "项目部",
+//   id: "99",
+//   position: Cesium.Cartesian3.fromDegrees(119.59135, 25.73374),
+//   billboard: {
+//     image: "/public/img/project-dep.svg",
+//     scale: 1,
+//     horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
+//     verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+//   },
+//   // heightReference: Cesium.HeightReference.NONE, // 不随地形高度变化
+// });
+// entities.push(entity1);
 export function removeAllEntities(viewer: Viewer) {
   entities.forEach((entity: any) => {
     viewer.entities.remove(entity);
@@ -114,7 +112,6 @@ export function setupClickHandler(viewer: Viewer) {
 watch(curdeviceListId, (newId) => {
   entities.forEach((entity: any) => {
     if (entity.id == newId) {
-      console.log("选中实体", entity);
       selectEntity = entity; // 更新选中实体
       scaleEntity(selectEntity, 1.1); // 缩放选中实体
       bubbleVisible.value = true; // 显示气泡
