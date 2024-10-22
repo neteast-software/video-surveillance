@@ -80,12 +80,13 @@ import {
   addSeconds,
 } from "date-fns";
 import { NSpin } from "naive-ui";
-import {
-  getServerWebRTC,
-  getRealtimeVideo,
-  getRecordVideo,
-  testRecordRatio,
-} from "@/utils/network/api/security";
+// import {
+//   getServerWebRTC,
+//   getRealtimeVideo,
+//   getRecordVideo,
+//   testRecordRatio,
+// } from "@/utils/network/api/security";
+import { getRealtimeVideo, getRecordVideo } from "@/utils/network/api/monitor";
 import {
   recordTimerKey,
   isReadyKey,
@@ -99,6 +100,7 @@ interface Props {
   controls?: boolean;
   clientID?: string;
   channelNum: number;
+  channelId: number;
 }
 const props = withDefaults(defineProps<Props>(), {
   clientID: uuidv4(),
@@ -218,9 +220,10 @@ async function negotiate(ts: number) {
   let data: any;
   try {
     if (isRecord.value) {
+      console.log("录制", startTime.value, endTime.value);
       data = await getRecordVideo(
         props.nvrId,
-        props.channelNum,
+        props.channelId,
         btoa(pc!.localDescription!.sdp),
         unref(startTime),
         unref(endTime),
@@ -228,6 +231,7 @@ async function negotiate(ts: number) {
         ts,
         scale.value
       );
+
       // data = await testRecordRatio(
       //     `${props.nvrId}-${props.channelId}`,
       //     'rtsp://admin:hk123456@112.5.140.146:554/Streaming/tracks/101?starttime=20240527t000000z&endtime=20240527t120000z',
@@ -239,7 +243,7 @@ async function negotiate(ts: number) {
     } else {
       data = await getRealtimeVideo(
         props.nvrId,
-        props.channelNum,
+        props.channelId,
         btoa(pc!.localDescription!.sdp)
       );
     }

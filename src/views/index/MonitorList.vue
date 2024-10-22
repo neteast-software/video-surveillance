@@ -8,6 +8,7 @@
           type="primary"
           class="absolute right-1.5 top-1/2 -translate-y-1/2 z-10"
           style="width: 52px; height: 26px"
+          @click="searchKeyword = keyword"
           >搜索</NButton
         >
         <NInput
@@ -149,11 +150,13 @@ import {
 import MonitorCard from "./MonitorCard.vue";
 
 import { computed, h, onMounted, ref, watch } from "vue";
-import {
-  getDevicesList,
-  NVRItem,
-  ChannelItem,
-} from "@/utils/network/api/security";
+// import {
+//   getDevicesList,
+//   NVRItem,
+//   ChannelItem,
+// } from "@/utils/network/api/security";
+import { getDevicesList } from "@/utils/network/api/monitor";
+import type { NVRItem, ChannelItem } from "@/utils/network/types/monitor";
 import { useEventBus } from "@vueuse/core";
 import { pickMonitorKey } from "./helper";
 import { MonitorItem } from "@/utils/network/types/security";
@@ -198,7 +201,9 @@ watch(
 const options = ref<SelectOption[]>([]);
 const labelOptions = ref<SelectOption[]>([]);
 const filter = ref<number | string>("");
+const searchKeyword = ref<string>("");
 const keyword = ref<string>("");
+
 const status = ref<number | string>("");
 const statusOptions = ref<SelectOption[]>([
   { label: "在线", value: MonitorStatus.ONLINE },
@@ -228,7 +233,7 @@ const filteredDeviceList = computed(() => {
             (selectLabels.length
               ? haveCommonLabel(selectLabels, ch.labels || [])
               : true) &&
-            ch.channelName.includes(keyword.value)
+            ch.channelName.includes(searchKeyword.value)
           );
         }),
       };

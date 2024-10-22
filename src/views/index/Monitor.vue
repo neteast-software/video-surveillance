@@ -11,6 +11,7 @@
             :clientID="id"
             :nvrId="nvrId"
             :channel-num="channelNum"
+            :channel-id="channelId"
             @set-preset="setPreset(nvrId, channelNum)"
             @to-preset="gotoPresetPoint(nvrId, channelNum)"
             @clear-preset="clearPreset(nvrId, channelNum)"
@@ -107,6 +108,7 @@ import {
   getPresetPoint,
   clearPresetPoint,
 } from "@/utils/network/api/security";
+// import { getPresetPoint } from "@/utils/network/api/monitor";
 import ControlButton from "@/components/video/ControlButton.vue";
 import { useDialogAsync } from "@/components/dialog";
 import { translate, visualization } from "@/assets/icons";
@@ -118,6 +120,7 @@ interface Props {
   nvrId: number;
   nvrName: string;
   chName: string;
+  channelId: number;
   controls?: boolean;
   isFullscreen?: boolean;
   channelNum: number;
@@ -131,6 +134,7 @@ provide("havePreset", havePreset);
 async function initData() {
   if (!props.nvrId) return;
   const res = await getPresetPoint(props.nvrId, props.channelNum);
+  // const res = await getPresetPoint(props.nvrId, props.channelId);
   havePreset.value = !!res.data?.preset;
 }
 onMounted(initData);
