@@ -1,18 +1,17 @@
 <template>
   <div class="text-basic">
-    <div class="button hover:scale-106 mb-3" @click="show3D = !show3D">
+    <div class="button hover:scale-106" @click="toggleBaseMapStyle">
+      <div class="i-icons:refresh icon" :class="{ rotate: isRotating }"></div>
+    </div>
+    <div class="button hover:scale-106 my-3" @click="show3D = !show3D">
       {{ show3D ? "2D" : "3D" }}
     </div>
-    <!-- <div class="button hover:scale-106">
-      <div class="i-icons:settings icon"></div>
-    </div> -->
     <div class="button my-3 hover:scale-106" @click="backOrigin = true">
       <div class="i-icons:backorigin icon"></div>
     </div>
     <div class="button flex-(col center) gap-1">
       <div class="i-icons:add icon" @click="increaseZoom"></div>
       <!-- :tooltip="false" -->
-
       <NSlider
         :value="localZoomLevel"
         reverse
@@ -39,8 +38,8 @@ import { useMapInfoStore } from "@/stores/mapInfo";
 import { storeToRefs } from "pinia";
 
 const mapInfo = useMapInfoStore();
-const { zoomLevel, show3D, backOrigin } = storeToRefs(mapInfo);
-
+const { zoomLevel, show3D, backOrigin, curBaseMapStyle } = storeToRefs(mapInfo);
+const isRotating = ref(false);
 //倍数
 const Level = 100;
 
@@ -53,11 +52,13 @@ const zoomUpdateBus = useEventBus(zoomUpdateKey);
 zoomUpdateBus.on((zoom) => {
   localZoomLevel.value = zoom / Level;
 });
+//放大
 function increaseZoom() {
   const oldZoom = localZoomLevel.value;
   localZoomLevel.value = Math.max(minimumZoom, localZoomLevel.value - step);
   zoomBus.emit([localZoomLevel.value * Level, oldZoom * Level]);
 }
+//缩小
 function zoomOut() {
   const oldZoom = localZoomLevel.value;
   localZoomLevel.value = Math.min(maximumZoom, localZoomLevel.value + step);
@@ -72,6 +73,15 @@ onBeforeUnmount(() => {
   zoomBus.reset();
   zoomUpdateBus.reset();
 });
+
+function toggleBaseMapStyle() {
+  isRotating.value = true;
+  curBaseMapStyle.value = !curBaseMapStyle.value;
+  // 重置旋转状态;
+  setTimeout(() => {
+    isRotating.value = false;
+  }, 500); // 动画持续时间与 CSS 中的动画时间一致
+}
 </script>
 
 <style scoped>
@@ -85,5 +95,17 @@ onBeforeUnmount(() => {
 .icon {
   width: 24px;
   height: 24px;
+}
+.rotate {
+  animation: rotate 0.3s ease-in-out; /* 设置旋转动画 */
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
 }
 </style>

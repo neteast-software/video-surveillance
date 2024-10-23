@@ -13,19 +13,21 @@ import {
   removeAllEntities,
   setupClickHandler,
   updateBubblePosition,
+  updatePointStatus,
 } from "@/utils/map/mark";
 import { setAntialias, updateBuildingVisibility } from "@/utils/map/index";
 import { useEventBus } from "@vueuse/core";
-import { zoomKey, zoomUpdateKey } from "@/config/eventBus";
+import { zoomKey, zoomUpdateKey, flyToPositionKey } from "@/config/eventBus";
 import CesiumNavigation from "cesium-navigation-es6";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 import { ClickToGetLocation } from "@/utils/map/ClickToGetLocation";
 import { addAllPath } from "@/utils/map/path";
 import { useMapInfoStore } from "@/stores/mapInfo";
+import { modifyMap } from "@/utils/map/modify";
 
 const mapInfo = useMapInfoStore();
-const { zoomLevel, show3D, backOrigin } = storeToRefs(mapInfo);
+const { zoomLevel, show3D, backOrigin, curBaseMapStyle } = storeToRefs(mapInfo);
 const deviceInfo = useDeviceInfoStore();
 const { filteredDataList, curdeviceListId } = storeToRefs(deviceInfo);
 const currentHeading = ref(0); // 当前的方位角
@@ -85,6 +87,7 @@ onMounted(() => {
 
   // viewer.camera.changed.addEventListener(onZoomLevelChange); //监听相机变化
   viewer.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
+  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 100000; //最大缩放距离
   // viewer.scene.screenSpaceCameraController.maximumZoomDistance = 30000; //最大缩放距离
   viewer.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
   // viewer.scene.primitives.add(tileset); //添加3D建筑物
@@ -166,10 +169,39 @@ watch(filteredDataList, () => {
   addDemoGraphic1(viewer);
 });
 
+//选中列表项时更新标记点
+const flyToPositionBus = useEventBus(flyToPositionKey);
+flyToPositionBus.on(() => {
+  if (!viewer) return;
+  updatePointStatus(viewer, curdeviceListId.value);
+});
+//点击修改底图
+watch(
+  () => curBaseMapStyle.value,
+  () => {
+    console.log("curBaseMapStyle", curBaseMapStyle);
+    if (!viewer) return;
+    if (!curBaseMapStyle.value) {
+      modifyMap(viewer, {
+        filterRGB: [66, 70, 75],
+        brightness: 0.5,
+        contrast: 1,
+        gamma: 0.3,
+        hue: 0,
+      });
+    } else {
+      // viewer.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
+      modifyMap(viewer, {
+        filterRGB: [],
+        brightness: 1,
+      });
+    }
+  }
+);
+
 // 更新相机视图
 const updateCamera = (zoomLevel: number, oldZoomLevel: number) => {
   if (!viewer) return;
-  console.log("updateCamera");
   const camera = viewer.camera;
   currentHeading.value = camera.heading;
   currentPitch.value = camera.pitch;

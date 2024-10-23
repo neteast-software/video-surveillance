@@ -14,7 +14,7 @@
               <div
                 class="text-6 font-700 leading-7.5 mt-1 overflow-hidden lt-laptop-(text-6)"
               >
-                {{ option.value }}
+                {{ option.value || 0 }}
               </div>
             </div>
           </div>
@@ -45,68 +45,7 @@
             :tab="option.label"
             class="h-full"
           >
-            <div class="fill-parent relative">
-              <NScrollbar
-                ref="scrollbar"
-                class="px-7.5 lt-laptop-(px-5)"
-                v-if="filteredDataList.length !== 0"
-              >
-                <div
-                  v-for="data in filteredDataList"
-                  :id="String(data.id)"
-                  class="bg-primaryLightBg rounded-1 p-5 flex gap-4 mb-5 transition duration-300 border-(2 white/0 solid) lt-laptop-(p-3)"
-                  @click="curdeviceListId = data.id"
-                  :class="{ active: curdeviceListId == data.id }"
-                  ref="deviceList"
-                >
-                  <img
-                    src="../../assets/imgs/text/listImg.png"
-                    class="w-22 h-22 rounded-1 lt-laptop-(w-20 h-20)"
-                    alt=""
-                  />
-                  <div class="flex-w-rest flex-col justify-between">
-                    <div class="flex-between">
-                      <div class="text-4 text-basic truncate flex-w-rest">
-                        {{ data.name }}
-                      </div>
-                      <span class="text-lightGrey">{{ data.compression }}</span>
-                    </div>
-                    <div class="flex-between text-greyText h-11">
-                      <div class="flex-col flex-center">
-                        <div class="text-(basic 4) font-700 flex-center">
-                          {{ data.durationOnline }}
-                        </div>
-                        在线时长
-                      </div>
-                      <div class="flex-col flex-center">
-                        <div
-                          class="text-(basic 4) font-700 flex-center lt-laptop-(text-4)"
-                        >
-                          {{ data.resolution }}
-                        </div>
-                        分辨率
-                      </div>
-                      <div class="flex-(col center) gap-2">
-                        <NTag
-                          :bordered="false"
-                          size="small"
-                          :type="FilterStatus(data.status!)"
-                        >
-                          {{
-                            deviceStatus.find(
-                              (item) => item.value === data.status
-                            )?.label
-                          }}
-                        </NTag>
-
-                        设备状态
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </NScrollbar>
-              <listEmpty v-else></listEmpty>
-            </div>
+            <deviceList></deviceList>
           </n-tab-pane>
         </NTabs>
       </div>
@@ -116,25 +55,19 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import { NTag, NTabs, NTabPane, NScrollbar } from "naive-ui";
-import listEmpty from "@/components/other/listEmpty.vue";
+import { NTabs, NTabPane } from "naive-ui";
+import deviceList from "./deviceList.vue";
 import totelIcon from "@/assets/svgs/total.svg";
 import onlineIcon from "@/assets/svgs/online.svg";
 import exceptionIcon from "@/assets/svgs/abnormal.svg";
 import OfflineIcon from "@/assets/svgs/Offline.svg";
 // import { options } from "./data";
-import { FilterStatus } from "@/utils/other/index";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 import { getOnlineStatistics } from "@/utils/network/api/dashboard";
+
 const deviceInfo = useDeviceInfoStore();
-const {
-  deviceType,
-  curdeviceType,
-  curdeviceListId,
-  filteredDataList,
-  deviceStatus,
-} = storeToRefs(deviceInfo);
+const { deviceType, curdeviceType } = storeToRefs(deviceInfo);
 const { initAllDevices } = deviceInfo;
 
 const OnlineStatistics = ref<any>(null);
@@ -171,24 +104,6 @@ const options = computed(() => {
     },
   ];
 });
-
-// const scrollbar = ref<ScrollbarInst | null>(null);
-// // 监听 curdeviceListId 的变化并滚动到对应项
-// watch(curdeviceListId, async (newId) => {
-//   await scrollbarTo(String(newId));
-// });
-
-// async function scrollbarTo(newId: string) {
-//   // const { value: scrollbarInst } = scrollbar;
-//   // const element = document.getElementById(newId); // 获取对应的设备元素
-//   if (scrollbar.value) {
-//     console.log("滚动到", scrollbar.value);
-//     scrollbar.value.scrollTo({
-//       top: 500, // 适当偏移
-//       behavior: "smooth",
-//     });
-//   }
-// }
 </script>
 
 <style scoped>
@@ -201,10 +116,7 @@ const options = computed(() => {
 :deep(.n-tabs .n-tabs-tab-pad) {
   @apply lt-laptop-(w-6);
 }
-.active {
-  /* background: linear-gradient(0deg, #e3eeff, #e3eeff), #f5f9ff; */
-  border: 2px solid #3563ef;
-}
+
 :deep(.n-tabs-pane-wrapper) {
   @apply h-full;
 }

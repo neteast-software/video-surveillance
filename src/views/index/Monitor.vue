@@ -137,7 +137,7 @@ async function initData() {
   // const res = await getPresetPoint(props.nvrId, props.channelId);
   havePreset.value = !!res.data?.preset;
 }
-onMounted(initData);
+// onMounted(initData);
 const isH264 = ref(true);
 async function getCodec() {
   if (!props.nvrId) return;

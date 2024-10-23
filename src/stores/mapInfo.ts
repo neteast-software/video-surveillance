@@ -7,6 +7,7 @@ export const useMapInfoStore = defineStore("mapInfo", () => {
   const show3D = ref(false); // 是否显示3D
   const backOrigin = ref(false); // 是否返回原点
   const curDetailId = ref(0); // 当前详情id
+  const curBaseMapStyle = ref(true); // 当前底图样式
 
   return {
     // showDetails,
@@ -14,5 +15,6 @@ export const useMapInfoStore = defineStore("mapInfo", () => {
     zoomLevel,
     show3D,
     backOrigin,
+    curBaseMapStyle,
   };
 });

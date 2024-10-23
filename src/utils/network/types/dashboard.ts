@@ -13,4 +13,5 @@ export interface AllDevices {
   alarmInfo: string; // 报警信息
   responsible: string; // 负责人
   type: number; // 类型
+  time?: string; // 时间
 }

@@ -26,13 +26,14 @@
         <div class="flex gap-2.5">
           <div class="i-icons:position w-5 h-5 text-greyText mt-1"></div>
           <div>
-            <div class="text-4.5">{{ curData.project }}</div>
+            <div class="text-4.5">{{ curData.manufacturer }}</div>
             <span class="text-lightGrey">{{ curData.address }}</span>
           </div>
         </div>
         <div class="relative">
-          <div class="my-4">设备编号: {{ curData.number }}</div>
-          <div>预警时间: {{ curData.time }}</div>
+          <div class="my-4">设备编号: {{ curData.serialNo }}</div>
+          <div>负责人: {{ curData.responsible }}</div>
+          <!-- <div>预警时间: {{ curData.time }}</div> -->
           <img
             src="../../assets/imgs/cardImg.png"
             alt=""
@@ -157,11 +158,6 @@ function navigateToFullscreenPage() {
 }
 //筛选dataList中对应curdeviceListId的数据
 const curData = computed(() => {
-  console.log(
-    "sx",
-    dataList.value,
-    dataList.value.filter((item) => item.id == curdeviceListId.value)
-  );
   return dataList.value.filter((item) => item.id == curdeviceListId.value)[0];
 });
 

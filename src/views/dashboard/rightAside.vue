@@ -32,22 +32,13 @@ const deviceInfo = useDeviceInfoStore();
 const { deviceStatus, curDeviceStatus } = storeToRefs(deviceInfo);
 
 const selectState = ref(false);
-// 显示设备状态，拼接上“设备”关键字，除了“全部”
 const displayDeviceStatus = computed(() => {
-  // 打印当前状态的值，方便调试
-  console.log(curDeviceStatus.value);
-  if (curDeviceStatus.value === undefined || curDeviceStatus.value === null) {
+  if (curDeviceStatus.value === undefined || curDeviceStatus.value === null)
     return "设备状态";
-  }
-  // 查找 curDeviceStatus 对应的状态对象
   const selectedStatus = deviceStatus.value.find(
     (status) => status.value === curDeviceStatus.value
   );
-  // 如果找不到对应的状态或是选择了 "全部" (id 为 0)，返回默认状态
-  if (!selectedStatus || curDeviceStatus.value === 0) {
-    return "全部";
-  }
-  // 返回选中状态的 label，并拼接 "设备"
+  if (!selectedStatus || curDeviceStatus.value === 0) return "全部";
   return selectedStatus.label + "设备";
 });
 
@@ -69,7 +60,7 @@ const renderLabel: SelectRenderLabel = (status) => {
       ]),
       h(NCheckbox, {
         class: "w-4 h-4 ",
-        checked: status.value === curDeviceStatus.value, // 如果当前选项的值等于 selectValue，则选中
+        checked: status.value === curDeviceStatus.value, // 是否选中
       }),
     ]
   );

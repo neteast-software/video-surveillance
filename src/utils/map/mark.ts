@@ -4,6 +4,9 @@ import Viewer from "cesium/Source/Widgets/Viewer/Viewer";
 import { ref, watch } from "vue";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
+import { useEventBus } from "@vueuse/core";
+import { scrollToItemKey } from "@/config/eventBus";
+
 const deviceInfo = useDeviceInfoStore();
 const { filteredDataList, curdeviceListId } = storeToRefs(deviceInfo);
 const { getIconByTypeAndStatus } = deviceInfo;
@@ -75,6 +78,7 @@ function scaleEntity(entity: any, scale: number) {
     entity.billboard.scale = scale;
   }
 }
+const scrollToItemBus = useEventBus(scrollToItemKey);
 export function setupClickHandler(viewer: Viewer) {
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 
@@ -82,7 +86,6 @@ export function setupClickHandler(viewer: Viewer) {
     const pickedObject = viewer.scene.pick(movement.position);
     if (Cesium.defined(pickedObject) && pickedObject.id) {
       const entity = pickedObject.id;
-
       // 恢复上一个选中实体的缩放
       if (selectEntity && selectEntity !== entity) {
         scaleEntity(selectEntity, 1);
@@ -95,6 +98,7 @@ export function setupClickHandler(viewer: Viewer) {
         // 更新当前选中的实体并缩放
         selectEntity = entity;
         scaleEntity(selectEntity, 1.1);
+        scrollToItemBus.emit(curdeviceListId.value);
       }
     } else {
       // 如果没有选中实体，则恢复之前的实体状态
@@ -109,12 +113,13 @@ export function setupClickHandler(viewer: Viewer) {
 }
 
 // 监听设备列表 ID 的变化并处理选中状态
-watch(curdeviceListId, (newId) => {
+export function updatePointStatus(viewer: Viewer, newId: number) {
   entities.forEach((entity: any) => {
     if (entity.id == newId) {
       selectEntity = entity; // 更新选中实体
       scaleEntity(selectEntity, 1.1); // 缩放选中实体
       bubbleVisible.value = true; // 显示气泡
+      flyToPosition(viewer); // 飞到选中实体位置
     } else {
       // 恢复未选中实体的缩放
       if (entity.billboard) {
@@ -126,12 +131,39 @@ watch(curdeviceListId, (newId) => {
   if (!newId) {
     bubbleVisible.value = false; // 隐藏气泡
   }
-});
+}
+
+//更新标记点变化
+export function flyToPosition(viewer: Viewer) {
+  if (!selectEntity) return;
+  const position = selectEntity.position.getValue(Cesium.JulianDate.now());
+  // 将 Cartesian3 转换为 Cartographic 以获取经纬度和高度
+  const cartographic = Cesium.Cartographic.fromCartesian(position);
+  const longitude = Cesium.Math.toDegrees(cartographic.longitude);
+  const latitude = Cesium.Math.toDegrees(cartographic.latitude);
+  const height = cartographic.height; // 获取当前高度
+  const adjustedHeight = height + 10000;
+  viewer.camera.flyTo({
+    destination: Cesium.Cartesian3.fromDegrees(
+      longitude,
+      latitude + 0.005,
+      adjustedHeight
+    ),
+    orientation: {
+      //初始方向
+      heading: Cesium.Math.toRadians(0),
+      pitch: Cesium.Math.toRadians(-90),
+      roll: Cesium.Math.toRadians(0),
+    },
+    duration: 1.0, // 飞行持续时间，单位为秒
+  });
+}
 
 // 地图移动时更新 PointBubble 的位置
 export function updateBubblePosition(viewer: Cesium.Viewer) {
   if (!selectEntity) return;
   const position = selectEntity.position.getValue(Cesium.JulianDate.now());
+  // console.log("updateBubblePosition", position);
   const screenPosition = calculateScreenPosition(viewer, position);
   if (screenPosition) {
     bubblePosition.value = screenPosition;
