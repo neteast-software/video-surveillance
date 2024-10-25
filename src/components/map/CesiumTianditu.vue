@@ -33,15 +33,14 @@ const { filteredDataList, curdeviceListId } = storeToRefs(deviceInfo);
 const currentHeading = ref(0); // 当前的方位角
 const currentPitch = ref(-90); // 当前的俯仰角
 let viewer: Cesium.Viewer | null = null;
-// // 3D建筑物
-// const tileset = new Cesium.Cesium3DTileset({
-//   url: "/model/tileset.json",
-// });
+// 3D建筑物
+const tileset = new Cesium.Cesium3DTileset({
+  url: "/model/tileset.json",
+});
 
 // const tileset = new Cesium.Cesium3DTileset({
-//   url: "/map/tileset.json",
+//   url: "/model1/G228.geojson",
 // });
-
 const Cartesian = Cesium.Cartesian3.fromDegrees(119.6, 25.75, zoomLevel.value);
 
 function onZoomLevelChange() {
@@ -86,12 +85,36 @@ onMounted(() => {
   viewer.scene.postProcessStages.fxaa.enabled = true; // 开启FXAA抗锯齿
 
   // viewer.camera.changed.addEventListener(onZoomLevelChange); //监听相机变化
-  viewer.imageryLayers.addImageryProvider(newtdtMap("vec"), 0);
-  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 100000; //最大缩放距离
+  viewer.imageryLayers.addImageryProvider(newtdtMap("vec"), 1);
+  // viewer.imageryLayers.addImageryProvider(newtdtMap("cva"), 2);
   // viewer.scene.screenSpaceCameraController.maximumZoomDistance = 30000; //最大缩放距离
   viewer.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
   // viewer.scene.primitives.add(tileset); //添加3D建筑物
   // tileset.show = props.show3D; //控制3D建筑物的显示
+
+  // const cartographic = Cesium.Cartographic.fromCartesian(
+  //   tileset.boundingSphere.center
+  // );
+  // const surface = Cesium.Cartesian3.fromRadians(
+  //   cartographic.longitude, //经度
+  //   cartographic.latitude, //纬度
+  //   0.0 //高度
+  // );
+  // const offset = Cesium.Cartesian3.fromRadians(119.31408, 26.0538, 0);
+  // const translation = Cesium.Cartesian3.subtract(
+  //   offset, //根据中心点坐标和height值计算出的新的坐标点
+  //   surface, //根据中心点坐标计算出的地表坐标点
+  //   new Cesium.Cartesian3()
+  // );
+  // tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
+
+  // const newPosition = Cesium.Cartesian3.fromDegrees(119.31408, 26.0538, 0);
+
+  // // // 获取变换矩阵，并将模型平移到新位置
+  // const modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(newPosition);
+  // // Cesium.Matrix4.multiplyByUniformScale(modelMatrix, 1, modelMatrix);
+  // tileset.modelMatrix = modelMatrix;
+  // // tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
 
   ClickToGetLocation(viewer); //点击获取位置
   //相机
@@ -104,12 +127,12 @@ onMounted(() => {
       roll: Cesium.Math.toRadians(0),
     },
   });
-  addDemoGraphic1(viewer); //添加标记
-  addAllPath(viewer); // 添加轨迹路线
-  setupClickHandler(viewer); //点击事件
+  // addDemoGraphic1(viewer); //添加标记
+  // addAllPath(viewer); // 添加轨迹路线
+  // setupClickHandler(viewer); //点击事件
 
   viewer.scene.camera.changed.addEventListener(updateBuilding); //更新建筑物
-  setAntialias(viewer); //抗锯齿
+  // setAntialias(viewer); //抗锯齿
   // viewer.scene.postRender.addEventListener(updateBubble); //更新气泡位置
   viewer.scene.preRender.addEventListener(updateBubble);
 
@@ -120,7 +143,41 @@ onMounted(() => {
     enableDistanceLegend: true, // 启用比例尺
     enableCompassOuterRing: false, // 启用外环指南针
   });
+
+  //修改底图样式
+  // modifyMap(viewer, {
+  // filterRGB: [255, 255, 255], //灰
+  // filterRGB: [39, 48, 78], //蓝黑
+  // filterRGB: [25, 27, 34], //黑
+  // filterRGB: [25, 25, 112], //蓝
+  // brightness: 6,
+  // contrast: 0.1,
+  // gamma: 6,
+  // hue: 0,
+  // alpha: 0,
+  // });
 });
+
+// var heightOffset = 20.0;
+// var boundingSphere = tileset.boundingSphere;
+// var cartographic = Cesium.Cartographic.fromCartesian(boundingSphere.center);
+// console.log("surface");
+// var surface = Cesium.Cartesian3.fromRadians(
+//   cartographic.longitude,
+//   cartographic.latitude,
+//   0.0
+// );
+// var offset = Cesium.Cartesian3.fromRadians(
+//   cartographic.longitude,
+//   cartographic.latitude,
+//   heightOffset
+// );
+// var translation = Cesium.Cartesian3.subtract(
+//   offset,
+//   surface,
+//   new Cesium.Cartesian3()
+// );
+// tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
 
 function onResize() {
   setAntialias(viewer);

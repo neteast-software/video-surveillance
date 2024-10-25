@@ -3,7 +3,7 @@ export interface AllDevices {
   name: string;
   durationOnline: number; // 在线时长
   resolution: string; // 分辨率
-  status: number; // 状态
+  status: string; // 状态
   manufacturer: string; // 制造商
   compression: string; // 压缩
   lng: string;

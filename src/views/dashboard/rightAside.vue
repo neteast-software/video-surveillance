@@ -38,7 +38,7 @@ const displayDeviceStatus = computed(() => {
   const selectedStatus = deviceStatus.value.find(
     (status) => status.value === curDeviceStatus.value
   );
-  if (!selectedStatus || curDeviceStatus.value === 0) return "全部";
+  if (!selectedStatus || curDeviceStatus.value === "全部") return "全部";
   return selectedStatus.label + "设备";
 });
 

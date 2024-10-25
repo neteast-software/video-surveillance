@@ -1,7 +1,7 @@
 <template>
   <div class="fill-parent relative">
     <NScrollbar
-      v-if="filteredDataList"
+      v-if="filteredDataList.length > 0"
       ref="scrollbar"
       class="px-7.5 lt-laptop-(px-5)"
     >
@@ -45,10 +45,9 @@
                 size="small"
                 :type="FilterStatus(data.status!)"
               >
-                {{
-                  deviceStatus.find((item) => item.value === data.status)?.label
-                }}
+                {{ data.status }}
               </NTag>
+              <!-- deviceStatus.find((item) => item.value ===data.status)?.label -->
 
               设备状态
             </div>

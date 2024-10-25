@@ -1,28 +1,32 @@
 import * as Cesium from "cesium";
 import { tdtKey, subdomains, tdtUrl } from "./env";
+import { vi } from "date-fns/locale";
 // var scale = new T.Control.Scale();
 //加载天地图
 export const newtdtMap = (layer: string) => {
   return new Cesium.WebMapTileServiceImageryProvider({
     url: `${tdtUrl}${layer}_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=${layer}&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=${tdtKey}`,
     subdomains: subdomains,
-    layer: "tdtVecBasicLayer",
+    layer: "tdtVecDarkLayer",
+    // layer: "tdtVecBasicLayer",
     style: "light",
     format: "image/jpeg",
     tileMatrixSetID: "GoogleMapsCompatible",
     maximumLevel: 18,
     minimumLevel: 0,
+    rectangle: Cesium.Rectangle.fromDegrees(73.0, 18.0, 135.0, 54.0),
   });
 };
 
 //改变底图颜色
 export function modifyMap(viewer: any, options: any) {
-  const baseLayer = viewer.imageryLayers.get(0);
+  const baseLayer = viewer.imageryLayers.get(1);
   baseLayer.brightness = options.brightness || 1; //亮度
   baseLayer.contrast = options.contrast || 1; //对比度
   baseLayer.gamma = options.gamma || 1; //伽马
   baseLayer.hue = options.hue || 0; //色调
   baseLayer.saturation = options.saturation || 1; //饱和度
+  baseLayer.alpha = options.alpha || 1; //透明度
   const baseFragShader =
     viewer.scene.globe._surfaceShaderSet.baseFragmentShaderSource.sources; //获取地球表面着色器
   for (let i = 0; i < baseFragShader.length; i++) {

@@ -4,7 +4,7 @@ import { getAllDevices } from "@/utils/network/api/dashboard";
 import { AllDevices } from "@/utils/network/types/dashboard";
 
 export const useDeviceInfoStore = defineStore("deviceInfo", () => {
-  const curDeviceStatus = ref<number>(); // 设备状态
+  const curDeviceStatus = ref(); // 设备状态
   const curdeviceType = ref(1); // 设备类型
   const curdeviceListId = ref(0); // 设备列表
   // const dataList = ref<AllDevices[]>([]);
@@ -16,7 +16,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
       type: 2,
-      status: 1,
+      status: "在线",
       durationOnline: 12,
       resolution: "1920*1080",
       compression: "H.264",
@@ -35,7 +35,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "002",
       type: 3,
-      status: 3,
+      status: "异常",
       durationOnline: 12,
       resolution: "1920*1080",
       compression: "H.264",
@@ -52,7 +52,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       serialNo: "001",
       time: "2021-07-01",
       type: 3,
-      status: 3,
+      status: "异常",
       durationOnline: 12,
       resolution: "1920*1080",
       compression: "H.264",
@@ -70,7 +70,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       serialNo: "001",
       time: "2021-07-01",
       type: 3,
-      status: 1,
+      status: "在线",
       durationOnline: 12,
       resolution: "1920*1080",
       compression: "H.264",
@@ -88,7 +88,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       serialNo: "001",
       time: "2021-07-01",
       type: 2,
-      status: 1,
+      status: "在线",
       durationOnline: 12,
       resolution: "1920*1080",
       compression: "H.264",
@@ -106,7 +106,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       serialNo: "001",
       time: "2021-07-01",
       type: 3,
-      status: 3,
+      status: "异常",
       durationOnline: 12,
       resolution: "1920*1080",
       compression: "H.264",
@@ -124,7 +124,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       serialNo: "001",
       time: "2021-07-01",
       type: 2,
-      status: 2,
+      status: "离线",
       durationOnline: 12,
       resolution: "1920*1080",
       compression: "H.264",
@@ -143,7 +143,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       serialNo: "001",
       time: "2021-07-01",
       type: 3,
-      status: 3,
+      status: "异常",
       durationOnline: 12,
       resolution: "1920*1080",
       compression: "H.264",
@@ -174,10 +174,10 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
   }
 
   const deviceStatus = ref([
-    { value: 0, label: "全部", name: "all", color: "#232D42" },
-    { value: 1, label: "在线", name: "online", color: "#4DC591" },
-    { value: 2, label: "离线", name: "offline", color: "#8A92A6" },
-    { value: 3, label: "异常", name: "abnormal", color: "#FF7648" },
+    { id: 0, label: "全部", value: "全部", name: "all", color: "#232D42" },
+    { id: 1, label: "在线", value: "在线", name: "online", color: "#4DC591" },
+    { id: 2, label: "离线", value: "离线", name: "offline", color: "#8A92A6" },
+    { id: 3, label: "异常", value: "异常", name: "abnormal", color: "#FF7648" },
   ]);
   const deviceType = ref([
     {
@@ -196,14 +196,14 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       value: "helmet",
     },
   ]);
-  function getIconByTypeAndStatus(type: number, status: number): string {
+  function getIconByTypeAndStatus(type: number, status: string): string {
     // 获取设备类型的 value
     const typeValue = deviceType.value.find((item) => item.id === type)?.value;
     // 获取设备状态的 value
     const statusValue = deviceStatus.value.find(
       (item) => item.value === status
     )?.name;
-    if (!typeValue || !statusValue) return "/img/key-alarmInfos.svg";
+    if (!typeValue || !statusValue) return "/img/key-projects.svg";
     return `/img/${statusValue}-${typeValue}.svg`;
   }
 
@@ -213,7 +213,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
       const matchType =
         curdeviceType.value === 1 || device.type === curdeviceType.value;
       const matchStatus =
-        curDeviceStatus.value === 0 ||
+        curDeviceStatus.value === "全部" ||
         curDeviceStatus.value === undefined ||
         device.status === curDeviceStatus.value;
       return matchType && matchStatus;
