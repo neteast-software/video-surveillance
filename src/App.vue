@@ -5,6 +5,7 @@
   >
     <navbar v-model:showModal="showModal"></navbar>
     <main class="flex flex-h-rest">
+      <!--  v-if="isLogin" -->
       <NModal
         v-model:show="showModal"
         transform-origin="center"
@@ -24,6 +25,11 @@
         </router-view>
       </div>
     </main>
+    <!-- <template v-else>
+      <NSpin class="absolute-center" size="large">
+        <template #description> 登录中 </template>
+      </NSpin>
+    </template> -->
   </LkNaiveProvider>
 </template>
 
@@ -31,11 +37,12 @@
 import navbar from "./components/navbar.vue";
 import sidebar from "./components/sidebar.vue";
 import { LkNaiveProvider } from "linker-uii";
-import { GlobalThemeOverrides, NModal } from "naive-ui";
+import { GlobalThemeOverrides, NModal, NSpin } from "naive-ui";
 import notice from "./components/notice/index.vue";
 import { ref } from "vue";
-// import { getQuery } from "./api/pack";
+
 const showModal = ref(false);
+
 const themeOverrides: GlobalThemeOverrides = {
   common: {
     primaryColor: "#3563EF",

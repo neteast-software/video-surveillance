@@ -6,7 +6,7 @@ import { deviceType } from "@/utils/other/data";
 
 export const useDeviceInfoStore = defineStore("deviceInfo", () => {
   const curDeviceStatus = ref(); // 设备状态
-  const curdeviceType = ref(1); // 设备类型
+  const curdeviceType = ref(0); // 设备类型
   const curdeviceListId = ref(0); // 设备列表
   // const dataList = ref<AllDevices[]>([]);
   const dataList = ref<AllDevices[]>([
@@ -195,9 +195,9 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
   const filteredDataList = computed(() => {
     return dataList.value.filter((device) => {
       const matchType =
-        curdeviceType.value === 1 || device.type === curdeviceType.value;
+        curdeviceType.value === 0 || device.type === curdeviceType.value;
       const matchStatus =
-        curDeviceStatus.value === "全部" ||
+        curDeviceStatus.value === 0 ||
         curDeviceStatus.value === undefined ||
         device.status === curDeviceStatus.value;
       return matchType && matchStatus;

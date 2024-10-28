@@ -106,7 +106,7 @@ class Requestor {
     //     'eyJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInVzZXJfa2V5IjoiNzM4ZmIxYTItZTRhNy00OTFkLWIxZmEtOWVkYjk0Yzk2MTdiIiwidXNlcm5hbWUiOiJhZG1pbiJ9.lYPDO59WXTNE85UpFzzlcYu0pNfGdr626RXEPDDQV0jLWhLvVcaGxrmeyLIe-Ay4PEAlhr1Gfk3cnWmsjFI_bw';
     options.headers = {
       ...options.headers,
-      Authorization: accessToken ? `${accessToken}` : "",
+      Authorization: accessToken ? `Bearer ${accessToken}` : "",
     };
     return {
       options,

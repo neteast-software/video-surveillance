@@ -87,20 +87,20 @@ import {
 } from "naive-ui";
 import user from "@/assets/imgs/user.png";
 import { createMenu } from "../utils/other/createMenu";
-import { routes } from "../router";
-import { useRouter, useRoute } from "vue-router";
-import { computed, ref } from "vue";
+import { menuOptions, routes } from "../router";
+import { useRouter } from "vue-router";
+import { computed } from "vue";
 const router = useRouter();
-const route = useRoute();
 function handleMenuSelect(key: string) {
   console.log("key", key);
   router.push(key);
 }
+
 const menuKey = computed(() => {
+  console.log("router.currentRoute.value.path", menuOptions.value);
   return router.currentRoute.value.path as string;
 });
-
-const menuOptions = createMenu(routes);
+// const menuOptions = createMenu(routes);
 
 const options = [
   {
