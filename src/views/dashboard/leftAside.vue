@@ -42,7 +42,7 @@
           <n-tab-pane
             v-for="option in deviceType"
             :name="option.id"
-            :tab="option.label"
+            :tab="option.name"
             class="h-full"
           >
             <deviceList></deviceList>
@@ -65,9 +65,10 @@ import OfflineIcon from "@/assets/svgs/Offline.svg";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 import { getOnlineStatistics } from "@/utils/network/api/dashboard";
+import { deviceType } from "@/utils/other/data";
 
 const deviceInfo = useDeviceInfoStore();
-const { deviceType, curdeviceType } = storeToRefs(deviceInfo);
+const { curdeviceType } = storeToRefs(deviceInfo);
 const { initAllDevices } = deviceInfo;
 
 const OnlineStatistics = ref<any>(null);

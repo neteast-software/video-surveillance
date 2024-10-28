@@ -8,8 +8,8 @@
         <div
           class="w-1/3 flex-center rounded-7.5 text-greyText transition"
           v-for="item in deviceType"
-          :class="{ active: item.type === selectType }"
-          @click="selectType = item.type"
+          :class="{ active: item.id === selectType }"
+          @click="selectType = item.id"
         >
           {{ item.name }}
         </div>
@@ -34,7 +34,7 @@
                 type="line"
                 :color="device.color"
                 :rail-color="device.railColor"
-                :percentage="device.percentage"
+                :percentage="device.value"
                 :show-indicator="false"
               />
             </div>
@@ -44,7 +44,7 @@
       <div
         class="blue-gradient rounded-2 flex-w-rest min-w-70 flex-col relative"
       >
-        <div class="font-600 p-5">整体在线率</div>
+        <div class="font-600 p-5">{{ title }}</div>
         <PieChart
           :source="source"
           :legend="legend"
@@ -57,46 +57,56 @@
 
 <script setup lang="ts">
 import { NProgress } from "naive-ui";
-import { reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import PieChart from "@/components/chart/PieChart.vue";
 import { LegendComponentOption } from "echarts";
+import { getDeviceStatus } from "@/utils/network/api/statusMonitor";
+import type { DeviceStatus } from "@/utils/network/types/statusMonitor";
+import type { PieSource } from "@/components/chart/PieChart.vue";
+import { deviceType } from "@/utils/other/data";
+const deviceData = ref<DeviceStatus>();
+const source = ref<PieSource>([]);
+const title = ref("整体在线率");
+async function initData() {
+  const { data } = await getDeviceStatus(selectType.value);
+  console.log(data);
+  deviceData.value = data;
+  const dataBody = data.chartData.dataBody;
+  title.value = dataBody.title;
+  source.value = dataBody.dataList || [];
+}
+onMounted(initData);
 
-const deviceType = [
-  { name: "全部", type: "all" },
-  { name: "监控", type: "probe" },
-  { name: "安全帽", type: "helmet" },
-] as const;
-const selectType = ref("all");
-const deviceStatus = ref([
+const selectType = ref(0);
+watch(() => selectType.value, initData);
+
+const deviceStatus = computed(() => [
   {
     label: "devicescount",
     name: "设备数",
-    value: 1212,
-    percentage: 100,
+    value: deviceData.value?.total || 0,
     color: "#3563EF",
     railColor: "#DFEBFF",
   },
   {
     label: "online",
     name: "在线",
-    value: 128,
-    percentage: 60,
+    value: deviceData.value?.online || 0,
     color: "#4DC591",
     railColor: "#B6E7D3",
   },
   {
     label: "offline",
     name: "离线",
-    value: 86,
-    percentage: 30,
+    value: deviceData.value?.offline || 0,
     color: "#8A92A6",
     railColor: "#CFD3DB",
   },
 ]);
-const source = [
-  ["在线", 80],
-  ["异常", 20],
-];
+// const source = [
+//   ["在线", 80],
+//   ["异常", 20],
+// ];
 const legend = reactive<LegendComponentOption>({
   orient: "vertical",
   right: 30,

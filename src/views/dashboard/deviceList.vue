@@ -1,5 +1,6 @@
 <template>
   <div class="fill-parent relative">
+    <!-- {{ filteredDataList }} -->
     <NScrollbar
       v-if="filteredDataList.length > 0"
       ref="scrollbar"

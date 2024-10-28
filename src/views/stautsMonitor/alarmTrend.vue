@@ -3,15 +3,15 @@
     <header class="flex justify-between">
       <h1>告警事件趋势</h1>
       <div
-        class="h-8 bg-#F6F6F7 border-(1 solid greyLine) rounded-7.5 flex cursor-pointer"
+        class="w-56 h-8 bg-#F6F6F7 border-(1 solid greyLine) rounded-7.5 flex cursor-pointer"
       >
         <div
-          class="flex-center rounded-7.5 text-greyText transition px-4"
-          v-for="item in dateMap"
-          :class="{ active: item.value === selectType }"
-          @click="selectType = item.value"
+          class="w-1/3 flex-center rounded-7.5 text-greyText transition"
+          v-for="item in deviceType"
+          :class="{ active: item.id === selectType }"
+          @click="selectType = item.id"
         >
-          {{ item.label }}
+          {{ item.name }}
         </div>
       </div>
     </header>
@@ -23,13 +23,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { deviceType } from "@/utils/other/data";
 import ResponsiveTrendChart from "./ResponsiveTrendChart.vue";
 
-const dateMap = [
-  { label: "上半年", value: 1 },
-  { label: "下半年", value: 2 },
-] as const;
-const selectType = ref(1);
+const selectType = ref(0);
 </script>
 
 <style scoped>

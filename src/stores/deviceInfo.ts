@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { getAllDevices } from "@/utils/network/api/dashboard";
 import { AllDevices } from "@/utils/network/types/dashboard";
+import { deviceType } from "@/utils/other/data";
 
 export const useDeviceInfoStore = defineStore("deviceInfo", () => {
   const curDeviceStatus = ref(); // 设备状态
@@ -170,7 +171,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     const { data } = await getAllDevices();
     console.log("initAllDevices", data);
     if (!data) return;
-    dataList.value = data;
+    // dataList.value = data;
   }
 
   const deviceStatus = ref([
@@ -179,26 +180,9 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     { id: 2, label: "离线", value: "离线", name: "offline", color: "#8A92A6" },
     { id: 3, label: "异常", value: "异常", name: "abnormal", color: "#FF7648" },
   ]);
-  const deviceType = ref([
-    {
-      id: 1,
-      label: "全部",
-      value: "all",
-    },
-    {
-      id: 2,
-      label: "监控",
-      value: "monitor",
-    },
-    {
-      id: 3,
-      label: "安全帽",
-      value: "helmet",
-    },
-  ]);
   function getIconByTypeAndStatus(type: number, status: string): string {
     // 获取设备类型的 value
-    const typeValue = deviceType.value.find((item) => item.id === type)?.value;
+    const typeValue = deviceType.find((item) => item.id === type)?.type;
     // 获取设备状态的 value
     const statusValue = deviceStatus.value.find(
       (item) => item.value === status

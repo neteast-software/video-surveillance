@@ -1,17 +1,18 @@
 <template>
   <div class="dataframe">
     <header class="flex-y-center justify-between mb-4 lt-laptop-(mb-2)">
-      <h1>历史事件列表</h1>
+      <h1>{{ listTitle }}</h1>
+      params: {{ params }}
       <!-- <div class="i-icons:filter w-6 h-6 cursor-pointer"></div> -->
     </header>
     <div class="flex gap-3">
       <div
         class="w-18 bg-#F5F9FF rounded-1 text-greyText flex-center cursor-pointer transition"
-        :class="{ 'bg-primary text-white': index === clickSelect }"
-        @click="clickSelect = index"
-        v-for="(data, index) in selectData"
+        :class="{ 'bg-primary text-white': device.id === curdeviceType }"
+        @click="curdeviceType = device.id"
+        v-for="device in deviceType"
       >
-        {{ data }}
+        {{ device.name }}
       </div>
     </div>
     <LineChart :source="source" class="h-60"></LineChart>
@@ -39,12 +40,9 @@
         :events="events"
       ></Calendar>
     </div>
-    <Transition appear name="slideBottom">
-      <div class="relative flex-h-rest">
-        <div
-          class="flex-col gap-2.5 h-full mt-2 overflow-auto transition"
-          v-if="filterLists.length > 0"
-        >
+    <div class="relative flex-h-rest">
+      <Transition appear name="slideBottom" v-if="filterLists.length > 0">
+        <div class="flex-col gap-2.5 h-full mt-2 overflow-auto transition">
           <div
             class="w-full rounded-1 py-3.5 px-3 lt-laptop-(py-3 px-2)"
             :class="getClassByType(list.status)"
@@ -74,9 +72,9 @@
             </div>
           </div>
         </div>
-        <listEmpty v-else></listEmpty>
-      </div>
-    </Transition>
+      </Transition>
+      <listEmpty v-else class="!mt-0"></listEmpty>
+    </div>
   </div>
 </template>
 
@@ -84,48 +82,82 @@
 import LineChart from "@/components/chart/LineChart.vue";
 import Calendar from "@/components/Calendar.vue";
 import listEmpty from "@/components/other/listEmpty.vue";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { NDatePicker } from "naive-ui";
+import { deviceType } from "@/utils/other/data";
+import {
+  getHistoryEvent,
+  getHasAlarmByDate,
+} from "@/utils/network/api/statusMonitor";
+
 // import "v-calendar/style.css";
 // import { DatePicker } from "v-calendar";
-
 import { format } from "date-fns";
-const timestamp = ref(new Date().getTime()); // 当前时间戳
+import { getMonday, getSunday } from "@/utils/other/calendar";
 
+const timestamp = ref(new Date().getTime()); // 当前时间戳
 const backToday = ref(false);
-const source = [
-  [
-    "flow",
-    "1月",
-    "2月",
-    "3月",
-    "4月",
-    "5月",
-    "6月",
-    "7月",
-    "8月",
-    "9月",
-    "10月",
-    "11月",
-    "12月",
-  ],
-  ["事件分类1", "-", "-", "-", "-", "-", 60, 80, 60, 36, 38, 60, 76],
-  ["事件分类2", 30, 40, 30, 58, 20, 40, 20, 40, "-", "-", "-", 24],
-  ["事件分类3", "-", "-", "-", "-", "-", "-", "-", 40, 64, 20, 3, 0],
-  ["事件分类4", "-", "-", "-", 20, 15, 18, "-", "-", "-", 62, 40, 24],
-];
-const selectData = ["全部", "监控", "安全帽"];
-const clickSelect = ref(0);
+const curdeviceType = ref(0);
+
+const listTitle = ref("历史事件列表");
+const source = ref<(number | string)[][]>([]);
+async function initsource() {
+  const { data } = await getHistoryEvent(curdeviceType.value, 1);
+  console.log("getHistoryEvent", data);
+  listTitle.value = data?.dataBody.title;
+  // const title = data?.dataBody.title || "";
+  const dataList = data?.dataBody.dataList || [];
+  const xAxis = data?.dataBody.abscissa || [];
+  const xAxisDays = xAxis.map((date) => date.split("-")[2]);
+  const items = dataList.map((item) =>
+    Array.isArray(item.value)
+      ? [item.name, ...item.value]
+      : [item.name, item.value]
+  );
+  source.value = [["日期", ...xAxisDays], ...items];
+  if (!xAxis.length) {
+    const names = dataList.map((item) => item.name);
+    const values = dataList.map((item) => item.value);
+    source.value = [
+      ["日期", ...names],
+      ["数量", ...(values as number[])],
+    ];
+  }
+}
+watch(() => curdeviceType.value, initsource);
+
+const params = computed(() => {
+  const startDay = format(getMonday(new Date(timestamp.value)), "yyyy-MM-dd");
+  const endDay = format(getSunday(new Date(timestamp.value)), "yyyy-MM-dd");
+  console.log("startDay", startDay, "endDay", endDay);
+  return { startDay, endDay };
+});
+const events = ref();
+async function initList() {
+  const { data } = await getHasAlarmByDate(
+    params.value.startDay,
+    params.value.endDay
+  );
+  console.log("getHistoryEvent", data);
+  events.value = data;
+}
+watch(() => timestamp.value, initList);
+function initData() {
+  initsource();
+  initList();
+}
+onMounted(initData);
+
 const lists = ref([
   {
-    data: "2024-10-21",
+    data: "2024-10-1",
     time: "13:43",
     name: "这里显示的是事111件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
     status: "alerts",
   },
   {
-    data: "2024-10-21",
+    data: "2024-10-1",
     time: "13:43",
     name: "这里显示的是事件名称事件名称",
     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
@@ -172,18 +204,6 @@ const filterLists = computed(() => {
   if (!lists.value) return [];
   const date = format(new Date(timestamp.value), "yyyy-MM-dd");
   return lists.value.filter((item) => item.data === date);
-});
-
-const events = computed(() => {
-  const addedEvents: Record<string, boolean> = {};
-  return lists.value.reduce<{ date: string; status: string }[]>((acc, item) => {
-    const key = `${item.data}-${item.status}`;
-    if (item.status && !addedEvents[key]) {
-      addedEvents[key] = true;
-      acc.push({ date: item.data, status: item.status });
-    }
-    return acc;
-  }, []);
 });
 
 const disablePreviousDate = (ts: number) => {

@@ -3,20 +3,31 @@
     <h1>安全帽状态</h1>
     <div class="flex gap-6 lt-laptop-(gap-3) mt-3">
       <div
-        class="blue-gradient flex flex-y-center gap-9 px-7 p-6 w-full rounded-2 lt-laptop-(gap-4 px-3 py-2)"
-        v-for="(data, index) in datas"
+        class="blue-gradient flex flex-y-center gap-9 px-7 py-6 w-full rounded-2 lt-laptop-(gap-4 px-3 py-2)"
       >
-        <div class="i-palette:probe w-11 h-12"></div>
-        <div class="text-7.5 font-700">
-          {{ data.value }}
+        <div class="i-palette:probe w-11 h-12 lt-laptop-(w-9 h-9)"></div>
+        <div class="text-7.5 lt-laptop-(text-6) font-700">
+          {{ monitorStatus?.onlineCount }}
+          <!-- <div class="text-(greyText 3) flex-center gap-2">在线数</div> -->
+        </div>
+      </div>
+      <div
+        class="blue-gradient flex flex-y-center gap-9 px-7 py-6 w-full rounded-2 lt-laptop-(gap-4 px-3 py-2)"
+      >
+        <div class="i-palette:probe w-11 h-12 lt-laptop-(w-9 h-9)"></div>
+        <div class="text-7.5 lt-laptop-(text-6) font-700">
+          {{ monitorStatus?.alarmCount }}
           <div class="text-(greyText 3) flex-center gap-2">
-            {{ data.name }}数
+            告警数
             <div
               class="text-(#4DC591 3) flex-center"
-              :class="{ 'text-#F94144': index === 1 }"
+              :class="monitorStatus?.alarmRate > 0 ? '' : 'text-#F94144'"
             >
-              <div class="i-icons:caretdown w-4 h-4 rotate-180"></div>
-              {{ data.percentage }}%
+              <div
+                class="i-icons:caretdown w-4 h-4"
+                :class="monitorStatus?.alarmRate > 0 ? 'rotate-180' : ''"
+              ></div>
+              {{ monitorStatus?.alarmRate }}%
             </div>
           </div>
         </div>
@@ -26,12 +37,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { getStatusTotal } from "@/utils/network/api/statusMonitor";
+import type { StatusTotal } from "@/utils/network/types/statusMonitor";
 
-const datas = ref([
-  { name: "在线", value: 32, percentage: 2.8 },
-  { name: "离线", value: 10, percentage: 2.1 },
-]);
+const monitorStatus = ref<StatusTotal>({
+  onlineCount: 0,
+  alarmCount: 0,
+  alarmRate: 0,
+});
+async function initData() {
+  const { data } = await getStatusTotal(3);
+  monitorStatus.value = data;
+}
+onMounted(initData);
 </script>
 
 <style scoped></style>

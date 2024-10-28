@@ -3,17 +3,17 @@
     <div class="flex justify-between mb-5 space-y-4 lt-laptop-(mb-2)">
       <div class="flex gap-2">
         <button
-          v-for="(label, range) in timeRanges"
-          :key="range"
-          @click="activeRange = range"
+          v-for="range in timeRanges"
+          :key="range.id"
+          @click="activeRange = range.id"
           class="px-4 py-1 rounded-md text-greyText transition"
           :class="
-            activeRange === range
+            activeRange === range.id
               ? 'bg-#3563ef text-white'
               : 'bg-#f6f6f7 border-(1px solid #eaeaea)'
           "
         >
-          {{ label }}
+          {{ range.name }}
         </button>
       </div>
       <div class="flex flex-wrap items-center gap-2 text-xs">
@@ -59,7 +59,7 @@
                 <div
                   class="w-full pb-[100%] rounded hover:scale-110 cursor-pointer"
                   :style="{
-                    background: getColorClass(getData()),
+                    background: getColorClass(getAlarmCount(month, day)),
                   }"
                 ></div>
               </template>
@@ -70,7 +70,8 @@
                 <div
                   class="p-1.5 bg-primary/20 rounded-1 flex-between gap-10 w-full"
                 >
-                  <span class="text-greyText">在线数量</span> {{ getData() }}
+                  <span class="text-greyText">在线数量</span>
+                  {{ getAlarmCount(month, day) }}
                 </div>
               </div>
             </NPopover>
@@ -92,22 +93,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { NPopover } from "naive-ui";
+import { getAlarmTrend } from "@/utils/network/api/statusMonitor";
+import type { AlarmTrend } from "@/utils/network/types/statusMonitor";
 interface Props {
   selectType?: number;
 }
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   selectType: 1,
 });
-const activeRange = ref("all");
+
+const activeRange = ref(1);
 const currentDate = ref(new Date()); // 当前日期
-//本年
-const currentYear = currentDate.value.getFullYear();
-const timeRanges = {
-  all: "在线趋势",
-  disconCount: "掉线次数",
-};
+const currentYear = currentDate.value.getFullYear(); // 当前年份
+const alarmTrendData = ref<AlarmTrend[]>([]);
+async function initdata() {
+  const { data } = await getAlarmTrend(props.selectType, activeRange.value);
+  alarmTrendData.value = data;
+}
+onMounted(initdata);
+const timeRanges = [
+  { id: 1, name: "在线趋势" },
+  { id: 2, name: "掉线次数" },
+];
 const colorRanges = [
   { min: 0, max: 100 },
   { min: 100, max: 200 },
@@ -130,8 +139,15 @@ const getColorClass = (value: number) => {
   return "rgba(53,99,239, 0.05)";
 };
 
-function getData() {
-  return Math.floor(Math.random() * 1000);
+watch([() => props.selectType, activeRange], initdata);
+
+// 获取指定日期的 alarmCount
+function getAlarmCount(month: number, day: number) {
+  const dateStr = `${currentYear}-${String(month).padStart(2, "0")}-${String(
+    day
+  ).padStart(2, "0")}`;
+  const entry = alarmTrendData.value.find((item) => item.date === dateStr);
+  return entry ? entry.alarmCount : 0;
 }
 </script>
 

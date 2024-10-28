@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useMessage } from "naive-ui";
+import { getMonday } from "@/utils/other/calendar";
 const message = useMessage();
 interface Props {
   backToday?: boolean;
   timestamp?: number;
-  events?: Array<{ date: string; status: string }>;
+  events?: Array<{ date: string; offlineAlarm: string }>;
 }
 const props = withDefaults(defineProps<Props>(), {
   backToday: false,
@@ -24,13 +25,6 @@ watch(
 const currentDate = ref(new Date()); // 当前日期
 // 初始化日期
 const activeDate = ref(new Date().getDate());
-// 获取当前星期一的日期
-function getMonday(d: Date) {
-  d = new Date(d);
-  const day = d.getDay();
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1); // 调整到上一周的周一
-  return new Date(d.setDate(diff));
-}
 
 // 生成当前一周的日期数组
 const currentWeek = ref(getCurrentWeek(currentDate.value));
@@ -111,9 +105,16 @@ function hasEvents(day: string) {
 }
 
 // 计算某一天的事件数量
-function getEvents(day: string) {
+
+function getEventColors(day: string) {
   if (!props.events) return [];
-  return props.events.filter((event) => event.date.split("-")[2] === day);
+  const event = props.events.find((event) => event.date.split("-")[2] === day);
+  if (!event) return [];
+  const colors = [];
+  if (event.offlineAlarm) colors.push("bg-info");
+  // if (event.onlineAlarm) colors.push("bg-success");
+
+  return colors;
 }
 
 // animate.css动画
@@ -161,12 +162,9 @@ function animateCSS(
         </div>
         <div class="mt-2px flex gap-2px" v-if="hasEvents(day.label)">
           <div
-            v-for="event in getEvents(day.label)"
-            :class="{
-              'bg-warning': event.status === 'alerts',
-              'bg-success': event.status === 'equip',
-              'bg-info': event.status === 'noequip',
-            }"
+            v-for="dotColor in getEventColors(day.label)"
+            :key="dotColor"
+            :class="dotColor"
             class="w-1 h-1 rounded-full"
           ></div>
         </div>
