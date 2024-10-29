@@ -29,6 +29,10 @@ const defaultLegend: LegendComponentOption = {
   textStyle: {
     fontSize: 14,
   },
+  formatter: function (params: string) {
+    const value = props.source.find((item) => item.name === params)?.value;
+    return `${params} ${value}个`;
+  },
 };
 interface PieChartProps {
   series?: PieSeriesOption[] | Partial<PieSeriesOption>;
@@ -58,53 +62,56 @@ const defaultTooltip = computed<TooltipComponentOption>(() => {
   };
 });
 
-const defaultOption = computed<PieSeriesOption>(() => ({
-  type: "pie",
-  // radius: ["50%", "70%"],
-  center: ["50%", "40%"],
-  startAngle: 15,
-  itemStyle: {
-    borderRadius: 4,
-    borderColor: "#fff",
-    borderWidth: 2,
-  },
-  label: {
-    show: false,
-    // position: "center",
-    //   position: "outer",
-    //   formatter: function (params) {
-    //     const { percent, name } = params;
-    //     return `{pre|${percent}%}\n{name|${name}} `;
+const defaultOption = computed<PieSeriesOption>(() => {
+  const hasZeroValue = props.source.some((item) => item.value === 0);
+  return {
+    type: "pie",
+    // radius: ["50%", "70%"],
+    center: ["50%", "40%"],
+    startAngle: 15,
+    itemStyle: {
+      borderRadius: hasZeroValue ? "" : 4,
+      borderColor: hasZeroValue ? "transparent" : "#fff",
+      borderWidth: 2,
+    },
+    label: {
+      show: false,
+      // position: "center",
+      //   position: "outer",
+      //   formatter: function (params) {
+      //     const { percent, name } = params;
+      //     return `{pre|${percent}%}\n{name|${name}} `;
+      //   },
+      //   rich: {
+      //     pre: {
+      //       fontSize: 24,
+      //       padding: [0, -60],
+      //       lineHeight: 30,
+      //       // align: "center",
+      //     },
+      //     name: {
+      //       fontSize: 16,
+      //       lineHeight: 30,
+      //       padding: [0, -60],
+      //     },
+      //   },
+      //   fontSize: 12,
+      //   // color: '#fff'
+    },
+    // emphasis: {
+    //   label: {
+    //     show: true,
+    //     fontSize: 20,
+    //     fontWeight: "bold",
     //   },
-    //   rich: {
-    //     pre: {
-    //       fontSize: 24,
-    //       padding: [0, -60],
-    //       lineHeight: 30,
-    //       // align: "center",
-    //     },
-    //     name: {
-    //       fontSize: 16,
-    //       lineHeight: 30,
-    //       padding: [0, -60],
-    //     },
-    //   },
-    //   fontSize: 12,
-    //   // color: '#fff'
-  },
-  // emphasis: {
-  //   label: {
-  //     show: true,
-  //     fontSize: 20,
-  //     fontWeight: "bold",
-  //   },
-  // },
-  // labelLine: {
-  //   show: true,
-  //   length: 20,
-  //   length2: 55,
-  // },
-}));
+    // },
+    // labelLine: {
+    //   show: true,
+    //   length: 20,
+    //   length2: 55,
+    // },
+  };
+});
 const option = computed(() => {
   const { source, color, series, seriesOption, legend, grid, tooltip } = props;
   if (source.length === 0) return {};

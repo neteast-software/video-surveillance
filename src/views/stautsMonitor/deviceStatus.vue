@@ -45,11 +45,13 @@
         class="blue-gradient rounded-2 flex-w-rest min-w-70 flex-col relative"
       >
         <div class="font-600 p-5">{{ title }}</div>
-        <PieChart
-          :source="source"
-          :legend="legend"
-          :seriesOption="seriesOption"
-        ></PieChart>
+        <div class="fill-parent relative">
+          <PieChart
+            :source="source"
+            :legend="legend"
+            :seriesOption="seriesOption"
+          ></PieChart>
+        </div>
       </div>
     </div>
   </div>
@@ -77,7 +79,7 @@ async function initData() {
 }
 onMounted(initData);
 
-const selectType = ref(0);
+const selectType = ref("0");
 watch(() => selectType.value, initData);
 
 const deviceStatus = computed(() => [
@@ -109,12 +111,12 @@ const deviceStatus = computed(() => [
 // ];
 const legend = reactive<LegendComponentOption>({
   orient: "vertical",
-  right: 30,
+  right: "25%",
   top: "middle",
 });
 const seriesOption = reactive({
   radius: ["0", "90%"],
-  center: ["40%", "50%"],
+  center: ["30%", "50%"],
 });
 </script>
 

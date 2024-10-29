@@ -1,5 +1,5 @@
 import type { PieSource } from "@/components/chart/PieChart.vue";
-
+import type { lineSource } from "@/components/chart/LineChart.vue";
 export interface StatusTotal {
   onlineCount: number;
   alarmCount: number;
@@ -28,12 +28,6 @@ export interface HistoryEvent {
   type: number;
   dataBody: lineSource;
 }
-export interface lineSource {
-  title: string;
-  abscissa: string[];
-  dataList: { name: string; value: number[] | number }[];
-  dataValueType: number;
-}
 
 export interface HasAlarmByDate {
   date: string;
@@ -50,4 +44,5 @@ export interface AlarmList {
   deviceName: string;
   happenTime: string;
   category: number;
+  type: string;
 }

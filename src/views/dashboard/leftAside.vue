@@ -48,6 +48,17 @@
             <deviceList></deviceList>
           </n-tab-pane>
         </NTabs>
+        <div class="flex-center text-(primary 4) mt-8 h-6">
+          <div>
+            今天事件数
+            <span class="font-600">{{ eventStatistics.today }}</span>
+          </div>
+          <div class="w-1px h-full mx-5 bg-#EAEAEA"></div>
+          <div class="">
+            近30天事件数
+            <span class="font-600">{{ eventStatistics.recentDays }}</span>
+          </div>
+        </div>
       </div>
     </div>
   </Transition>
@@ -61,10 +72,12 @@ import totelIcon from "@/assets/svgs/total.svg";
 import onlineIcon from "@/assets/svgs/online.svg";
 import exceptionIcon from "@/assets/svgs/abnormal.svg";
 import OfflineIcon from "@/assets/svgs/Offline.svg";
-// import { options } from "./data";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
-import { getOnlineStatistics } from "@/utils/network/api/dashboard";
+import {
+  getOnlineStatistics,
+  getEventStatistics,
+} from "@/utils/network/api/dashboard";
 import { deviceType } from "@/utils/other/data";
 
 const deviceInfo = useDeviceInfoStore();
@@ -72,15 +85,25 @@ const { curdeviceType } = storeToRefs(deviceInfo);
 const { initAllDevices } = deviceInfo;
 
 const OnlineStatistics = ref<any>(null);
-async function initData() {
+async function inittotalData() {
   const { data } = await getOnlineStatistics();
   if (!data) return;
   OnlineStatistics.value = data;
 }
-onMounted(() => {
-  initAllDevices();
-  initData();
+const eventStatistics = ref({
+  today: 0,
+  recentDays: 0,
 });
+async function initEventStatistics() {
+  const { data } = await getEventStatistics();
+  eventStatistics.value = data;
+}
+async function initData() {
+  initAllDevices();
+  inittotalData();
+  initEventStatistics();
+}
+onMounted(initData);
 const options = computed(() => {
   return [
     {

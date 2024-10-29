@@ -8,4 +8,5 @@ declare module "linker-uii" {
   export default value;
   export const Viewer: any;
   export const LkNaiveProvider: any;
+  export const LkViewer: any;
 }

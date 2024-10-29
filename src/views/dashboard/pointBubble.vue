@@ -11,15 +11,19 @@
 
     <div
       class="transition bg-white bg rounded-1 p-7.5 text-4 absolute bottom-0 left-0"
-      v-if="curData.type != 0"
+      v-if="curData.type != '0'"
     >
       <header class="flex-y-center gap-3 mb-5">
         <div class="text-4.5 font-600 flex-center">
           <div class="w-1 h-4 bg-primary rounded-2px mr-2"></div>
-          {{ curData.name }} {{ curData.id }}
+          {{ curData.name }}
         </div>
-        <NTag :bordered="false" size="small" :type="FilterStatus(3)">
-          异常
+        <NTag
+          :bordered="false"
+          size="small"
+          :type="FilterStatus(curData.status)"
+        >
+          {{ curData.status }}
         </NTag>
       </header>
       <section class="mb-7">
@@ -129,7 +133,7 @@
 <script setup lang="ts">
 import { bubblePosition, bubbleVisible } from "@/utils/map/mark";
 import { NTag, NRate } from "naive-ui";
-import { FilterStatus } from "@/utils/other/index";
+import { FilterStatus } from "@/utils/other/data";
 import { useRouter } from "vue-router";
 import { useMapInfoStore } from "@/stores/mapInfo";
 import { storeToRefs } from "pinia";

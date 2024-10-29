@@ -22,6 +22,12 @@ import {
 } from "echarts";
 import useTheme from "@/utils/theme";
 const { colorPrimary, colorBg, colorText } = useTheme();
+export interface lineSource {
+  title: string;
+  abscissa: string[];
+  dataList: { name: string; value: number[] | number }[];
+  dataValueType: number;
+}
 const defaultXAxis: XAXisComponentOption = {
   type: "category",
   axisLine: {

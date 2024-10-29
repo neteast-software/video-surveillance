@@ -1,6 +1,5 @@
 <template>
   <div class="fill-parent relative">
-    <!-- {{ filteredDataList }} -->
     <NScrollbar
       v-if="filteredDataList.length > 0"
       ref="scrollbar"
@@ -63,7 +62,7 @@
 <script setup lang="ts">
 import listEmpty from "@/components/other/listEmpty.vue";
 import { NTag, NScrollbar, ScrollbarInst } from "naive-ui";
-import { FilterStatus } from "@/utils/other/index";
+import { FilterStatus } from "@/utils/other/data";
 import { nextTick, ref } from "vue";
 import { useEventBus } from "@vueuse/core";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
@@ -71,8 +70,7 @@ import { scrollToItemKey, flyToPositionKey } from "@/config/eventBus";
 import { storeToRefs } from "pinia";
 
 const deviceInfo = useDeviceInfoStore();
-const { curdeviceListId, filteredDataList, deviceStatus } =
-  storeToRefs(deviceInfo);
+const { curdeviceListId, filteredDataList } = storeToRefs(deviceInfo);
 
 const flyToPositionBus = useEventBus(flyToPositionKey);
 const scrollToItemBus = useEventBus(scrollToItemKey);

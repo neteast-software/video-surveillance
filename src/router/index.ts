@@ -7,9 +7,8 @@ import storage from "@/utils/other/storage";
 import { getMenuList } from "@/utils/network/api/root";
 import { login } from "@/utils/network/api/root";
 import type { MenuList } from "@/utils/network/types/root";
-import { ref, nextTick, h, reactive } from "vue";
-import { createMenu, createRoutes } from "@/utils/other/createMenu";
-import { ro } from "date-fns/locale";
+import { ref, reactive } from "vue";
+import { createMenu, createRoutes } from "@/utils/other/create";
 
 // export const routes: RouteRecordRaw[] = [
 //   {

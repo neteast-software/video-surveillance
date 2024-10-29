@@ -1,5 +1,5 @@
 <template>
-  <div class="fill-parent flex-col gap-2">
+  <div class="fill-parent flex-col gap-2 relative">
     <div class="flex justify-between mb-5 space-y-4 lt-laptop-(mb-2)">
       <div class="flex gap-2">
         <button
@@ -16,6 +16,7 @@
           {{ range.name }}
         </button>
       </div>
+      <!-- <div class="absolute left-30 top-20 w-30 h-20 frosted z-9999">111</div> -->
       <div class="flex flex-wrap items-center gap-2 text-xs">
         <span
           v-for="(range, index) in colorRanges"
@@ -53,7 +54,8 @@
               trigger="hover"
               placement="bottom-start"
               :show-arrow="false"
-              style="padding: 8px"
+              style="padding: 0px"
+              :show="true"
             >
               <template #trigger>
                 <div
@@ -63,8 +65,8 @@
                   }"
                 ></div>
               </template>
-              <div clas="w-40 text-3">
-                <div class="text-#1D2129 font-600">
+              <div class="w-40 text-3 frosted p-2">
+                <div class="text-#1D2129 mb-1">
                   {{ currentYear }}-{{ month }}-{{ day }}
                 </div>
                 <div
@@ -98,13 +100,13 @@ import { NPopover } from "naive-ui";
 import { getAlarmTrend } from "@/utils/network/api/statusMonitor";
 import type { AlarmTrend } from "@/utils/network/types/statusMonitor";
 interface Props {
-  selectType?: number;
+  selectType?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
-  selectType: 1,
+  selectType: "0",
 });
 
-const activeRange = ref(1);
+const activeRange = ref(0);
 const currentDate = ref(new Date()); // 当前日期
 const currentYear = currentDate.value.getFullYear(); // 当前年份
 const alarmTrendData = ref<AlarmTrend[]>([]);
@@ -114,8 +116,8 @@ async function initdata() {
 }
 onMounted(initdata);
 const timeRanges = [
-  { id: 1, name: "在线趋势" },
-  { id: 2, name: "掉线次数" },
+  { id: 0, name: "全部" },
+  { id: 1, name: "离线次数" },
 ];
 const colorRanges = [
   { min: 0, max: 100 },
@@ -154,5 +156,39 @@ function getAlarmCount(month: number, day: number) {
 <style scoped>
 .grid-cols {
   grid-template-columns: auto repeat(31, minmax(0, 1fr));
+}
+:deep(
+    .n-popover:not(.n-popover--raw):not(.n-popover--scrollable):not(
+        .n-popover--show-header-or-footer
+      )
+  ) {
+  background: #ff0000 !important;
+}
+
+:deep(.n-popover .n-popover:not(.n-popover--raw)) {
+  background: #ff0000 !important;
+  /* background: linear-gradient(
+    300deg,
+    rgba(236, 247, 255, 0.6) -3%,
+    rgba(247, 251, 255, 0.6) 83%
+  );
+  box-sizing: border-box;
+  border: 1px solid;
+  border-image: linear-gradient(317deg, #ffffff 8%, rgba(255, 255, 255, 0) 78%)
+    1;
+  backdrop-filter: blur(10px); */
+}
+
+.frosted {
+  background: linear-gradient(
+    300deg,
+    rgba(236, 247, 255, 0.6) -3%,
+    rgba(247, 251, 255, 0.6) 83%
+  );
+  box-sizing: border-box;
+  border: 1px solid;
+  border-image: linear-gradient(317deg, #ffffff 8%, rgba(255, 255, 255, 0) 78%)
+    1;
+  backdrop-filter: blur(10px);
 }
 </style>

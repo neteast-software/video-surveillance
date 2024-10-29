@@ -127,9 +127,9 @@ onMounted(() => {
       roll: Cesium.Math.toRadians(0),
     },
   });
-  // addDemoGraphic1(viewer); //添加标记
+  addDemoGraphic1(viewer); //添加标记
   // addAllPath(viewer); // 添加轨迹路线
-  // setupClickHandler(viewer); //点击事件
+  setupClickHandler(viewer); //点击事件
 
   viewer.scene.camera.changed.addEventListener(updateBuilding); //更新建筑物
   // setAntialias(viewer); //抗锯齿

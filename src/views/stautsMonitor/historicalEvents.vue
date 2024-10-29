@@ -18,8 +18,8 @@
     <div class="w-full h-1px bg-greyLine my-4"></div>
     <div>
       <header class="flex-y-center justify-between font-600">
+        <!-- :is-date-disabled="disablePreviousDate" -->
         <NDatePicker
-          :is-date-disabled="disablePreviousDate"
           v-model:value="timestamp"
           format="yyyy年MM月dd"
           type="date"
@@ -27,7 +27,7 @@
         />
         <span
           class="cursor-pointer text-primary"
-          :class="{ 'text-primary/20': timestamp >= Date.now() }"
+          :class="{ 'text-primary/20': clickDate === todayDate }"
           @click="backToday = true"
           >今日</span
         >
@@ -99,27 +99,29 @@ import {
   getAlarmList,
 } from "@/utils/network/api/statusMonitor";
 import type { AlarmList } from "@/utils/network/types/statusMonitor";
+import { createLineChart } from "@/utils/other/create";
 
 // import "v-calendar/style.css";
 // import { DatePicker } from "v-calendar";
 import { format } from "date-fns";
 import { getMonday, getSunday } from "@/utils/other/calendar";
 
+const todayDate = format(new Date(), "yyyy-MM-dd"); // 当前日期
 const timestamp = ref(new Date().getTime()); // 当前时间戳
 const clickDate = computed(() =>
   format(new Date(timestamp.value), "yyyy-MM-dd")
 );
 const backToday = ref(false);
-const curdeviceType = ref(0);
+const curdeviceType = ref("0");
 
 const listTitle = ref("历史事件列表");
 const source = ref<(number | string)[][]>([]);
 const alarmList = ref<AlarmList[]>([]);
 async function initsource() {
   const { data } = await getHistoryEvent(curdeviceType.value, 1);
-  console.log("getHistoryEvent", data);
   listTitle.value = data?.dataBody.title;
   // const title = data?.dataBody.title || "";
+
   const dataList = data?.dataBody.dataList || [];
   const xAxis = data?.dataBody.abscissa || [];
   const xAxisDays = xAxis.map((date) => date.split("-")[2]);
@@ -137,6 +139,9 @@ async function initsource() {
       ["数量", ...(values as number[])],
     ];
   }
+  // source.value = createLineChart(data);
+
+  source.value = createLineChart(data.dataBody);
 }
 watch(() => curdeviceType.value, initsource);
 
@@ -232,9 +237,9 @@ const lists = ref([
   },
 ]);
 
-const disablePreviousDate = (ts: number) => {
-  return ts > Date.now();
-};
+// const disablePreviousDate = (ts: number) => {
+//   return ts > Date.now();
+// };
 // function getClassByType(status: string) {
 //   switch (status) {
 //     case "alerts":

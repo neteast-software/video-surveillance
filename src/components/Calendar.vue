@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { useMessage } from "naive-ui";
 import { getMonday } from "@/utils/other/calendar";
-const message = useMessage();
+
 interface Props {
   backToday?: boolean;
   timestamp?: number;
@@ -43,8 +42,8 @@ function getCurrentWeek(date: Date) {
   return week;
 }
 function clickActiveDay(day: { day: Date }) {
-  const today = new Date();
-  if (day.day > today) return message.warning("不能选择未来日期");
+  // const today = new Date();
+  // if (day.day > today) return message.warning("不能选择未来日期");
   activeDate.value = day.day.getDate();
   currentDate.value = day.day;
   emits("update:timestamp", day.day.getTime());
@@ -105,7 +104,6 @@ function hasEvents(day: string) {
 }
 
 // 计算某一天的事件数量
-
 function getEventColors(day: string) {
   if (!props.events) return [];
   const event = props.events.find((event) => event.date.split("-")[2] === day);

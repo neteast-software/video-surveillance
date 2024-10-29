@@ -18,7 +18,7 @@ export const getStatusTotal = async (deviceType: number) => {
 };
 
 //获取设备状态
-export const getDeviceStatus = async (deviceType: number) => {
+export const getDeviceStatus = async (deviceType: string) => {
   const { data } = await http.get<{ data: DeviceStatus }>(
     `/v2/index/deviceStatus/`,
     { deviceType }
@@ -31,7 +31,7 @@ export const getAlarmCount = async () => {
   return data.value!;
 };
 //告警事件趋势
-export const getAlarmTrend = async (source?: number, category?: number) => {
+export const getAlarmTrend = async (source?: string, category?: number) => {
   const params = source ? { source, category } : { category };
   const { data } = await http.get<{ data: AlarmTrend[] }>(
     "/v2/index/alarmTrend",
@@ -41,9 +41,8 @@ export const getAlarmTrend = async (source?: number, category?: number) => {
 };
 
 //历史事件列表
-export const getHistoryEvent = async (source?: number, category?: number) => {
+export const getHistoryEvent = async (source?: string, category?: number) => {
   const params = source ? { source, category } : { category };
-
   const { data } = await http.get<{ data: HistoryEvent }>(
     "/v2/index/historyEvent",
     params
@@ -63,7 +62,7 @@ export const getHasAlarmByDate = async (startDate: string, endDate: string) => {
 interface AlarmListParams {
   deviceId?: number;
   happenTime?: string;
-  category?: number;
+  category?: string;
 }
 
 //获取告警事件列表

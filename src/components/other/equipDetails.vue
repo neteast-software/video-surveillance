@@ -3,6 +3,7 @@
     <div
       ref="detailsRef"
       class="flex-col bg-white h-full w-24% min-w-102 lt-laptop-(min-w-92) py-7.5"
+      v-show="curDetailId !== 0"
     >
       <header class="flex-between mb-6 px-7.5 lt-laptop-(px-5)">
         <div class="text-5 font-600">设备详情{{ curDetailId }}</div>
@@ -20,7 +21,7 @@
           />
           <div class="flex-w-rest ml-4 text-4.5 lt-laptop-(ml-2.5)">
             <div class="font-500 truncate">
-              设备名称设备名称设备名称设备名称
+              {{ deviceDetail?.name }}
             </div>
             <div
               class="flex-between text-(greyText 3.5) lt-laptop-(text-3 mt-2) h-11 mt-5"
@@ -29,7 +30,7 @@
                 <div
                   class="text-(basic 4.5) font-700 flex-center lt-laptop-(text-3.5)"
                 >
-                  128h
+                  {{ deviceDetail?.durationOnline }}h
                 </div>
                 在线时长
               </div>
@@ -37,7 +38,7 @@
                 <div
                   class="text-(basic 4.5) font-700 flex-center lt-laptop-(text-3.5)"
                 >
-                  1920*1080
+                  {{ deviceDetail?.resolution }}
                 </div>
                 分辨率
               </div>
@@ -45,7 +46,7 @@
                 <div
                   class="text-(basic 4.5) font-700 flex-center lt-laptop-(text-3.5)"
                 >
-                  H264
+                  {{ deviceDetail?.compression }}
                 </div>
                 设备编码
               </div>
@@ -56,7 +57,7 @@
                   :type="FilterStatus(3)"
                   class="lt-laptop-(text-2.5 p-1 h-4)"
                 >
-                  异常
+                  {{ deviceDetail?.status }}
                 </NTag>
 
                 设备状态
@@ -93,7 +94,7 @@
         </template>
 
         <n-tab-pane
-          v-for="option in eventType"
+          v-for="option in eventData"
           :name="option.id"
           :tab="option.label"
           class="h-full"
@@ -106,16 +107,22 @@
             >
               <div
                 class="w-full rounded-1 py-4 px-3 lt-laptop-(py-3 px-2) mb-3"
-                :class="getClassByType(list.status)"
+                :class="
+                  eventType.find((item) => list.category === item.id)?.color ||
+                  ''
+                "
                 v-for="list in filterLists"
               >
                 <div class="flex-between mb-3 lt-laptop-(mb-2)">
                   <div class="flex-center gap-1">
                     <div
                       class="i-palette:alerts w-4 h-4"
-                      :class="`i-palette:${list.status}`"
+                      :class="`i-palette:${
+                        eventType.find((item) => list.category === item.id)
+                          ?.value || ''
+                      }`"
                     ></div>
-                    <span class="text-greyText">{{ list.time }}</span>
+                    <span class="text-greyText">{{ list.happenTime }}</span>
                   </div>
                   <div class="i-icons:details rotate-90 w-3.5 h-3.5"></div>
                 </div>
@@ -127,10 +134,10 @@
                   />
                   <div class="flex-w-rest overflow-hidden">
                     <div class="text-4 lt-laptop-(text-3.5) truncate">
-                      {{ list.name }}
+                      {{ list.title }}
                     </div>
                     <div class="list-desc text-greyText lt-laptop-(text-3)">
-                      {{ list.desc }}
+                      {{ list.content }}
                     </div>
                   </div>
                 </div>
@@ -145,46 +152,69 @@
 </template>
 
 <script setup lang="ts">
-import { FilterStatus } from "@/utils/other/index";
+import { FilterStatus } from "@/utils/other/data";
 import { NTag, NTabs, NTabPane, NScrollbar, NSelect } from "naive-ui";
 import LineChart from "@/components/chart/LineChart.vue";
 import listEmpty from "@/components/other/listEmpty.vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 // import { getClassByType } from "@/utils/other/index";
 import { useMapInfoStore } from "@/stores/mapInfo";
 import { storeToRefs } from "pinia";
-import { onClickOutside } from "@vueuse/core";
+import { getDeviceDetail } from "@/utils/network/api/dashboard";
+import type { DeviceDetail } from "@/utils/network/types/dashboard";
+import { createLineChart } from "@/utils/other/create";
+import { getAlarmList } from "@/utils/network/api/statusMonitor";
+import { AlarmList } from "@/utils/network/types/statusMonitor";
 const mapInfo = useMapInfoStore();
 const { curDetailId } = storeToRefs(mapInfo);
-const source = [
-  [
-    "flow",
-    "1月",
-    "2月",
-    "3月",
-    "4月",
-    "5月",
-    "6月",
-    "7月",
-    "8月",
-    "9月",
-    "10月",
-    "11月",
-    "12月",
-  ],
-  ["事件分类1", 12, 12, 8, 4, 8, 8, 8, 12, 12, 8, 8, 12, 16, 16],
-];
+
+const source = ref<(number | string)[][]>([]);
+const deviceDetail = ref<DeviceDetail>();
+const alarmList = ref<AlarmList[]>([]);
+const selectlist = ref(); // 列表下拉框选中值
+const curEventType = ref("0"); // 当前事件类型
+
+async function initDeviceDetail() {
+  if (!curDetailId.value) return;
+  const { data } = await getDeviceDetail(curDetailId.value);
+  deviceDetail.value = data;
+  source.value = createLineChart(data.echartsData.dataBody);
+}
+
+const listParams = computed(() => {
+  if (curEventType.value === "0")
+    return {
+      deviceId: curDetailId.value,
+    };
+  else {
+    return {
+      deviceId: curDetailId.value,
+      category: curEventType.value,
+    };
+  }
+});
+async function initList() {
+  const { data } = await getAlarmList(listParams.value);
+  alarmList.value = data;
+  console.log("alarmList", data);
+}
+function initData() {
+  initDeviceDetail();
+  initList();
+}
+watch(() => curDetailId.value, initData);
+watch(() => curEventType.value, initList);
+
 const legend = ref({
   show: false,
 });
 const grid = ref({
   bottom: "15%",
   left: "5%",
-  right: 0,
+  right: "5%",
 });
-const selectlist = ref(); // 列表下拉框选中值
-const curEventType = ref(0); // 当前事件类型
-const eventType = ref([
+
+const eventData = ref([
   {
     id: 0,
     label: "全部",
@@ -193,15 +223,20 @@ const eventType = ref([
     id: 1,
     label: "事件类型1",
   },
-  {
-    id: 2,
-    label: "事件类型2",
-  },
-  {
-    id: 3,
-    label: "事件类型3",
-  },
+  // {
+  //   id: 2,
+  //   label: "事件类型2",
+  // },
+  // {
+  //   id: 3,
+  //   label: "事件类型3",
+  // },
 ]);
+const eventType = [
+  { id: 1, name: "离线", value: "noequip", color: "bg-#F5F9FF" },
+  // { id: 2, name: "设备", value: "" },
+  // { id: 3, name: "非设备", value: "" },
+];
 const selectDatas = ref([
   {
     label: "一般预警",
@@ -220,40 +255,42 @@ const selectDatas = ref([
     value: "特别预警",
   },
 ]);
-const lists = ref([
-  {
-    time: "2024年10月10日 13：43",
-    name: "这里显示的是事111件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "alerts",
-    type: 1,
-  },
-  {
-    time: "2024年10月10日 13：43",
-    name: "这里显示的是事件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "equip",
-    type: 2,
-  },
-  {
-    time: "2024年10月10日 13：43",
-    name: "这里显示的是事件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "noequip",
-    type: 3,
-  },
-  {
-    time: "2024年10月10日 13：43",
-    name: "这里显示的是事件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "equip",
-    type: 2,
-  },
-]);
+// const lists = ref([
+//   {
+//     time: "2024年10月10日 13：43",
+//     name: "这里显示的是事111件名称事件名称",
+//     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
+//     status: "alerts",
+//     type: 1,
+//   },
+//   {
+//     time: "2024年10月10日 13：43",
+//     name: "这里显示的是事件名称事件名称",
+//     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
+//     status: "equip",
+//     type: 2,
+//   },
+//   {
+//     time: "2024年10月10日 13：43",
+//     name: "这里显示的是事件名称事件名称",
+//     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
+//     status: "noequip",
+//     type: 3,
+//   },
+//   {
+//     time: "2024年10月10日 13：43",
+//     name: "这里显示的是事件名称事件名称",
+//     desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
+//     status: "equip",
+//     type: 2,
+//   },
+// ]);
+
 const filterLists = computed(() => {
-  if (!lists.value) return [];
-  if (curEventType.value === 0) return lists.value;
-  return lists.value.filter((item) => item.type === curEventType.value);
+  if (!alarmList.value) return [];
+  // return alarmList.value;
+  if (selectlist.value === 0) return alarmList.value;
+  return alarmList.value.filter((item) => item.type === curEventType.value);
 });
 
 function getClassByType(status: string) {
@@ -292,5 +329,8 @@ function getClassByType(status: string) {
 }
 :deep(.n-tabs .n-tabs-tab-pad) {
   @apply w-5;
+}
+:deep(.n-tabs-pane-wrapper) {
+  @apply h-full;
 }
 </style>

@@ -26,7 +26,7 @@ import { ref } from "vue";
 import { deviceType } from "@/utils/other/data";
 import ResponsiveTrendChart from "./ResponsiveTrendChart.vue";
 
-const selectType = ref(0);
+const selectType = ref("0");
 </script>
 
 <style scoped>

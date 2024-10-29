@@ -68,18 +68,3 @@ export function downloadFile(data: Blob | string, filename: string) {
   a.click();
   URL.revokeObjectURL(a.href);
 }
-
-export function FilterStatus(typeValue: string | number) {
-  switch (typeValue) {
-    case "正常":
-      return "primary";
-    case "在线":
-      return "success";
-    case "离线":
-      return "info";
-    case "异常":
-      return "warning";
-    default:
-      return "info";
-  }
-}
