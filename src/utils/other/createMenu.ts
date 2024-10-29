@@ -10,11 +10,11 @@ export function createRoutes(menuData: MenuList[]): RouteRecordRaw[] {
       name: menuItem.path ? menuItem.path : "",
       meta: {
         title: menuItem.name,
-        icon: () => h("div", { class: `i-icons:${menuItem.icon}  w-5 h-5` }),
+        icon: () => h("div", { class: `i-icons:home  w-5 h-5` }),
       },
-      // component: () => import(`../views/${menuItem.component}.vue`), // 动态导入组件
+
       component: () => import(`@/views/${menuItem.component}/index.vue`), // 动态导入组件
-      children: menuItem.children ? createRoutes(menuItem.children) : null,
+      children: menuItem.children ? createRoutes(menuItem.children) : undefined,
     };
     return route;
   });
@@ -22,7 +22,6 @@ export function createRoutes(menuData: MenuList[]): RouteRecordRaw[] {
 
 export function createMenu(routes: any) {
   // if (!routes || routes.length === 0) return [];
-  console.log("111111", routes);
   const routesFilter = routes.filter((route: any) => route.name !== undefined);
   if (routesFilter.length === 0) return [];
   return routesFilter.map((route: any) => {

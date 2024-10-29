@@ -39,3 +39,15 @@ export interface HasAlarmByDate {
   date: string;
   hasAlarm: boolean;
 }
+
+export interface AlarmList {
+  title: string;
+  img: string | null;
+  content: string;
+  source: number;
+  level: number;
+  deviceId: number;
+  deviceName: string;
+  happenTime: string;
+  category: number;
+}

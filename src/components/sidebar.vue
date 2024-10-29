@@ -97,7 +97,6 @@ function handleMenuSelect(key: string) {
 }
 
 const menuKey = computed(() => {
-  console.log("router.currentRoute.value.path", menuOptions.value);
   return router.currentRoute.value.path as string;
 });
 // const menuOptions = createMenu(routes);

@@ -9,6 +9,7 @@ import { login } from "@/utils/network/api/root";
 import type { MenuList } from "@/utils/network/types/root";
 import { ref, nextTick, h, reactive } from "vue";
 import { createMenu, createRoutes } from "@/utils/other/createMenu";
+import { ro } from "date-fns/locale";
 
 // export const routes: RouteRecordRaw[] = [
 //   {
@@ -85,7 +86,7 @@ export const menuOptions = ref();
 export const routes = ref<RouteRecordRaw[]>([]);
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [],
+  routes: [{ path: "/", redirect: "/index" }],
 });
 let hasGetRouter = false;
 router.beforeEach(async (to, _, next) => {
@@ -96,33 +97,25 @@ router.beforeEach(async (to, _, next) => {
     return next();
   }
   const token = storage.get<string>("access_token");
-  // 如果没有 token，进行登录
   if (!token) {
     try {
       await initLogin(); // 等待登录完成
     } catch (error) {
       console.error("登录失败:", error);
-      return next("/login"); // 或者重定向到登录页面
+      // return next("/login"); // 或者重定向到登录页面
     }
   }
   if (hasGetRouter) return next();
   // 动态加载系统路由
-  console.log("动态加载系统路由");
   const { data } = await getMenuList();
   routes.value = createRoutes(data); // 更新动态路由
   menuOptions.value = createMenu(routes.value);
   // 将动态路由添加到 router
-
   routes.value.forEach((route) => {
     router.addRoute(route);
   });
-  // routes.forEach((route) => {
-  //   router.addRoute(route);
-  // });
-  console.log("动态路由", data, routes.value);
-  // 此处继续处理动态路由的添加...
   hasGetRouter = true; // 设置标志，防止重复加载
-  next(); // 继续导航
+  next({ ...to }); // 继续导航
 });
 
 //登录

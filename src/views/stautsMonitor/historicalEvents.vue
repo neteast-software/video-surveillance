@@ -2,7 +2,6 @@
   <div class="dataframe">
     <header class="flex-y-center justify-between mb-4 lt-laptop-(mb-2)">
       <h1>{{ listTitle }}</h1>
-      params: {{ params }}
       <!-- <div class="i-icons:filter w-6 h-6 cursor-pointer"></div> -->
     </header>
     <div class="flex gap-3">
@@ -41,15 +40,19 @@
       ></Calendar>
     </div>
     <div class="relative flex-h-rest">
-      <Transition appear name="slideBottom" v-if="filterLists.length > 0">
+      <Transition appear name="slideBottom" v-if="alarmList.length > 0">
         <div class="flex-col gap-2.5 h-full mt-2 overflow-auto transition">
           <div
             class="w-full rounded-1 py-3.5 px-3 lt-laptop-(py-3 px-2)"
-            :class="getClassByType(list.status)"
-            v-for="list in filterLists"
+            :class="
+              eventType.find((item) => list.category === item.id)?.color || ''
+            "
+            v-for="list in alarmList"
           >
             <div class="flex-center gap-2">
+              <img v-if="list.img" src="" alt="" />
               <img
+                v-else
                 src="@/assets/imgs/text/build.png"
                 class="w-20 h-16 lt-laptop-(w-18 h-14)"
                 alt=""
@@ -59,14 +62,19 @@
                   <div class="flex-(y-center w-rest) gap-1">
                     <div
                       class="i-palette:alerts w-4 h-4"
-                      :class="`i-palette:${list.status}`"
+                      :class="`i-palette:${
+                        eventType.find((item) => list.category === item.id)
+                          ?.value || ''
+                      }`"
                     ></div>
-                    <div class="truncate flex-w-rest">{{ list.name }}</div>
+                    <div class="truncate flex-w-rest">{{ list.title }}</div>
                   </div>
-                  <span class="text-(3 greyText)">{{ list.time }}</span>
+                  <span class="text-(3 greyText)">{{
+                    list.happenTime.split(" ")[1].slice(0, 5)
+                  }}</span>
                 </div>
                 <div class="list-desc text-greyText lt-laptop-(text-3)">
-                  {{ list.desc }}
+                  {{ list.content }}
                 </div>
               </div>
             </div>
@@ -88,7 +96,9 @@ import { deviceType } from "@/utils/other/data";
 import {
   getHistoryEvent,
   getHasAlarmByDate,
+  getAlarmList,
 } from "@/utils/network/api/statusMonitor";
+import type { AlarmList } from "@/utils/network/types/statusMonitor";
 
 // import "v-calendar/style.css";
 // import { DatePicker } from "v-calendar";
@@ -96,11 +106,15 @@ import { format } from "date-fns";
 import { getMonday, getSunday } from "@/utils/other/calendar";
 
 const timestamp = ref(new Date().getTime()); // 当前时间戳
+const clickDate = computed(() =>
+  format(new Date(timestamp.value), "yyyy-MM-dd")
+);
 const backToday = ref(false);
 const curdeviceType = ref(0);
 
 const listTitle = ref("历史事件列表");
 const source = ref<(number | string)[][]>([]);
+const alarmList = ref<AlarmList[]>([]);
 async function initsource() {
   const { data } = await getHistoryEvent(curdeviceType.value, 1);
   console.log("getHistoryEvent", data);
@@ -129,25 +143,43 @@ watch(() => curdeviceType.value, initsource);
 const params = computed(() => {
   const startDay = format(getMonday(new Date(timestamp.value)), "yyyy-MM-dd");
   const endDay = format(getSunday(new Date(timestamp.value)), "yyyy-MM-dd");
-  console.log("startDay", startDay, "endDay", endDay);
   return { startDay, endDay };
 });
 const events = ref();
-async function initList() {
+async function initCalendar() {
   const { data } = await getHasAlarmByDate(
     params.value.startDay,
     params.value.endDay
   );
-  console.log("getHistoryEvent", data);
   events.value = data;
+}
+watch(
+  () => [params.value.startDay, params.value.endDay],
+  (newValues, oldValues) => {
+    if (!oldValues) return initCalendar();
+    if (newValues[0] !== oldValues[0] || newValues[1] !== oldValues[1]) {
+      initCalendar();
+    }
+  }
+);
+
+async function initList() {
+  const { data } = await getAlarmList({ happenTime: clickDate.value });
+  alarmList.value = data;
 }
 watch(() => timestamp.value, initList);
 function initData() {
   initsource();
+  initCalendar();
   initList();
 }
 onMounted(initData);
 
+const eventType = [
+  { id: 1, name: "离线", value: "noequip", color: "bg-#F5F9FF" },
+  // { id: 2, name: "设备", value: "" },
+  // { id: 3, name: "非设备", value: "" },
+];
 const lists = ref([
   {
     data: "2024-10-1",
@@ -200,27 +232,21 @@ const lists = ref([
   },
 ]);
 
-const filterLists = computed(() => {
-  if (!lists.value) return [];
-  const date = format(new Date(timestamp.value), "yyyy-MM-dd");
-  return lists.value.filter((item) => item.data === date);
-});
-
 const disablePreviousDate = (ts: number) => {
   return ts > Date.now();
 };
-function getClassByType(status: string) {
-  switch (status) {
-    case "alerts":
-      return "bg-#FFF8EF";
-    case "equip":
-      return "bg-#F7FFFC";
-    case "noequip":
-      return "bg-#F5F9FF ";
-    default:
-      return "bg-#F7FFFC";
-  }
-}
+// function getClassByType(status: string) {
+//   switch (status) {
+//     case "alerts":
+//       return "bg-#FFF8EF";
+//     case "equip":
+//       return "bg-#F7FFFC";
+//     case "noequip":
+//       return "bg-#F5F9FF ";
+//     default:
+//       return "bg-#F7FFFC";
+//   }
+// }
 </script>
 
 <style scoped>

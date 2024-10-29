@@ -6,6 +6,7 @@ import type {
   AlarmTrend,
   HistoryEvent,
   HasAlarmByDate,
+  AlarmList,
 } from "../types/statusMonitor";
 
 //获取监控状态/安全帽状态
@@ -55,6 +56,21 @@ export const getHasAlarmByDate = async (startDate: string, endDate: string) => {
   const { data } = await http.get<{ data: HasAlarmByDate[] }>(
     `/v2/index/hasAlarmByDate`,
     { startDate, endDate }
+  );
+  return data.value!;
+};
+
+interface AlarmListParams {
+  deviceId?: number;
+  happenTime?: string;
+  category?: number;
+}
+
+//获取告警事件列表
+export const getAlarmList = async (params: AlarmListParams) => {
+  const { data } = await http.get<{ data: AlarmList[] }>(
+    "/v2/index/alarmList",
+    params
   );
   return data.value!;
 };

@@ -48,8 +48,8 @@ importers:
         specifier: ^5.4.2
         version: 5.5.1
       linker-uii:
-        specifier: ^0.7.0
-        version: 0.7.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2))
+        specifier: ^0.9.0
+        version: 0.9.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2))
       pinia:
         specifier: ^2.2.4
         version: 2.2.4(typescript@5.6.2)(vue@3.5.8(typescript@5.6.2))
@@ -988,6 +988,9 @@ packages:
 
   '@types/lodash-es@4.17.12':
     resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
+
+  '@types/lodash@4.17.12':
+    resolution: {integrity: sha512-sviUmCE8AYdaF/KIHLDJBQgeYzPBI0vf/17NaYehBJfYD1j6/L95Slh07NlyK2iNyBNaEkb3En2jRt+a8y3xZQ==}
 
   '@types/lodash@4.17.9':
     resolution: {integrity: sha512-w9iWudx1XWOHW5lQRS9iKpK/XuRhnN+0T7HvdCCd802FYkT1AMTnxndJHGrNJwRoRHkslGr4S29tjm1cT7x/7w==}
@@ -2108,8 +2111,8 @@ packages:
   lerc@2.0.0:
     resolution: {integrity: sha512-7qo1Mq8ZNmaR4USHHm615nEW2lPeeWJ3bTyoqFbd35DLx0LUH7C6ptt5FDCTAlbIzs3+WKrk5SkJvw8AFDE2hg==}
 
-  linker-uii@0.7.0:
-    resolution: {integrity: sha512-P8Ag4qvoclquLXUG9VFXMtWJhD6kPJd0CgLLAaYD52z3YYntd5e8niU4FQevp4arJQ1SFJtimPJNhghaIXS95g==}
+  linker-uii@0.9.0:
+    resolution: {integrity: sha512-RN4RyPZuL43f7YSl2u1HjiGGz80V8GY8yoo1C7/0CHVDUnL1I52sxtgw/RctyZygy0E1v1Ed5NYRT5NGFFMUFA==}
     peerDependencies:
       naive-ui: ^2.39.0
       vue: ^3.4.37
@@ -3577,7 +3580,9 @@ snapshots:
 
   '@types/lodash-es@4.17.12':
     dependencies:
-      '@types/lodash': 4.17.9
+      '@types/lodash': 4.17.12
+
+  '@types/lodash@4.17.12': {}
 
   '@types/lodash@4.17.9': {}
 
@@ -5033,7 +5038,7 @@ snapshots:
 
   lerc@2.0.0: {}
 
-  linker-uii@0.7.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2)):
+  linker-uii@0.9.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2)):
     dependencies:
       '@iconify-json/heroicons': 1.2.0
       '@iconify/types': 2.0.0
@@ -5225,7 +5230,7 @@ snapshots:
       '@css-render/plugin-bem': 0.15.14(css-render@0.15.14)
       '@css-render/vue3-ssr': 0.15.14(vue@3.5.8(typescript@5.6.2))
       '@types/katex': 0.16.7
-      '@types/lodash': 4.17.9
+      '@types/lodash': 4.17.12
       '@types/lodash-es': 4.17.12
       async-validator: 4.2.5
       css-render: 0.15.14
@@ -5806,7 +5811,7 @@ snapshots:
   v-calendar@3.1.2(@popperjs/core@2.11.8)(vue@3.5.8(typescript@5.6.2)):
     dependencies:
       '@popperjs/core': 2.11.8
-      '@types/lodash': 4.17.9
+      '@types/lodash': 4.17.12
       '@types/resize-observer-browser': 0.1.11
       date-fns: 2.30.0
       date-fns-tz: 2.0.1(date-fns@2.30.0)
