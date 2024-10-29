@@ -55,7 +55,6 @@
               placement="bottom-start"
               :show-arrow="false"
               style="padding: 0px"
-              :show="true"
             >
               <template #trigger>
                 <div
