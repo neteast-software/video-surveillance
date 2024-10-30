@@ -99,6 +99,9 @@ function toggleBaseMapStyle() {
 .rotate {
   animation: rotate 0.3s ease-in-out; /* 设置旋转动画 */
 }
+:deep(.n-slider .n-slider-rail) {
+  @apply bg-#CAD3EF;
+}
 
 @keyframes rotate {
   from {

@@ -1,7 +1,9 @@
 <template>
-  <div class="h-full px-2.5 py-4 bg relative border-r-(2px solid greyLine)">
+  <div class="h-full py-4 bg relative border-r-(2px solid greyLine)">
     <div class="flex-col h-full">
-      <header class="flex-center bg-primaryBg rounded-2 p-2 min-w-48 mb-4.5">
+      <header
+        class="flex-center bg-primaryBg rounded-2 p-2 min-w-48 mb-4.5 mx-2.5"
+      >
         <img :src="user" class="w-7.5 h-7.5 rounded-full" alt="" />
         <div class="text-3.5 flex-w-rest ml-2.5">
           Yaomeier
@@ -11,16 +13,16 @@
           <div class="i-icons:caretdown w-3 h-3 text-lightGrey"></div>
         </div>
       </header>
-      <div class="text-3 text-lightGrey mb-6 lt-laptop-(mb-3)">菜单</div>
-      <NScrollbar trigger="none">
+      <div class="text-3 text-lightGrey mb-6 lt-laptop-(mb-3) mx-2.5">菜单</div>
+      <NScrollbar class="flex-h-rest">
         <NMenu
           :options="menuOptions"
           :value="menuKey"
           @update:value="handleMenuSelect"
         />
       </NScrollbar>
-      <div class="w-full h-1px bg-greyLine my-10 lt-laptop-(my-7)"></div>
-      <div>
+      <div class="w-full h-1px bg-greyLine my-10 lt-laptop-(my-7) mx-2.5"></div>
+      <div class="z-1 mx-2.5">
         <div class="text-(3 lightGrey) mb-6">数据</div>
         <div>
           <div>安全帽在线人数</div>
@@ -37,7 +39,7 @@
               <n-avatar>+{{ rest }}</n-avatar>
             </template>
           </NAvatarGroup>
-          <div class="w-full bg-primaryLightBg rounded-2 px-2.5 py-4">
+          <div class="w-full bg-#EFF3F7 rounded-2 px-2.5 py-4">
             <div>
               安全帽在线率
               <n-progress
@@ -125,9 +127,9 @@ const options = [
   right: 0;
   top: -30px;
 }
-:deep(.n-scrollbar-rail__scrollbar) {
+/* :deep(.n-scrollbar-rail__scrollbar) {
   display: none;
-}
+} */
 :deep(.n-menu .n-submenu-children) {
   @apply relative;
 }

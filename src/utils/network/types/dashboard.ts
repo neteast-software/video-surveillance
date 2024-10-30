@@ -12,7 +12,13 @@ export interface AllDevices {
   lat: string;
   address: string;
   serialNo: string; // 序列号
-  alarmInfo: string; // 报警信息
+  alarmInfo: {
+    type: string;
+    time: string;
+    content: string;
+    title: string;
+    img: string;
+  }; // 报警信息
   responsible: string; // 负责人
   type: string; // 类型
   time?: string; // 时间

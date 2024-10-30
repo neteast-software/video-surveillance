@@ -3,7 +3,7 @@
     <header class="flex-center justify-between mb-4 lt-laptop-(mb-2)">
       <h1>设备状态</h1>
       <div
-        class="w-56 h-8 bg-#F6F6F7 border-(1 solid greyLine) rounded-7.5 flex cursor-pointer"
+        class="w-56 h-8 bg-#F5F9FF border-(1 solid greyLine) rounded-7.5 flex cursor-pointer"
       >
         <div
           class="w-1/3 flex-center rounded-7.5 text-greyText transition"

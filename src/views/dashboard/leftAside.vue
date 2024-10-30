@@ -1,6 +1,6 @@
 <template>
   <Transition appear name="slideLeft">
-    <div class="flex-col gap-4 h-full w-24% min-w-105 lt-laptop-(min-w-92)">
+    <div class="flex-col gap-4 h-full w-24% min-w-110 lt-laptop-(min-w-92)">
       <header class="bg-white w-full rounded-2px py-6">
         <div class="mx-6 flex justify-between lt-laptop-(mx-3)">
           <div v-for="option in options" class="flex-center">

@@ -50,8 +50,8 @@
             class="w-14 h-14"
             alt=""
           />
-          <div class="text-#A0AEC0 list-desc">
-            展示最新一条预警信息展示最新一条预警信息展示最新一条预警信息展示最新一条预警信息
+          <div class="text-#A0AEC0 list-desc w-60">
+            {{ curData.alarmInfo ? curData.alarmInfo.title : "暂无预警信息" }}
           </div>
         </div>
       </section>

@@ -46,7 +46,7 @@
                 :bordered="false"
                 size="small"
                 :type="FilterStatus(data.status!)"
-                class="px-1 h-3.5"
+                class="px-1 lt-laptop-(h-3.5)"
               >
                 {{ data.status }}
               </NTag>

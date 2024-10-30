@@ -2,9 +2,7 @@
   <div class="dataframe">
     <header class="flex justify-between">
       <h1>告警事件趋势</h1>
-      <div
-        class="w-56 h-8 bg-#F6F6F7 border-(1 solid greyLine) rounded-7.5 flex cursor-pointer"
-      >
+      <div class="w-56 h-8 bg-#F5F9FF rounded-7.5 flex cursor-pointer">
         <div
           class="w-1/3 flex-center rounded-7.5 text-greyText transition"
           v-for="item in deviceType"

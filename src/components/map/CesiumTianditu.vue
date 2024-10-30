@@ -190,7 +190,7 @@ watch(
     if (viewer) {
       newShow3D ? viewer.scene.morphTo3D(0) : viewer.scene.morphTo2D(0);
       console.log("newShow3D", newShow3D);
-      if (!newShow3D) backToOrigin(); // 切换到2D时回到原点,防止3D视角下的位置偏移
+      // if (!newShow3D) backToOrigin(); // 切换到2D时回到原点,防止3D视角下的位置偏移
     }
   },
   { immediate: true } // 确保组件加载时也同步显示状态

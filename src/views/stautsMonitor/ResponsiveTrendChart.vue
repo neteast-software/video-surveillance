@@ -6,13 +6,12 @@
           v-for="range in timeRanges"
           :key="range.id"
           @click="activeRange = range.id"
-          class="px-4 py-1 rounded-md text-greyText transition"
+          class="px-4 py-1.5 rounded-md text-greyText transition"
           :class="
-            activeRange === range.id
-              ? 'bg-#3563ef text-white'
-              : 'bg-#f6f6f7 border-(1px solid #eaeaea)'
+            activeRange === range.id ? 'bg-#3563ef text-white' : 'bg-#F5F9FF '
           "
         >
+          <!-- border-(1px solid #eaeaea) -->
           {{ range.name }}
         </button>
       </div>

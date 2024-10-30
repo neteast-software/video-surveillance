@@ -6,7 +6,7 @@
     </header>
     <div class="flex gap-3">
       <div
-        class="w-18 bg-#F5F9FF rounded-1 text-greyText flex-center cursor-pointer transition"
+        class="bg-#F5F9FF rounded-1 text-greyText py-1.5 px-5 flex-center cursor-pointer transition leading-4"
         :class="{ 'bg-primary text-white': device.id === curdeviceType }"
         @click="curdeviceType = device.id"
         v-for="device in deviceType"
