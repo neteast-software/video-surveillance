@@ -13,6 +13,10 @@ import http from "@/utils/network/http";
 const linker = Linker.create();
 linker.http = http;
 
+const meta = document.createElement('meta');
+meta.name = 'naive-ui-style';
+document.head.appendChild(meta);
+
 const pinia = createPinia();
 const app = createApp(App);
 app.use(pinia);
