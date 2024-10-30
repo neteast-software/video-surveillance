@@ -63,9 +63,11 @@ const defaultTooltip = computed<TooltipComponentOption>(() => {
 });
 
 const defaultOption = computed<PieSeriesOption>(() => {
-  const hasZeroValue = props.source.some((item) => item.value === 0);
+  const hasZeroValue =
+    props.source.filter((item) => item.value === 0).length === 1;
   return {
     type: "pie",
+    radius: ["50%", "75%"],
     center: ["50%", "45%"],
     startAngle: 15,
     itemStyle: {
@@ -76,10 +78,17 @@ const defaultOption = computed<PieSeriesOption>(() => {
     label: {
       show: false,
     },
+    // emphasis: {
+    //   label: {
+    //     show: true,
+    //     fontSize: 14,
+    //     fontWeight: "bold",
+    //   },
+    // },
   };
 });
 const option = computed(() => {
-  const { source, color, series, seriesOption, legend, grid, tooltip } = props;
+  const { source, color, series, seriesOption, legend, tooltip } = props;
   if (source.length === 0) return {};
   const mixSeriesOption = { ...defaultOption.value, ...seriesOption };
   return {

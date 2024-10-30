@@ -1,7 +1,10 @@
 <template>
   <div class="flex flex-col gap-3.5 bg-white no-scrollbar flex-w-rest h-full">
     <section class="flex items-start justify-between h-full">
-      <section ref="monitorWrap" class="flex-w-rest h-full p-5 lt-laptop-(p-3)">
+      <section
+        ref="monitorWrap"
+        class="flex-w-rest h-full pr-5 lt-laptop-(pr-3)"
+      >
         <MonitorGallery
           :isFullscreen="isFullscreen"
           v-model:activeMonitor="activeMonitor"

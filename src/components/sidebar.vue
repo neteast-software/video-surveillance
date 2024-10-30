@@ -2,7 +2,7 @@
   <div class="h-full py-4 bg relative border-r-(2px solid greyLine)">
     <div class="flex-col h-full">
       <header
-        class="flex-center bg-primaryBg rounded-2 p-2 min-w-48 mb-4.5 mx-2.5"
+        class="flex-center bg-#EFF3F7 rounded-2 p-2 min-w-48 mb-4.5 mx-2.5"
       >
         <img :src="user" class="w-7.5 h-7.5 rounded-full" alt="" />
         <div class="text-3.5 flex-w-rest ml-2.5">
@@ -62,11 +62,11 @@
           </div>
         </div>
       </div>
-      <div
+      <!-- <div
         class="w-10 min-h-10 bg-white rounded-2 flex-center cursor-pointer z-1 mt-3 hover:scale-106 transition"
       >
         <div class="i-icons:export w-6 h-6 text-lightGrey"></div>
-      </div>
+      </div> -->
     </div>
     <img
       src="../assets/imgs/sidebar-bg.png"
@@ -130,6 +130,9 @@ const options = [
 /* :deep(.n-scrollbar-rail__scrollbar) {
   display: none;
 } */
+:deep(.n-menu .n-menu-item) {
+  @apply lt-laptop-(mt-3) mt-4;
+}
 :deep(.n-menu .n-submenu-children) {
   @apply relative;
 }

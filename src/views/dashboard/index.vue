@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fill-parent bg-#94BFFF p-7.5 lt-laptop-(p-3) relative overflow-hidden flex justify-between"
+    class="fill-parent bg-#94BFFF p-7 lt-laptop-(p-3) relative overflow-hidden flex justify-between"
   >
     <LeftAside class="z-1"></LeftAside>
     <RightAside class="z-1"></RightAside>

@@ -4,17 +4,17 @@
     class="absolute h-100 w-100"
     :style="{
       top: `${bubblePosition[1] - 480}px`,
-      left: `${bubblePosition[0] - 315}px`,
+      left: `${bubblePosition[0] - (isSmallScreen ? 268 : 315)}px`,
     }"
   >
     <!-- <div v-if="!curData.type">111</div> -->
 
     <div
-      class="transition bg-white bg rounded-1 p-7.5 text-4 absolute bottom-0 left-0"
+      class="transition bg-white bg rounded-1 p-7.5 text-4 absolute bottom-0 left-0 lt-laptop-(p-4)"
       v-if="curData.type != '0'"
     >
-      <header class="flex-y-center gap-3 mb-5">
-        <div class="text-4.5 font-600 flex-center">
+      <header class="flex-y-center gap-3 mb-5 text-4.5 lt-laptop-(text-4 mb-3)">
+        <div class="font-600 flex-center">
           <div class="w-1 h-4 bg-primary rounded-2px mr-2"></div>
           {{ curData.name }}
         </div>
@@ -26,16 +26,22 @@
           {{ curData.status }}
         </NTag>
       </header>
-      <section class="mb-7">
+      <section class="mb-7 lt-laptop-(mb-5)">
         <div class="flex gap-2.5">
           <div class="i-icons:position w-5 h-5 text-greyText mt-1"></div>
           <div>
-            <div class="text-4.5">{{ curData.manufacturer }}</div>
-            <span class="text-lightGrey">{{ curData.address }}</span>
+            <div class="text-4.5 lt-laptop-(text-4)">
+              {{ curData.manufacturer }}
+            </div>
+            <span class="text-lightGrey lt-laptop-(text-3.5)">{{
+              curData.address
+            }}</span>
           </div>
         </div>
         <div class="relative">
-          <div class="my-4">设备编号: {{ curData.serialNo }}</div>
+          <div class="my-4 lt-laptop-(my-3)">
+            设备编号: {{ curData.serialNo }}
+          </div>
           <div>负责人: {{ curData.responsible }}</div>
           <!-- <div>预警时间: {{ curData.time }}</div> -->
           <img
@@ -44,18 +50,20 @@
             class="absolute right-5 -top-6"
           />
         </div>
-        <div class="bg-#F4F8FF p-3 mt-4 flex gap-3">
+        <div class="bg-#F4F8FF p-3 mt-4 flex gap-3 lt-laptop-(p-2)">
           <img
             src="../../assets/imgs/text/listImg.png"
             class="w-14 h-14"
             alt=""
           />
-          <div class="text-#A0AEC0 list-desc w-60">
+          <div class="text-#A0AEC0 list-desc w-60 lt-laptop-(w-55 text-3.5)">
             {{ curData.alarmInfo ? curData.alarmInfo.title : "暂无预警信息" }}
           </div>
         </div>
       </section>
-      <footer class="flex items-center justify-around text-(4.5 primary)">
+      <footer
+        class="flex items-center justify-around text-(4.5 primary) lt-laptop-(text-4)"
+      >
         <div class="flex-center gap-2 cursor-pointer">
           <div class="i-icons:event w-5 h-5"></div>
           预警台账
@@ -69,7 +77,9 @@
           设备详情
         </div>
       </footer>
-      <div class="absolute -top-38 left-0 h-37 w-62 bg-white p-1 rounded-2">
+      <div
+        class="absolute -top-38 left-0 h-37 w-62 bg-white p-1 rounded-2 lt-laptop-(w-52 h-34 -top-35)"
+      >
         <img src="../../assets/imgs/text/text.png" class="fill-parent" alt="" />
         <div
           @click="navigateToFullscreenPage"
@@ -164,6 +174,7 @@ function navigateToFullscreenPage() {
 const curData = computed(() => {
   return dataList.value.filter((item) => item.id == curdeviceListId.value)[0];
 });
+const isSmallScreen = computed(() => window.innerWidth < 1540);
 
 // const keyProject = ref([
 //   { key: "name", name: "项目名称：", value: "双园道路监控探头" },

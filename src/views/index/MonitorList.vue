@@ -308,12 +308,6 @@ function haveCommonLabel(arr1: string[], arr2: string[]) {
 :deep(.n-base-selection .n-base-selection-tags) {
   background-color: transparent;
 }
-:deep(.n-button:hover) {
-  background-color: #4880ff;
-}
-:deep(.n-button:focus) {
-  background-color: #3563ef;
-}
 .popActive {
   @apply bg-primaryLightBg text-primary;
 }

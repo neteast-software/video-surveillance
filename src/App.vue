@@ -15,11 +15,11 @@
       </NModal>
       <sidebar></sidebar>
       <div class="flex-w-rest">
-        <router-view v-slot="{ Component }" class="relative">
+        <router-view v-slot="{ Component }" class="relative p-5">
           <transition name="fade" mode="out-in">
             <component
               :is="Component"
-              class="absolute top-0 left-0 w-full h-full"
+              class="absolute top-0 left-0 w-full h-full bg-white"
             />
           </transition>
         </router-view>
@@ -81,6 +81,9 @@ const themeOverrides: GlobalThemeOverrides = {
   Button: {
     borderHover: "1px solid #3563EF",
     textColorHover: "#3563EF",
+    colorHover: "#F94144",
+    colorPressed: "#F94144",
+    // borderPressed: "1px solid #F94144",
     borderFocus: "1px solid #3563EF",
     textColorFocus: "#3563EF",
     borderPressed: "1px solid #3563EF",
@@ -117,5 +120,12 @@ const themeOverrides: GlobalThemeOverrides = {
 .fade-leave-to {
   opacity: 0;
   transform: translatex(6px);
+}
+
+:deep(.n-button):hover {
+  background-color: #3563ef;
+}
+:deep(.n-button):focus {
+  background-color: #3563ef;
 }
 </style>

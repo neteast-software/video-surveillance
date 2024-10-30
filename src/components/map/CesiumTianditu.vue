@@ -41,7 +41,12 @@ const tileset = new Cesium.Cesium3DTileset({
 // const tileset = new Cesium.Cesium3DTileset({
 //   url: "/model1/G228.geojson",
 // });
-const Cartesian = Cesium.Cartesian3.fromDegrees(119.6, 25.75, zoomLevel.value);
+// const Cartesian = Cesium.Cartesian3.fromDegrees(119.6, 25.75, zoomLevel.value); //长乐
+const Cartesian = Cesium.Cartesian3.fromDegrees(
+  119.33018,
+  26.03244,
+  zoomLevel.value
+); //福州
 
 function onZoomLevelChange() {
   if (viewer) {
@@ -132,7 +137,7 @@ onMounted(() => {
   setupClickHandler(viewer); //点击事件
 
   viewer.scene.camera.changed.addEventListener(updateBuilding); //更新建筑物
-  // setAntialias(viewer); //抗锯齿
+  setAntialias(viewer); //抗锯齿
   // viewer.scene.postRender.addEventListener(updateBubble); //更新气泡位置
   viewer.scene.preRender.addEventListener(updateBubble);
 

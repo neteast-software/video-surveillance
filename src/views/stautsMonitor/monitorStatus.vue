@@ -17,7 +17,7 @@
         <div class="i-palette:monitor w-11 h-12 lt-laptop-(w-9 h-9)"></div>
         <div class="text-7.5 lt-laptop-(text-6) font-700">
           {{ monitorStatus?.alarmCount }}
-          <div class="text-(greyText 3) flex-center gap-2">
+          <div class="text-(greyText 3) text-4 font-400 flex-center gap-2">
             告警数
             <div
               class="text-(#4DC591 3) flex-center"

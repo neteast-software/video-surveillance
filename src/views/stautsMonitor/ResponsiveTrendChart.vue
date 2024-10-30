@@ -6,7 +6,7 @@
           v-for="range in timeRanges"
           :key="range.id"
           @click="activeRange = range.id"
-          class="px-4 py-1.5 rounded-md text-greyText transition"
+          class="px-4 py-1.5 rounded-md text-(greyText 4) transition lt-laptop-(px-3 py-1px text-3 h-6)"
           :class="
             activeRange === range.id ? 'bg-#3563ef text-white' : 'bg-#F5F9FF '
           "
@@ -33,7 +33,7 @@
       </div>
     </div>
     <main class="flex-h-rest flex-col">
-      <div class="grid grid-cols gap-1 mb-2">
+      <div class="grid grid-cols gap-7px mb-2">
         <div
           v-for="month in selectType === 1
             ? months.firsthalf
@@ -53,7 +53,7 @@
               trigger="hover"
               placement="bottom-start"
               :show-arrow="false"
-              style="padding: 0px"
+              style="padding: 0px; background-color: transparent"
             >
               <template #trigger>
                 <div
@@ -68,7 +68,7 @@
                   {{ currentYear }}-{{ month }}-{{ day }}
                 </div>
                 <div
-                  class="p-1.5 bg-primary/20 rounded-1 flex-between gap-10 w-full"
+                  class="p-1.5 bg-white rounded-1 flex-between gap-10 w-full"
                 >
                   <span class="text-greyText">在线数量</span>
                   {{ getAlarmCount(month, day) }}
@@ -155,33 +155,13 @@ function getAlarmCount(month: number, day: number) {
 .grid-cols {
   grid-template-columns: auto repeat(31, minmax(0, 1fr));
 }
-:deep(
-    .n-popover:not(.n-popover--raw):not(.n-popover--scrollable):not(
-        .n-popover--show-header-or-footer
-      )
-  ) {
-  background: #ff0000 !important;
-}
-
-:deep(.n-popover .n-popover:not(.n-popover--raw)) {
-  background: #ff0000 !important;
-  /* background: linear-gradient(
-    300deg,
-    rgba(236, 247, 255, 0.6) -3%,
-    rgba(247, 251, 255, 0.6) 83%
-  );
-  box-sizing: border-box;
-  border: 1px solid;
-  border-image: linear-gradient(317deg, #ffffff 8%, rgba(255, 255, 255, 0) 78%)
-    1;
-  backdrop-filter: blur(10px); */
-}
 
 .frosted {
+  /* background: transparent; */
   background: linear-gradient(
     300deg,
-    rgba(236, 247, 255, 0.6) -3%,
-    rgba(247, 251, 255, 0.6) 83%
+    rgba(236, 247, 255, 0.1) -3%,
+    rgba(247, 251, 255, 0.1) 83%
   );
   box-sizing: border-box;
   border: 1px solid;

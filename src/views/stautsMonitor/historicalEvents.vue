@@ -14,7 +14,7 @@
         {{ device.name }}
       </div>
     </div>
-    <LineChart :source="source" class="h-50"></LineChart>
+    <LineChart :source="source" class="h-55"></LineChart>
     <div class="w-full h-1px bg-greyLine my-4"></div>
     <div>
       <header class="flex-y-center justify-between font-600">
