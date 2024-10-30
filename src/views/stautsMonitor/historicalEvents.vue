@@ -14,7 +14,7 @@
         {{ device.name }}
       </div>
     </div>
-    <LineChart :source="source" class="h-60"></LineChart>
+    <LineChart :source="source" class="h-50"></LineChart>
     <div class="w-full h-1px bg-greyLine my-4"></div>
     <div>
       <header class="flex-y-center justify-between font-600">
@@ -23,7 +23,7 @@
           v-model:value="timestamp"
           format="yyyy年MM月dd"
           type="date"
-          style="width: 150px"
+          style="width: 155px"
         />
         <span
           class="cursor-pointer text-primary"
@@ -54,7 +54,7 @@
               <img
                 v-else
                 src="@/assets/imgs/text/build.png"
-                class="w-20 h-16 lt-laptop-(w-18 h-14)"
+                class="w-20 h-16 lt-laptop-(w-18 h-14) rounded-1"
                 alt=""
               />
               <div class="flex-w-rest overflow-hidden">
@@ -81,7 +81,7 @@
           </div>
         </div>
       </Transition>
-      <listEmpty v-else class="!mt-0"></listEmpty>
+      <listEmpty v-else class="!mt-0 z-0"></listEmpty>
     </div>
   </div>
 </template>
@@ -236,22 +236,6 @@ const lists = ref([
     status: "noequip",
   },
 ]);
-
-// const disablePreviousDate = (ts: number) => {
-//   return ts > Date.now();
-// };
-// function getClassByType(status: string) {
-//   switch (status) {
-//     case "alerts":
-//       return "bg-#FFF8EF";
-//     case "equip":
-//       return "bg-#F7FFFC";
-//     case "noequip":
-//       return "bg-#F5F9FF ";
-//     default:
-//       return "bg-#F7FFFC";
-//   }
-// }
 </script>
 
 <style scoped>

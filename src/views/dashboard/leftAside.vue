@@ -1,6 +1,6 @@
 <template>
   <Transition appear name="slideLeft">
-    <div class="flex-col gap-4 h-full w-24% min-w-102 lt-laptop-(min-w-92)">
+    <div class="flex-col gap-4 h-full w-24% min-w-105 lt-laptop-(min-w-92)">
       <header class="bg-white w-full rounded-2px py-6">
         <div class="mx-6 flex justify-between lt-laptop-(mx-3)">
           <div v-for="option in options" class="flex-center">
@@ -48,7 +48,9 @@
             <deviceList></deviceList>
           </n-tab-pane>
         </NTabs>
-        <div class="flex-center text-(primary 4) mt-8 h-6">
+        <div
+          class="flex-center text-(primary 4) mt-8 h-6 lt-laptop-(mt-5 text-3.5)"
+        >
           <div>
             今天事件数
             <span class="font-600">{{ eventStatistics.today }}</span>

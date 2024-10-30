@@ -23,7 +23,7 @@ const { colorPrimary, colorBg, colorText } = useTheme();
 const defaultLegend: LegendComponentOption = {
   icon: "emptyCircle",
   bottom: 0,
-  itemGap: 36,
+  itemGap: 40,
   itemWidth: 16,
   itemHeight: 16,
   textStyle: {
@@ -31,7 +31,7 @@ const defaultLegend: LegendComponentOption = {
   },
   formatter: function (params: string) {
     const value = props.source.find((item) => item.name === params)?.value;
-    return `${params} ${value}个`;
+    return `${params}   ${value}个`;
   },
 };
 interface PieChartProps {
@@ -66,8 +66,7 @@ const defaultOption = computed<PieSeriesOption>(() => {
   const hasZeroValue = props.source.some((item) => item.value === 0);
   return {
     type: "pie",
-    // radius: ["50%", "70%"],
-    center: ["50%", "40%"],
+    center: ["50%", "45%"],
     startAngle: 15,
     itemStyle: {
       borderRadius: hasZeroValue ? "" : 4,
@@ -76,40 +75,7 @@ const defaultOption = computed<PieSeriesOption>(() => {
     },
     label: {
       show: false,
-      // position: "center",
-      //   position: "outer",
-      //   formatter: function (params) {
-      //     const { percent, name } = params;
-      //     return `{pre|${percent}%}\n{name|${name}} `;
-      //   },
-      //   rich: {
-      //     pre: {
-      //       fontSize: 24,
-      //       padding: [0, -60],
-      //       lineHeight: 30,
-      //       // align: "center",
-      //     },
-      //     name: {
-      //       fontSize: 16,
-      //       lineHeight: 30,
-      //       padding: [0, -60],
-      //     },
-      //   },
-      //   fontSize: 12,
-      //   // color: '#fff'
     },
-    // emphasis: {
-    //   label: {
-    //     show: true,
-    //     fontSize: 20,
-    //     fontWeight: "bold",
-    //   },
-    // },
-    // labelLine: {
-    //   show: true,
-    //   length: 20,
-    //   length2: 55,
-    // },
   };
 });
 const option = computed(() => {

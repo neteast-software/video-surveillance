@@ -2,7 +2,7 @@
   <Transition appear name="slideRight" class="z-999 fixed right-0 top-0 z-1">
     <div
       ref="detailsRef"
-      class="flex-col bg-white h-full w-24% min-w-102 lt-laptop-(min-w-92) py-7.5"
+      class="flex-col bg-white h-full w-24% min-w-128 lt-laptop-(min-w-97) py-7.5"
       v-show="curDetailId !== 0"
     >
       <header class="flex-between mb-6 px-7.5 lt-laptop-(px-5)">
@@ -24,42 +24,33 @@
               {{ deviceDetail?.name }}
             </div>
             <div
-              class="flex-between text-(greyText 3.5) lt-laptop-(text-3 mt-2) h-11 mt-5"
+              class="flex-between text-(greyText 3.5) lt-laptop-(text-3 mt-2) h-11 mt-5 overflow-hidden"
             >
-              <div class="flex-col flex-center">
-                <div
-                  class="text-(basic 4.5) font-700 flex-center lt-laptop-(text-3.5)"
-                >
-                  {{ deviceDetail?.durationOnline }}h
-                </div>
+              <div class="message">
+                <div class="label">{{ deviceDetail?.durationOnline }}h</div>
                 在线时长
               </div>
-              <div class="flex-col flex-center">
-                <div
-                  class="text-(basic 4.5) font-700 flex-center lt-laptop-(text-3.5)"
-                >
+              <div class="message">
+                <div class="label">
                   {{ deviceDetail?.resolution }}
                 </div>
                 分辨率
               </div>
-              <div class="flex-col flex-center">
-                <div
-                  class="text-(basic 4.5) font-700 flex-center lt-laptop-(text-3.5)"
-                >
+              <div class="message">
+                <div class="label">
                   {{ deviceDetail?.compression }}
                 </div>
                 设备编码
               </div>
-              <div class="flex-(col center) gap-2">
+              <div class="gap-2 message">
                 <NTag
                   :bordered="false"
                   size="small"
-                  :type="FilterStatus(3)"
+                  :type="FilterStatus(deviceDetail?.status!)"
                   class="lt-laptop-(text-2.5 p-1 h-4)"
                 >
                   {{ deviceDetail?.status }}
                 </NTag>
-
                 设备状态
               </div>
             </div>
@@ -157,7 +148,6 @@ import { NTag, NTabs, NTabPane, NScrollbar, NSelect } from "naive-ui";
 import LineChart from "@/components/chart/LineChart.vue";
 import listEmpty from "@/components/other/listEmpty.vue";
 import { computed, ref, watch } from "vue";
-// import { getClassByType } from "@/utils/other/index";
 import { useMapInfoStore } from "@/stores/mapInfo";
 import { storeToRefs } from "pinia";
 import { getDeviceDetail } from "@/utils/network/api/dashboard";
@@ -216,11 +206,11 @@ const grid = ref({
 
 const eventData = ref([
   {
-    id: 0,
+    id: "0",
     label: "全部",
   },
   {
-    id: 1,
+    id: "1",
     label: "事件类型1",
   },
   // {
@@ -288,23 +278,9 @@ const selectDatas = ref([
 
 const filterLists = computed(() => {
   if (!alarmList.value) return [];
-  // return alarmList.value;
-  if (selectlist.value === 0) return alarmList.value;
+  if (curEventType.value === "0") return alarmList.value;
   return alarmList.value.filter((item) => item.type === curEventType.value);
 });
-
-function getClassByType(status: string) {
-  switch (status) {
-    case "alerts":
-      return "bg-#FFF8EF";
-    case "equip":
-      return "bg-#F7FFFC";
-    case "noequip":
-      return "bg-#F5F9FF ";
-    default:
-      return "bg-#F7FFFC";
-  }
-}
 
 //点击外部关闭
 // const detailsRef = ref<HTMLElement | null>(null); // 用于获取组件元素
@@ -332,5 +308,11 @@ function getClassByType(status: string) {
 }
 :deep(.n-tabs-pane-wrapper) {
   @apply h-full;
+}
+.message {
+  @apply flex-(col center);
+  .label {
+    @apply text-(basic 4.5) font-700 flex-center lt-laptop-(text-3.5);
+  }
 }
 </style>

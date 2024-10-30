@@ -3,9 +3,7 @@ import { MenuList } from "../network/types/root";
 import { h } from "vue";
 import { lineSource } from "@/components/chart/LineChart.vue";
 import { Viewer } from "linker-uii";
-// 递归处理菜单数据
-// function componentPath(component: string | undefined) {
-// }
+
 const componentMap: Record<string, RouteComponent> = {
   viewer: Viewer,
 };
@@ -16,7 +14,8 @@ export function createRoutes(menuData: MenuList[]): RouteRecordRaw[] {
       name: menuItem.path ? menuItem.path : "",
       meta: {
         title: menuItem.name,
-        icon: () => h("div", { class: `i-icons:${menuItem.icon} w-5 h-5` }),
+        icon: () =>
+          h("div", { class: `i-icons:${menuItem.path.toLowerCase()} w-5 h-5` }),
         uri: menuItem.init,
       },
       component: !menuItem.component

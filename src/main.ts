@@ -7,6 +7,11 @@ import router from "../src/router";
 import "virtual:uno.css";
 import { createPinia } from "pinia";
 import { setupCalendar } from "v-calendar";
+import { Linker } from "linker-uii";
+import http from "@/utils/network/http";
+
+const linker = Linker.create();
+linker.http = http;
 
 const pinia = createPinia();
 const app = createApp(App);

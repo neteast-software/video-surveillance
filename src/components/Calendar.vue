@@ -138,12 +138,12 @@ function animateCSS(
 </script>
 
 <template>
-  <div class="relative w-full rounded-1 p-3 lt-laptop-(px-0)">
+  <div class="relative w-full rounded-1 py-3 z-99">
     <div ref="animatedElement" class="flex-between">
       <div
         v-for="day in currentWeek"
         :key="day.label"
-        class="flex-(col y-center) bg-#F5F9FF cursor-pointer rounded-7.5 py-3 px-1.5 transition duration-500 hover:bg-primary/20"
+        class="flex-(col y-center) bg-#F5F9FF cursor-pointer rounded-7.5 pt-2 pb-1.5 px-2 lt-laptop-(px-1.5 pt-1.5 pb-1) transition duration-500 hover:bg-primary/20"
         @click="clickActiveDay(day)"
         :class="{ 'bg-primary/20': activeDate === day.day.getDate() }"
       >

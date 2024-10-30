@@ -44,7 +44,7 @@
       <div
         class="blue-gradient rounded-2 flex-w-rest min-w-70 flex-col relative"
       >
-        <div class="font-600 p-5">{{ title }}</div>
+        <div class="font-600 pl-5 pt-5">{{ title }}</div>
         <div class="fill-parent relative">
           <PieChart
             :source="source"
@@ -105,17 +105,12 @@ const deviceStatus = computed(() => [
     railColor: "#CFD3DB",
   },
 ]);
-// const source = [
-//   ["在线", 80],
-//   ["异常", 20],
-// ];
 const legend = reactive<LegendComponentOption>({
   orient: "vertical",
-  right: "25%",
+  right: "10%",
   top: "middle",
 });
 const seriesOption = reactive({
-  radius: ["0", "90%"],
   center: ["30%", "50%"],
 });
 </script>

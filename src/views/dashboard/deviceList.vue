@@ -25,25 +25,28 @@
             <span class="text-lightGrey">{{ data.compression }}</span>
           </div>
           <div class="flex-between text-greyText h-11">
-            <div class="flex-col flex-center">
-              <div class="text-(basic 4) font-700 flex-center">
+            <div class="flex-col flex-center lt-laptop-(text-3)">
+              <div
+                class="text-(basic 4) font-700 flex-center lt-laptop-(text-3.5)"
+              >
                 {{ data.durationOnline }}h
               </div>
               在线时长
             </div>
-            <div class="flex-col flex-center">
+            <div class="flex-col flex-center lt-laptop-(text-3)">
               <div
-                class="text-(basic 4) font-700 flex-center lt-laptop-(text-4)"
+                class="text-(basic 4) font-700 flex-center lt-laptop-(text-3.5)"
               >
                 {{ data.resolution }}
               </div>
               分辨率
             </div>
-            <div class="flex-(col center) gap-2">
+            <div class="flex-(col center) gap-2 lt-laptop-(text-3)">
               <NTag
                 :bordered="false"
                 size="small"
                 :type="FilterStatus(data.status!)"
+                class="px-1 h-3.5"
               >
                 {{ data.status }}
               </NTag>

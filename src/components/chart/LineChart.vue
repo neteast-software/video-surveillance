@@ -75,7 +75,7 @@ const defaultYAxis: YAXisComponentOption = {
 };
 const defaultLegend: LegendComponentOption = {
   icon: "circle",
-  bottom: 10,
+  bottom: 0,
   itemGap: 10,
   itemWidth: 8,
   itemHeight: 8,

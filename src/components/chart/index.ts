@@ -9,7 +9,7 @@ export interface BaseChartProps {
 export const defaultGrid: GridComponentOption = {
   left: "8%",
   right: "5%",
-  bottom: "30%",
+  bottom: "24%",
   top: "15%",
 };
 export const lineDefaultSeries: LineSeriesOption = {
