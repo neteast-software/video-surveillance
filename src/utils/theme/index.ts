@@ -91,7 +91,7 @@ export default function useTheme() {
   // const basicColorVar = useCssVar('--text-color'); //#040a12
   const naiveThemeOverrides = shallowRef<GlobalThemeOverrides>({});
   const colorPrimary = ref("");
-  const colorBg = ref("");
+  const colorBg = ref("#fff");
   const colorText = ref("");
   watch(
     isDark,

@@ -15,12 +15,12 @@ export const defaultGrid: GridComponentOption = {
 export const lineDefaultSeries: LineSeriesOption = {
   type: "line",
   seriesLayoutBy: "row",
-  // smooth: true,
-  // showSymbol: false,
   lineStyle: {
     width: 3,
     cap: "round",
   },
+  symbolSize: 5,
+  symbol: "circle",
 };
 
 export { default as PieChart } from "./PieChart.vue";

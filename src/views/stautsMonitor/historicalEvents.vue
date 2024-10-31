@@ -20,11 +20,12 @@
       <header class="flex-y-center justify-between font-600">
         <!-- :is-date-disabled="disablePreviousDate" -->
         <NDatePicker
+          type="month"
           v-model:value="timestamp"
-          format="yyyy年MM月dd"
-          type="date"
-          style="width: 155px"
-        />
+          format="yyyy年MM月"
+          style="width: 150px"
+        >
+        </NDatePicker>
         <span
           class="cursor-pointer text-primary"
           :class="{ 'text-primary/20': clickDate === todayDate }"
@@ -88,7 +89,7 @@
 
 <script setup lang="ts">
 import LineChart from "@/components/chart/LineChart.vue";
-import Calendar from "@/components/Calendar.vue";
+import Calendar from "@/components/CalendarMonth.vue";
 import listEmpty from "@/components/other/listEmpty.vue";
 import { computed, onMounted, ref, watch } from "vue";
 import { NDatePicker } from "naive-ui";
@@ -104,7 +105,7 @@ import { createLineChart } from "@/utils/other/create";
 // import "v-calendar/style.css";
 // import { DatePicker } from "v-calendar";
 import { format } from "date-fns";
-import { getMonday, getSunday } from "@/utils/other/calendar";
+import { getFirstDayOfMonth, getLastDayOfMonth } from "@/utils/other/calendar";
 
 const todayDate = format(new Date(), "yyyy-MM-dd"); // 当前日期
 const timestamp = ref(new Date().getTime()); // 当前时间戳
@@ -146,8 +147,15 @@ async function initsource() {
 watch(() => curdeviceType.value, initsource);
 
 const params = computed(() => {
-  const startDay = format(getMonday(new Date(timestamp.value)), "yyyy-MM-dd");
-  const endDay = format(getSunday(new Date(timestamp.value)), "yyyy-MM-dd");
+  const startDay = format(
+    getFirstDayOfMonth(new Date(timestamp.value)),
+    "yyyy-MM-dd"
+  );
+  const endDay = format(
+    getLastDayOfMonth(new Date(timestamp.value)),
+    "yyyy-MM-dd"
+  );
+  console.log(startDay, endDay);
   return { startDay, endDay };
 });
 const events = ref();

@@ -26,8 +26,11 @@ const defaultLegend: LegendComponentOption = {
   itemGap: 40,
   itemWidth: 16,
   itemHeight: 16,
-  textStyle: {
-    fontSize: 14,
+  // textStyle: {
+  //   fontSize: 14,
+  // },
+  itemStyle: {
+    borderWidth: 10, // 设置图例标记的边框宽度
   },
   formatter: function (params: string) {
     const value = props.source.find((item) => item.name === params)?.value;
@@ -42,6 +45,7 @@ interface PieChartProps {
   legend?: LegendComponentOption;
   grid?: GridComponentOption;
   tooltip?: TooltipComponentOption;
+  title?: any;
 }
 const defaultColors = computed(() => {
   return [colorPrimary.value, "#DDE5DD"];
@@ -67,7 +71,7 @@ const defaultOption = computed<PieSeriesOption>(() => {
     props.source.filter((item) => item.value === 0).length === 1;
   return {
     type: "pie",
-    radius: ["50%", "75%"],
+    radius: ["65%", "80%"],
     center: ["50%", "45%"],
     startAngle: 15,
     itemStyle: {
@@ -78,6 +82,7 @@ const defaultOption = computed<PieSeriesOption>(() => {
     label: {
       show: false,
     },
+    avoidLabelOverlap: false, // 防止标签重叠
     // emphasis: {
     //   label: {
     //     show: true,
@@ -87,8 +92,9 @@ const defaultOption = computed<PieSeriesOption>(() => {
     // },
   };
 });
+
 const option = computed(() => {
-  const { source, color, series, seriesOption, legend, tooltip } = props;
+  const { source, color, series, seriesOption, legend, tooltip, title } = props;
   if (source.length === 0) return {};
   const mixSeriesOption = { ...defaultOption.value, ...seriesOption };
   return {
@@ -105,6 +111,7 @@ const option = computed(() => {
     },
     color: color.length ? color : defaultColors.value,
     series: series || [mixSeriesOption],
+    title,
   };
 });
 </script>

@@ -81,13 +81,18 @@ const themeOverrides: GlobalThemeOverrides = {
   Button: {
     borderHover: "1px solid #3563EF",
     textColorHover: "#3563EF",
-    colorHover: "#F94144",
-    colorPressed: "#F94144",
+    // colorHover: "#F94144",
+    // colorPressed: "#F94144",
     // borderPressed: "1px solid #F94144",
     borderFocus: "1px solid #3563EF",
     textColorFocus: "#3563EF",
     borderPressed: "1px solid #3563EF",
     textColorPressed: "#3563EF",
+    colorHoverPrimary: "#3563EF",
+    colorPressedPrimary: "#3563EF",
+    // textColorHoverError: "#FFF8EF",
+    // colorHoverError: "#FFF8EF",.
+    colorPressedError: "#F94144",
   },
   Popselect: {
     extraTextColor: "#3563EF",

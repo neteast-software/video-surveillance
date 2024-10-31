@@ -35,7 +35,7 @@ function getCurrentWeek(date: Date) {
     day.setDate(monday.getDate() + i);
     week.push({
       day,
-      label: String(day.getDate()).padStart(2, "0"), // 确保 label 是两位数
+      label: String(day.getDate()), // 确保 label 是两位数
       weekDay: ["日", "一", "二", "三", "四", "五", "六"][day.getDay()], // 获取日期的“星期”
     });
   }

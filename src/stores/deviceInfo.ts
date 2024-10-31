@@ -171,7 +171,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     const { data } = await getAllDevices();
     console.log("initAllDevices", data);
     if (!data) return;
-    dataList.value = data;
+    // dataList.value = data;
   }
 
   const deviceStatus = ref([

@@ -50,6 +50,7 @@
             :source="source"
             :legend="legend"
             :seriesOption="seriesOption"
+            :title="pieTitle"
           ></PieChart>
         </div>
       </div>
@@ -69,6 +70,7 @@ import { deviceType } from "@/utils/other/data";
 const deviceData = ref<DeviceStatus>();
 const source = ref<PieSource>([]);
 const title = ref("整体在线率");
+
 async function initData() {
   const { data } = await getDeviceStatus(selectType.value);
   console.log(data);
@@ -112,6 +114,32 @@ const legend = reactive<LegendComponentOption>({
 });
 const seriesOption = reactive({
   center: ["30%", "50%"],
+});
+const pieTitle = computed(() => {
+  const isSmallScreen = window.innerHeight < 1000;
+  const isLargeScreen = window.innerWidth > 2560;
+  //求在线率
+  const online = source.value.find((item) => item.name === "在线")?.value || 0;
+  const totalCount = source.value.reduce((acc, item) => acc + item.value, 0);
+  const onlineRate =
+    totalCount > 0 ? ((online / totalCount) * 100).toFixed(0) + "%" : "0%";
+  return {
+    show: true,
+    text: onlineRate,
+    subtext: "在线率",
+    left: isSmallScreen ? "28%" : "28%",
+    top: isSmallScreen ? "36%" : "40%",
+    textAlign: "center",
+    itemGap: 5,
+    textStyle: {
+      fontSize: isSmallScreen ? 24 : 30,
+      color: "#3563EF",
+      fontWeight: "bold",
+    },
+    subtextStyle: {
+      fontSize: 14,
+    },
+  };
 });
 </script>
 

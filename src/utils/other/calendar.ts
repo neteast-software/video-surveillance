@@ -13,3 +13,12 @@ export function getSunday(d: Date) {
   const diff = d.getDate() + (7 - day); // 调整到本周的周日
   return new Date(d.setDate(diff));
 }
+
+//获取当前月份第一天的日期
+export function getFirstDayOfMonth(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+//获取当前月份最后一天的日期
+export function getLastDayOfMonth(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+}
