@@ -48,8 +48,15 @@ onMounted(() => {
     requestRenderMode: true
   })
   viewer.scene.debugShowFramesPerSecond = true
-  viewer.imageryLayers.addImageryProvider(newtdtMap("vec"))
-  viewer.imageryLayers.addImageryProvider(newtdtMap("cva"))
+  const vecLayer = viewer.imageryLayers.addImageryProvider(newtdtMap("vec"))
+  const cvaLayer = viewer.imageryLayers.addImageryProvider(newtdtMap("cva"))
+
+  // vecLayer.hue = -40.9
+  // vecLayer.contrast = -0.9
+  // cvaLayer.hue = -40.9
+  // cvaLayer.contrast = -0.9
+
+
   viewer.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
 
 
