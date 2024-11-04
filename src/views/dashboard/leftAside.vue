@@ -81,7 +81,9 @@ import {
   getEventStatistics,
 } from "@/utils/network/api/dashboard";
 import { deviceType } from "@/utils/other/data";
-
+import { useMapInfoStore } from "@/stores/mapInfo";
+const mapInfo = useMapInfoStore();
+const { isMapReady } = storeToRefs(mapInfo);
 const deviceInfo = useDeviceInfoStore();
 const { curdeviceType } = storeToRefs(deviceInfo);
 const { initAllDevices } = deviceInfo;
