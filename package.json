@@ -16,7 +16,7 @@
     "@videojs-player/vue": "^1.0.0",
     "@vueuse/components": "^10.4.1",
     "@vueuse/core": "^11.1.0",
-    "cesium": "1.99",
+    "cesium": "^1.122.0",
     "cesium-navigation-es6": "^3.0.9",
     "colord": "^2.9.3",
     "crypto-js": "^4.1.1",

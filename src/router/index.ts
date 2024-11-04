@@ -7,7 +7,7 @@ import storage from "@/utils/other/storage";
 import { getMenuList } from "@/utils/network/api/root";
 import { login } from "@/utils/network/api/root";
 import type { MenuList } from "@/utils/network/types/root";
-import { ref, reactive } from "vue";
+import { ref, reactive, h } from "vue";
 import { createMenu, createRoutes } from "@/utils/other/create";
 
 // export const routes: RouteRecordRaw[] = [
@@ -85,7 +85,17 @@ export const menuOptions = ref();
 export const routes = ref<RouteRecordRaw[]>([]);
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [{ path: "/", redirect: "/index" }],
+  routes: [{ path: "/", redirect: "/index" },
+    // {
+    //   path: "/dashboard",
+    //   name: "dashboard",
+    //   component: () => import("../views/dashboard/index.vue"),
+    //   meta: {
+    //     title: "综合看板",
+    //     icon: () => h("div", { class: "i-icons:dashboard  w-5 h-5" }),
+    //   },
+    // },
+  ],
 });
 let hasGetRouter = false;
 router.beforeEach(async (to, _, next) => {

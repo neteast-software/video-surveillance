@@ -9,6 +9,14 @@ export const useMapInfoStore = defineStore("mapInfo", () => {
   const curDetailId = ref(0); // 当前详情id
   const curBaseMapStyle = ref(true); // 当前底图样式
 
+  const isShowControlBar = ref(false)
+
+  function showControlBar() {
+    isShowControlBar.value = true
+  }
+
+  const isMapReady = computed(() => isShowControlBar.value)
+
   return {
     // showDetails,
     curDetailId,
@@ -16,5 +24,8 @@ export const useMapInfoStore = defineStore("mapInfo", () => {
     show3D,
     backOrigin,
     curBaseMapStyle,
+    showControlBar,
+    isShowControlBar,
+    isMapReady
   };
 });

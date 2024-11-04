@@ -8,8 +8,8 @@
     <div class="absolute top-0 left-0 w-full h-full z-0">
       <CesiumTianditu></CesiumTianditu>
       <PointBubble></PointBubble>
-      <Transition appear name="slideRight">
-        <MapControls class="absolute right-7.5 bottom-7.5 z-1"></MapControls>
+      <Transition name="slideRight">
+        <MapControls v-show="isMapReady" class="absolute right-7.5 bottom-7.5 z-1"></MapControls>
       </Transition>
     </div>
   </div>
@@ -28,7 +28,7 @@ import { useMapInfoStore } from "@/stores/mapInfo";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 const mapInfo = useMapInfoStore();
-const { curDetailId } = storeToRefs(mapInfo);
+const { curDetailId, isMapReady } = storeToRefs(mapInfo);
 const deviceInfo = useDeviceInfoStore();
 const { curdeviceListId } = storeToRefs(deviceInfo);
 

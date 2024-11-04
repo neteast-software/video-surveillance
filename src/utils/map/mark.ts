@@ -1,5 +1,5 @@
 import * as Cesium from "cesium";
-import Color from "cesium/Source/Core/Color";
+import { Color } from 'cesium'
 import Viewer from "cesium/Source/Widgets/Viewer/Viewer";
 import { ref, watch } from "vue";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
@@ -66,7 +66,7 @@ export function calculateScreenPosition(
   viewer: Cesium.Viewer,
   position: Cesium.Cartesian3
 ) {
-  const screenPosition = Cesium.SceneTransforms.wgs84ToWindowCoordinates(
+  const screenPosition = Cesium.SceneTransforms.worldToWindowCoordinates(
     viewer.scene,
     position
   );
