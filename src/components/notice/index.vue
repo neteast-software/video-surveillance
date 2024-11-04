@@ -9,7 +9,7 @@
     <header class="px-7.5 h-20 text-(white 6) flex-(between y-center)">
       <div class="flex-y-center gap-2">
         <div class="i-icons:notice w-6 h-6"></div>
-        关于「体验版权益调整」的公告
+        告警通知
       </div>
       <div
         class="i-icons:close w-6 h-6 cursor-pointer"
@@ -21,60 +21,117 @@
         class="inline-flex gap-2 bg-#F9F9F9 p-1 mx-7.5 rounded-2 border-(1px solid #f0f0f2) mb-5"
       >
         <div
-          v-for="data in datas"
-          :key="data.label"
-          @click="active = data.label"
+          v-for="data in alarmCategory"
+          :key="data.value"
+          @click="curCategory = data.value"
           :class="[
             'px-4 py-1 rounded-2 text-greyText cursor-pointer flex-center gap-1 transition',
-            active === data.label ? 'bg-#3563ef text-white' : '',
+            curCategory === data.value ? 'bg-#3563ef text-white' : '',
           ]"
         >
-          <div class="w-5 h-5" :class="`i-icons:${data.label}`"></div>
-          {{ data.name }}({{ data.value }})
+          <div
+            class="w-5 h-5"
+            :class="`i-icons:${getIconClass(data.value)}`"
+          ></div>
+          {{ data.category }}({{ data.num }})
         </div>
       </div>
-      <NScrollbar class="h-120 px-7.5">
-        <div class="flex gap-5 mb-4" v-for="index in 8">
+      <NScrollbar class="px-7.5 !h-120 text-4">
+        <div class="flex gap-5 mb-4" v-for="record in myList?.records">
           <img
             src="../../assets/imgs/text/listImg.png"
             class="w-45 h-30"
             alt=""
           />
-          <div class="flex-col justify-between py-1 w-full">
-            <span class="text-4.5 font-600"
-              >通知名称通知名称通知名称通知名称通知名称通知名称通知名称通知名称通知名称通知名称通知名称通知名称</span
-            >
+          <div class="flex-col justify-between py-1 flex-w-rest">
+            <div class="">
+              <div class="text-4.5 font-600 truncate mb-1">
+                {{ record.title }}
+              </div>
+              <div class="overflow-hidden content-ellipsis text-greyText">
+                {{ record.content }}
+              </div>
+            </div>
             <div class="flex-between text-greyText">
               <div class="flex-center gap-3">
                 <div class="text-(primary 3) px-2 bg-#E1EAF6 rounded-2px">
-                  类型名称
+                  {{ record.typeLabel }}
                 </div>
-                <span>来源：系统监测</span>
+
+                <span class="text-greyText"
+                  >来源设备：{{ record.deviceName }}</span
+                >
               </div>
-              <span>2024-09-20 09：00</span>
+              <span class="text-lightGrey">{{ record.happenTime }}</span>
             </div>
           </div>
         </div>
       </NScrollbar>
+      <footer class="flex-center mt-2 gap-5">
+        <div>总数 {{ myList?.total }}</div>
+        <NPagination
+          :display-order="['size-picker', 'pages', 'quick-jumper']"
+          v-model:page="page"
+          v-model:page-size="pageSize"
+          :page-count="myList?.pages"
+          show-quick-jumper
+          show-size-picker
+          :page-sizes="[1, 10, 20, 30, 50]"
+        />
+      </footer>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { NScrollbar } from "naive-ui";
+import { onMounted, ref, watch } from "vue";
+import { NScrollbar, NPagination } from "naive-ui";
+import { getMyList } from "@/utils/network/api/index";
+import { MyList } from "@/utils/network/types";
+import { useCommonDataStore } from "@/stores/index";
+import { storeToRefs } from "pinia";
+const CommonData = useCommonDataStore();
+const { alarmCategory } = storeToRefs(CommonData);
+const { getAlarmCategoryData } = CommonData;
 interface Props {
   showModal: boolean;
 }
 const emit = defineEmits(["update:showModal"]);
 withDefaults(defineProps<Props>(), {});
-const active = ref("all");
-const datas = ref([
-  { name: "全部", value: "12", label: "all" },
-  { name: "消息通知", value: "5", label: "mesnotice" },
-  { name: "设备预警", value: "4", label: "quipwarn" },
-  { name: "系统通知", value: "3", label: "sysnotice" },
-]);
+const curCategory = ref("");
+const page = ref(1);
+const pageSize = ref(10);
+const myList = ref<MyList>();
+function getIconClass(value: string) {
+  switch (value) {
+    case "":
+      return "all";
+    case "1":
+      return "quipwarn";
+    default:
+      return "defaultIcon";
+  }
+}
+
+async function initData() {
+  const { data } = await getMyList(curCategory.value);
+  console.log(data);
+  myList.value = data;
+}
+onMounted(() => {
+  initData();
+  getAlarmCategoryData();
+});
+watch(() => curCategory.value, initData);
 </script>
 
-<style scoped></style>
+<style scoped>
+.content-ellipsis {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* 控制显示的行数 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 3rem; /* 根据字体大小调整高度以显示两行 */
+}
+</style>

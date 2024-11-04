@@ -9,7 +9,10 @@
       <CesiumTianditu></CesiumTianditu>
       <PointBubble></PointBubble>
       <Transition name="slideRight">
-        <MapControls v-show="isMapReady" class="absolute right-7.5 bottom-7.5 z-1"></MapControls>
+        <MapControls
+          v-show="isMapReady"
+          class="absolute right-7.5 bottom-7.5 z-1"
+        ></MapControls>
       </Transition>
     </div>
   </div>

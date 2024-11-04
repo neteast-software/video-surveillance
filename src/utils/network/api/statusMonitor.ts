@@ -31,10 +31,10 @@ export const getAlarmCount = async () => {
   return data.value!;
 };
 //告警事件趋势
-export const getAlarmTrend = async (source?: string, category?: number) => {
+export const getAlarmTrend = async (source?: string, category?: string) => {
   const params: Record<string, any> = {};
   if (source !== undefined && source !== "0") params.source = source;
-  if (category !== undefined && category !== 0) params.category = category;
+  if (category !== undefined && category !== "") params.category = category;
   const { data } = await http.get<{ data: AlarmTrend[] }>(
     "/v2/index/alarmTrend",
     params

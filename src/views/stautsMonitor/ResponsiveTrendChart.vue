@@ -3,16 +3,18 @@
     <div class="flex justify-between space-y-4">
       <div class="flex gap-2">
         <button
-          v-for="range in timeRanges"
-          :key="range.id"
-          @click="activeRange = range.id"
+          v-for="range in alarmCategory"
+          :key="range.value"
+          @click="activeRange = range.value"
           class="px-4 py-1.5 rounded-md text-(greyText 4) transition lt-laptop-(px-3 py-1px text-3 h-6)"
           :class="
-            activeRange === range.id ? 'bg-#3563ef text-white' : 'bg-#F5F9FF '
+            activeRange === range.value
+              ? 'bg-#3563ef text-white'
+              : 'bg-#F5F9FF '
           "
         >
           <!-- border-(1px solid #eaeaea) -->
-          {{ range.name }}
+          {{ range.category }}
         </button>
       </div>
       <!-- <div class="absolute left-30 top-20 w-30 h-20 frosted z-9999">111</div> -->
@@ -101,6 +103,12 @@ import { onMounted, ref, watch } from "vue";
 import { NPopover } from "naive-ui";
 import { getAlarmTrend } from "@/utils/network/api/statusMonitor";
 import type { AlarmTrend } from "@/utils/network/types/statusMonitor";
+import { useCommonDataStore } from "@/stores/index";
+import { storeToRefs } from "pinia";
+
+const CommonData = useCommonDataStore();
+const { alarmCategory } = storeToRefs(CommonData);
+const { getAlarmCategoryData } = CommonData;
 interface Props {
   selectType?: string;
 }
@@ -108,7 +116,7 @@ const props = withDefaults(defineProps<Props>(), {
   selectType: "0",
 });
 
-const activeRange = ref(0);
+const activeRange = ref("");
 const currentDate = ref(new Date()); // 当前日期
 const currentYear = currentDate.value.getFullYear(); // 当前年份
 const alarmTrendData = ref<AlarmTrend[]>([]);
@@ -116,11 +124,10 @@ async function initdata() {
   const { data } = await getAlarmTrend(props.selectType, activeRange.value);
   alarmTrendData.value = data;
 }
-onMounted(initdata);
-const timeRanges = [
-  { id: 0, name: "全部" },
-  { id: 1, name: "离线次数" },
-];
+onMounted(() => {
+  initdata();
+  getAlarmCategoryData("1");
+});
 const colorRanges = [
   { min: 0, max: 100 },
   { min: 100, max: 200 },
