@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full py-4 bg relative border-r-(2px solid greyLine)">
+  <div class="h-full py-4 bg relative border-r-(1px solid greyLine)">
     <div class="flex-col h-full">
       <header
         class="flex-center bg-#EFF3F7 rounded-2 p-2 min-w-48 mb-4.5 mx-2.5"
@@ -9,7 +9,7 @@
           Yaomeier
           <div class="text-(2.5 lightGrey)">1565****367</div>
         </div>
-        <div class="w-4 h-4 bg-white flex-center">
+        <div class="w-4 h-4 bg-white flex-center rounded-1">
           <div class="i-icons:caretdown w-3 h-3 text-lightGrey"></div>
         </div>
       </header>
@@ -21,7 +21,7 @@
           @update:value="handleMenuSelect"
         />
       </NScrollbar>
-      <div class="w-full h-1px bg-greyLine my-10 lt-laptop-(my-7) mx-2.5"></div>
+      <div class="h-1px bg-greyLine my-10 lt-laptop-(my-7) mx-2.5"></div>
       <div class="z-1 mx-2.5">
         <div class="text-(3 lightGrey) mb-6">数据</div>
         <div>

@@ -1,6 +1,6 @@
 <template>
-  <div class="fill-parent flex-col gap-2 relative">
-    <div class="flex justify-between mb-5 space-y-4 lt-laptop-(mb-2)">
+  <div class="flex-col gap-2 relative h-full justify-between">
+    <div class="flex justify-between space-y-4">
       <div class="flex gap-2">
         <button
           v-for="range in timeRanges"
@@ -32,8 +32,8 @@
         </span>
       </div>
     </div>
-    <main class="flex-h-rest flex-col">
-      <div class="grid grid-cols gap-7px mb-2">
+    <main class="flex-col">
+      <div class="grid grid-cols gap-7px mb-2 lt-laptop-(gap-5px)">
         <div
           v-for="month in selectType === 1
             ? months.firsthalf
@@ -53,7 +53,11 @@
               trigger="hover"
               placement="bottom-start"
               :show-arrow="false"
-              style="padding: 0px; background-color: transparent"
+              style="
+                padding: 0px;
+                background-color: transparent;
+                border-radius: 6px;
+              "
             >
               <template #trigger>
                 <div
@@ -164,9 +168,10 @@ function getAlarmCount(month: number, day: number) {
     rgba(247, 251, 255, 0.1) 83%
   );
   box-sizing: border-box;
-  border: 1px solid;
-  border-image: linear-gradient(317deg, #ffffff 8%, rgba(255, 255, 255, 0) 78%)
-    1;
+  border: 1px solid #fff;
+  /* border-image: linear-gradient(317deg, #ffffff 8%, rgba(255, 255, 255, 0) 78%)
+    1; */
   backdrop-filter: blur(10px);
+  border-radius: 6px;
 }
 </style>

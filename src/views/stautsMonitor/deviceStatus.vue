@@ -2,9 +2,7 @@
   <div class="dataframe">
     <header class="flex-center justify-between mb-4 lt-laptop-(mb-2)">
       <h1>设备状态</h1>
-      <div
-        class="w-56 h-8 bg-#F5F9FF border-(1 solid greyLine) rounded-7.5 flex cursor-pointer"
-      >
+      <div class="w-56 h-8 bg-#F5F9FF rounded-7.5 flex cursor-pointer">
         <div
           class="w-1/3 flex-center rounded-7.5 text-greyText transition"
           v-for="item in deviceType"
@@ -21,7 +19,7 @@
       >
         <div class="font-600 mb-3 lt-laptop-(mb-1.5)">今日设备状态</div>
         <div
-          class="flex-col flex-h-rest justify-between max-h-50 lt-laptop-(gap-1)"
+          class="flex-col flex-h-rest justify-between max-h-50 gap-2 lt-laptop-(gap-1)"
         >
           <div v-for="device in deviceStatus" class="flex-y-center gap-4">
             <div :class="`i-palette:${device.label} `" class="w-5 h-5"></div>
@@ -70,6 +68,7 @@ import { deviceType } from "@/utils/other/data";
 const deviceData = ref<DeviceStatus>();
 const source = ref<PieSource>([]);
 const title = ref("整体在线率");
+const isSmallScreen = window.innerHeight < 1000;
 
 async function initData() {
   const { data } = await getDeviceStatus(selectType.value);
@@ -112,12 +111,13 @@ const legend = reactive<LegendComponentOption>({
   right: "10%",
   top: "middle",
 });
-const seriesOption = reactive({
-  center: ["30%", "50%"],
+const seriesOption = computed(() => {
+  return {
+    center: ["30%", "50%"],
+    radius: isSmallScreen ? ["60%", "80%"] : ["60%", "80%"],
+  };
 });
 const pieTitle = computed(() => {
-  const isSmallScreen = window.innerHeight < 1000;
-  const isLargeScreen = window.innerWidth > 2560;
   //求在线率
   const online = source.value.find((item) => item.name === "在线")?.value || 0;
   const totalCount = source.value.reduce((acc, item) => acc + item.value, 0);

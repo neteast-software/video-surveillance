@@ -15,35 +15,54 @@
         <NTree
           :show-irrelevant-nodes="false"
           :pattern="pattern"
-          :data="treeData"
+          :data="treeList"
+          key-field="id"
+          label-field="name"
           block-line
+          :default-expand-all="true"
           :render-suffix="renderSuffix"
           @update:selected-keys="updateCheckedKeys"
-          :default-expanded-keys="defaultExpandedKeys"
+          :default-selected-keys="defaultExpandedKeys"
         />
       </NScrollbar>
-      <!-- :render-switcher-icon="renderSwitcherIcon"  -->
-      <NButton class="mb-3 mr-5">
+      <NButton class="mb-3 !mr-5">
         <div class="i-icons:add w-5 h-5"></div>
         添加设备
       </NButton>
     </aside>
     <div class="h-full w-1px bg-greyLine mr-5"></div>
-    <Viewer class="flex-w-rest h-full" uri="/linker/viewer"></Viewer>
+    <Viewer
+      :key="treeListId"
+      class="flex-w-rest h-full"
+      :uri="`/channelInfo/dynamicList?areaId=${treeListId}`"
+    ></Viewer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Viewer } from "linker-uii";
 import { NInput, NTree, NButton, NScrollbar, NPopselect } from "naive-ui";
-import { h, ref } from "vue";
-import { treeData } from "./text";
+import { h, onMounted, ref } from "vue";
+// import { treeData } from "./text";
+import { getTreeList } from "@/utils/network/api/deviceManage";
+import type { TreeList } from "@/utils/network/types/deviceManage";
 const pattern = ref("");
-const defaultCheckedKeys = ref(["2-1-0"]);
-const defaultExpandedKeys = ref(["1", "1-0", "1-0-0"]);
-function renderPrefix() {
-  return h("div", { class: "i-icons:architecture w-5 h-5" }, {});
+const treeList = ref<TreeList[]>();
+const defaultExpandedKeys = ref([1]); // 声明为数组类型
+async function initData() {
+  const { data } = await getTreeList();
+  if (!data) return;
+  treeList.value = data;
+  console.log("treeData", treeList.value);
+  // 设置第一个节点的 id 为默认展开的节点
+  if (treeList.value.length > 0) {
+    defaultExpandedKeys.value = [treeList.value[0].id];
+  }
 }
+
+onMounted(initData);
+
+// const defaultExpandedKeys = ref(["0"]);
 function renderSuffix() {
   return h(
     NPopselect,
@@ -67,8 +86,15 @@ function renderSuffix() {
     }
   );
 }
-function updateCheckedKeys(keys: string[]) {
-  console.log("11111111", keys);
+
+const treeListId = ref(1);
+// 更新选中项，确保始终有一个选中节点
+function updateCheckedKeys(keys: number[]) {
+  if (keys.length === 0) {
+    keys.push(treeListId.value);
+  } else {
+    treeListId.value = keys[0];
+  }
 }
 </script>
 

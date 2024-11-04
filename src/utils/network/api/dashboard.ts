@@ -1,7 +1,5 @@
 import http from "../http";
-// import Pack from "../pack";
 import type { AllDevices, DeviceDetail } from "../types/dashboard";
-// const pack = new http();
 
 //获取数量统计
 export const getOnlineStatistics = async () => {

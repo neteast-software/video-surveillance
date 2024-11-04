@@ -5,7 +5,6 @@
   >
     <navbar v-model:showModal="showModal"></navbar>
     <main class="flex flex-h-rest">
-      <!--  v-if="isLogin" -->
       <NModal
         v-model:show="showModal"
         transform-origin="center"
@@ -25,11 +24,6 @@
         </router-view>
       </div>
     </main>
-    <!-- <template v-else>
-      <NSpin class="absolute-center" size="large">
-        <template #description> 登录中 </template>
-      </NSpin>
-    </template> -->
   </LkNaiveProvider>
 </template>
 
@@ -93,6 +87,7 @@ const themeOverrides: GlobalThemeOverrides = {
     // textColorHoverError: "#FFF8EF",
     // colorHoverError: "#FFF8EF",.
     colorPressedError: "#F94144",
+    colorPressed: "#3563EF",
   },
   Popselect: {
     extraTextColor: "#3563EF",
@@ -131,6 +126,9 @@ const themeOverrides: GlobalThemeOverrides = {
   background-color: #3563ef;
 }
 :deep(.n-button):focus {
+  background-color: #3563ef;
+}
+:deep(.n-button):active {
   background-color: #3563ef;
 }
 </style>

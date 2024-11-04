@@ -3,7 +3,7 @@
     <h1>安全帽状态</h1>
     <div class="flex gap-6 lt-laptop-(gap-3) mt-3">
       <div
-        class="blue-gradient flex flex-y-center gap-9 px-7 py-6 w-full rounded-2 lt-laptop-(gap-4 px-3 py-2)"
+        class="blue-gradient flex flex-y-center gap-9 px-7 py-5 w-full rounded-2 lt-laptop-(gap-4 px-3 py-2)"
       >
         <div class="i-palette:probe w-11 h-12 lt-laptop-(w-9 h-9)"></div>
         <div class="text-7.5 lt-laptop-(text-6) font-700">
@@ -12,7 +12,7 @@
         </div>
       </div>
       <div
-        class="blue-gradient flex flex-y-center gap-9 px-7 py-6 w-full rounded-2 lt-laptop-(gap-4 px-3 py-2)"
+        class="blue-gradient flex flex-y-center gap-9 px-7 py-3 w-full rounded-2 lt-laptop-(gap-4 px-3 py-2)"
       >
         <div class="i-palette:probe w-11 h-12 lt-laptop-(w-9 h-9)"></div>
         <div class="text-7.5 lt-laptop-(text-6) font-700">

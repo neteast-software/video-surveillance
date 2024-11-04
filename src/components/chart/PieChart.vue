@@ -20,17 +20,20 @@ import { DatasetSource } from "./index";
 export type PieSource = DatasetSource | { name: string; value: number }[];
 export type { PieSeriesOption } from "echarts/charts";
 const { colorPrimary, colorBg, colorText } = useTheme();
+const legends = ["在线", "离线"];
 const defaultLegend: LegendComponentOption = {
   icon: "emptyCircle",
   bottom: 0,
   itemGap: 40,
-  itemWidth: 16,
-  itemHeight: 16,
+  itemWidth: 12,
+  itemHeight: 12,
   // textStyle: {
   //   fontSize: 14,
   // },
   itemStyle: {
-    borderWidth: 10, // 设置图例标记的边框宽度
+    // color: "#fff",
+    // borderColor: "#3563EF",
+    // borderWidth: 4,
   },
   formatter: function (params: string) {
     const value = props.source.find((item) => item.name === params)?.value;
@@ -71,7 +74,7 @@ const defaultOption = computed<PieSeriesOption>(() => {
     props.source.filter((item) => item.value === 0).length === 1;
   return {
     type: "pie",
-    radius: ["65%", "80%"],
+    radius: ["65%", "85%"],
     center: ["50%", "45%"],
     startAngle: 15,
     itemStyle: {

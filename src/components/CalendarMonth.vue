@@ -96,11 +96,12 @@ watch(
 // 计算某一天的事件数量
 function getEventColors(day: string) {
   if (!props.events) return [];
-  const event = props.events.find((event) => event.date.split("-")[2] === day);
+  const event = props.events.find(
+    (event) => parseInt(event.date.split("-")[2]) === parseInt(day)
+  );
   if (!event) return [];
   const colors = [];
   if (event.offlineAlarm) colors.push("bg-info");
-  // if (event.onlineAlarm) colors.push("bg-success");
   return colors;
 }
 

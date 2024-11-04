@@ -40,7 +40,7 @@
         :events="events"
       ></Calendar>
     </div>
-    <div class="relative flex-h-rest">
+    <div class="relative flex-h-rest overflow-hidden">
       <Transition appear name="slideBottom" v-if="alarmList.length > 0">
         <div class="flex-col gap-2.5 h-full mt-2 overflow-auto transition">
           <div

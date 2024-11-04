@@ -1,5 +1,5 @@
 <template>
-  <div class="w-1/2 bg-#4880FF rounded-4">
+  <div class="w-1/2 bg-#4880FF rounded-4 h-1/2">
     <img src="../../assets/imgs/notice/linebg.png" alt="" class="absolute" />
     <img
       src="../../assets/imgs/notice/imgbg.png"
