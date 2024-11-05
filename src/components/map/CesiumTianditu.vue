@@ -117,12 +117,6 @@ function updateCamera(zoomLevel: number, oldZoomLevel: number) {
     });
   }
 }
-// function onZoomLevelChange() {
-//   if (viewer) {
-//     const level = viewer.camera.positionCartographic.height;
-//     zoomUpdateBus.emit(Math.round(level));
-//   }
-// }
 
 function updateBuilding() {
   if (viewer) updateBubblePosition(viewer);
@@ -131,6 +125,7 @@ function updateBubble() {
   if (viewer) updateBubblePosition(viewer);
 }
 
+// 控件相关
 //控制地图视角
 zoomInBus.on(() => {
   updateZoomIn();
@@ -150,7 +145,6 @@ onBeforeUnmount(() => {
   zoomOutBus.reset();
 });
 
-// 控件相关
 // 控制地图3D的显示
 watch(
   () => show3D.value,

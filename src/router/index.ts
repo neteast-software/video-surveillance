@@ -85,7 +85,8 @@ export const menuOptions = shallowRef();
 export const routes = shallowRef<RouteRecordRaw[]>([]);
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [{ path: "/", redirect: "/index" },
+  routes: [
+    { path: "/", redirect: "/index" },
     // {
     //   path: "/dashboard",
     //   name: "dashboard",
@@ -133,7 +134,7 @@ const formData = reactive({
   password: "admin123",
 });
 async function initLogin() {
-  // storage.remove("access_token");
+  storage.remove("access_token");
   const { username, password } = formData;
   const { data } = await login(username, password);
   storage.set("access_token", data.access_token);

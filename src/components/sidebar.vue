@@ -4,7 +4,11 @@
       <header
         class="flex-center bg-#EFF3F7 rounded-2 p-2 min-w-48 mb-4.5 mx-2.5"
       >
-        <img :src="user" class="w-7.5 h-7.5 rounded-full" alt="" />
+        <img
+          :src="user"
+          class="w-7.5 h-7.5 rounded-full border-(1 solid white)"
+          alt=""
+        />
         <div class="text-3.5 flex-w-rest ml-2.5">
           Yaomeier
           <div class="text-(2.5 lightGrey)">1565****367</div>
@@ -43,7 +47,7 @@
         <div class="text-(3 lightGrey) mb-6">数据</div>
         <div>
           <div>安全帽在线人数</div>
-          <NAvatarGroup :options="options" :size="40" :max="4" class="my-4">
+          <NAvatarGroup :options="options" :size="36" :max="4" class="my-4">
             <template #avatar="{ option: { name, src } }">
               <n-tooltip>
                 <template #trigger>
@@ -56,7 +60,7 @@
               <n-avatar>+{{ rest }}</n-avatar>
             </template>
           </NAvatarGroup>
-          <div class="w-full bg-#EFF3F7 rounded-2 px-2.5 py-4">
+          <div class="w-full bg-#EFF3F7/70 rounded-2 px-2.5 py-4">
             <div class="text-3">
               安全帽在线率
               <n-progress
@@ -98,7 +102,6 @@ import {
   NScrollbar,
   MenuInst,
   NPopover,
-  NModal,
   useDialog,
 } from "naive-ui";
 import user from "@/assets/imgs/user.png";
@@ -107,6 +110,9 @@ import { useRoute, useRouter } from "vue-router";
 import { getOnlineRate } from "@/utils/network/api/index";
 import { OnlineRate } from "@/utils/network/types/index";
 import { computed, watch, ref, onMounted, nextTick } from "vue";
+import { logout } from "@/utils/network/api/root";
+import storage from "@/utils/other/storage";
+
 const router = useRouter();
 const route = useRoute();
 const menuInstRef = ref<MenuInst | null>(null);
@@ -152,7 +158,15 @@ function handleLogOut() {
     content: "确定要退出登录吗？退出后数据将会自动同步",
     positiveText: "确定退出",
     negativeText: "取消",
-    onPositiveClick: () => {},
+    // maskClosable: false, //点击遮罩
+    onPositiveClick: async () => {
+      try {
+        await logout("admin");
+        storage.remove("access_token");
+      } catch (error) {
+        console.error("请求失败", error);
+      }
+    },
     onNegativeClick: () => {
       console.log("取消");
     },
@@ -211,9 +225,5 @@ function handleLogOut() {
 }
 :deep(.n-menu .n-submenu-children .n-menu-item-content-header) {
   @apply text-3.5;
-}
-
-:deep(.n-button:not(.n-button--disabled)):hover {
-  @apply !text-primary;
 }
 </style>
