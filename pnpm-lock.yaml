@@ -48,8 +48,8 @@ importers:
         specifier: ^5.4.2
         version: 5.5.1
       linker-uii:
-        specifier: latest
-        version: 0.12.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2))
+        specifier: 0.14.0
+        version: 0.14.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2))
       pinia:
         specifier: ^2.2.4
         version: 2.2.4(typescript@5.6.2)(vue@3.5.8(typescript@5.6.2))
@@ -2123,10 +2123,10 @@ packages:
   lerc@2.0.0:
     resolution: {integrity: sha512-7qo1Mq8ZNmaR4USHHm615nEW2lPeeWJ3bTyoqFbd35DLx0LUH7C6ptt5FDCTAlbIzs3+WKrk5SkJvw8AFDE2hg==}
 
-  linker-uii@0.12.0:
-    resolution: {integrity: sha512-paav5oGgw9VM74UWjPd3qeDu0JC+CDyDZwlRN+DlZ9jncRcQX/BMnkiVjP5OwSIG7sqeHgy7IEanzYCFyadsgA==}
+  linker-uii@0.14.0:
+    resolution: {integrity: sha512-r+nUSZWq0fM5HlT7k+0QQp0E///sD2F0FcN0zeCGeCgFCI60hABxDt/S3ecVnLZ6xZJk8ruO9OrU/Dgbu6lMsQ==}
     peerDependencies:
-      naive-ui: latest
+      naive-ui: ^2.39.0
       vue: ^3.4.37
 
   load-tsconfig@0.2.5:
@@ -5062,7 +5062,7 @@ snapshots:
 
   lerc@2.0.0: {}
 
-  linker-uii@0.12.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2)):
+  linker-uii@0.14.0(@types/video.js@7.3.58)(naive-ui@2.40.1(vue@3.5.8(typescript@5.6.2)))(vue@3.5.8(typescript@5.6.2)):
     dependencies:
       '@iconify-json/heroicons': 1.2.0
       '@iconify/types': 2.0.0
@@ -5081,7 +5081,6 @@ snapshots:
       qs: 6.13.0
       recordrtc: 5.6.2
       uuid: 10.0.0
-      video-surveillance: 'link:'
       video.js: 7.20.1
       vue: 3.5.8(typescript@5.6.2)
       vue-router: 4.4.5(vue@3.5.8(typescript@5.6.2))
