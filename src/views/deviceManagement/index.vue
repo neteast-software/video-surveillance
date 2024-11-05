@@ -6,7 +6,7 @@
     </div>
     <div class="w-full h-1px bg-greyLine mt-5"></div>
     <main class="flex-h-rest">
-      <router-view :key="$route.path"></router-view>
+      <router-view ></router-view>
     </main>
   </section>
 </template>
