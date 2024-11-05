@@ -1,3 +1,8 @@
+export interface MyListParams {
+  category?: string;
+  pageSize?: string;
+  pageNum?: string;
+}
 export interface Record {
   title: string;
   img: any;
@@ -35,4 +40,13 @@ export interface AlarmCategory {
   category: string;
   value: string;
   num: number;
+}
+
+export interface OnlineRate {
+  safetyHelmetVos: {
+    img?: string;
+    name: string;
+  }[];
+  safetyHelmetRate: number;
+  channelRate: number;
 }

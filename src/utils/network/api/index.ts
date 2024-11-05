@@ -1,10 +1,14 @@
 import http from "../http";
-import type { MyList, LastAlarm, AlarmCategory } from "../types/index";
+import type {
+  MyList,
+  LastAlarm,
+  AlarmCategory,
+  MyListParams,
+  OnlineRate,
+} from "../types/index";
 
 //我的告警通知
-export const getMyList = async (category: string) => {
-  const params: Record<string, any> = {};
-  if (category !== undefined && category !== "") params.category = category;
+export const getMyList = async (params: MyListParams) => {
   const { data } = await http.get<{ data: MyList }>("/notice/myList", {
     ...params,
   });
@@ -25,5 +29,11 @@ export const getAlarmCategory = async (type?: string) => {
     "/v2/index/alarmCategory",
     { ...params }
   );
+  return data.value!;
+};
+
+//左侧菜单栏数据
+export const getOnlineRate = async () => {
+  const { data } = await http.get<{ data: OnlineRate }>("/v2/index/onlineRate");
   return data.value!;
 };

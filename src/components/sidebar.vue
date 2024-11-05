@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full py-4 bg relative border-r-(1px solid greyLine)">
+  <div class="h-full py-4 bg relative border-r-(1px solid greyLine) max-w-58">
     <div class="flex-col h-full">
       <header
         class="flex-center bg-#EFF3F7 rounded-2 p-2 min-w-48 mb-4.5 mx-2.5"
@@ -9,9 +9,25 @@
           Yaomeier
           <div class="text-(2.5 lightGrey)">1565****367</div>
         </div>
-        <div class="w-4 h-4 bg-white flex-center rounded-1">
-          <div class="i-icons:caretdown w-3 h-3 text-lightGrey"></div>
-        </div>
+
+        <NPopover
+          trigger="click"
+          placement="bottom-end"
+          style="padding: 12px 0; border-radius: 8px"
+        >
+          <template #trigger>
+            <div class="w-4 h-4 bg-white flex-center rounded-1 cursor-pointer">
+              <div class="i-icons:caretdown w-3 h-3 text-lightGrey"></div>
+            </div>
+          </template>
+          <div
+            class="flex-center gap-2.5 py-3 pl-6 pr-8 hover-(text-primary bg-#DFEBFF) cursor-pointer"
+            @click="handleLogOut()"
+          >
+            <div class="i-icons:export w-4 h-4"></div>
+            退出登录
+          </div>
+        </NPopover>
       </header>
       <div class="text-3 text-lightGrey mb-6 lt-laptop-(mb-3) mx-2.5">菜单</div>
       <NScrollbar class="flex-h-rest">
@@ -27,13 +43,13 @@
         <div class="text-(3 lightGrey) mb-6">数据</div>
         <div>
           <div>安全帽在线人数</div>
-          <NAvatarGroup :options="options" :size="40" :max="3" class="my-4">
-            <template #avatar="{ option: { label, src } }">
+          <NAvatarGroup :options="options" :size="40" :max="4" class="my-4">
+            <template #avatar="{ option: { name, src } }">
               <n-tooltip>
                 <template #trigger>
                   <n-avatar :src="src" />
                 </template>
-                {{ label }}
+                {{ name }}
               </n-tooltip>
             </template>
             <template #rest="{ options: restOptions, rest }">
@@ -41,12 +57,12 @@
             </template>
           </NAvatarGroup>
           <div class="w-full bg-#EFF3F7 rounded-2 px-2.5 py-4">
-            <div>
+            <div class="text-3">
               安全帽在线率
               <n-progress
                 type="line"
                 class="mt-3"
-                :percentage="80"
+                :percentage="onlineRate?.safetyHelmetRate"
                 color="#3563EF"
                 rail-color="#A4BAF4"
               />
@@ -56,18 +72,13 @@
             <n-progress
               type="line"
               class="mt-3"
-              :percentage="60"
+              :percentage="onlineRate?.channelRate"
               color="#3563EF"
               rail-color="#A4BAF4"
             />
           </div>
         </div>
       </div>
-      <!-- <div
-        class="w-10 min-h-10 bg-white rounded-2 flex-center cursor-pointer z-1 mt-3 hover:scale-106 transition"
-      >
-        <div class="i-icons:export w-6 h-6 text-lightGrey"></div>
-      </div> -->
     </div>
     <img
       src="../assets/imgs/sidebar-bg.png"
@@ -86,54 +97,67 @@ import {
   NMenu,
   NScrollbar,
   MenuInst,
+  NPopover,
+  NModal,
+  useDialog,
 } from "naive-ui";
 import user from "@/assets/imgs/user.png";
 import { menuOptions } from "../router";
 import { useRoute, useRouter } from "vue-router";
+import { getOnlineRate } from "@/utils/network/api/index";
+import { OnlineRate } from "@/utils/network/types/index";
 import { computed, watch, ref, onMounted, nextTick } from "vue";
 const router = useRouter();
-const route = useRoute()
-const menuInstRef = ref<MenuInst | null>(null)
+const route = useRoute();
+const menuInstRef = ref<MenuInst | null>(null);
+const dialog = useDialog();
+
 function handleMenuSelect(key: string) {
   console.log("key", key);
   router.push(key);
 }
 const menuKey = computed(() => {
   // return router.currentRoute.value.path as string;
-  return route.path
+  return route.path;
 });
-watch((menuOptions), async(options) => {
+watch(menuOptions, async (options) => {
   if (options) {
-    console.log('menuOptions更新', options)
-    await nextTick()
+    console.log("menuOptions更新", options);
+    await nextTick();
     setTimeout(() => {
-      menuInstRef.value?.showOption(route.path)
-    }, 100)
+      menuInstRef.value?.showOption(route.path);
+    }, 100);
   }
-})
-// onMounted(() => {
-// })
+});
 
+const onlineRate = ref<OnlineRate>();
+async function initData() {
+  const { data } = await getOnlineRate();
+  onlineRate.value = data;
+}
+onMounted(initData);
 
+const options = computed(() => {
+  return onlineRate.value?.safetyHelmetVos.map((option) => {
+    return {
+      name: option.name,
+      src: option.img || user,
+    };
+  });
+});
 
-const options = [
-  {
-    label: "Tom",
-    src: user,
-  },
-  {
-    label: "Tom",
-    src: user,
-  },
-  {
-    label: "Tom",
-    src: user,
-  },
-  {
-    label: "Tom",
-    src: user,
-  },
-];
+function handleLogOut() {
+  dialog.create({
+    title: "退出登录",
+    content: "确定要退出登录吗？退出后数据将会自动同步",
+    positiveText: "确定退出",
+    negativeText: "取消",
+    onPositiveClick: () => {},
+    onNegativeClick: () => {
+      console.log("取消");
+    },
+  });
+}
 </script>
 
 <style scoped>
@@ -141,9 +165,7 @@ const options = [
   background: linear-gradient(180deg, #ffffff 76%, #e3ebff 100%);
 }
 :deep(.n-progress.n-progress--line .n-progress-icon.n-progress-icon--as-text) {
-  position: absolute;
-  right: 0;
-  top: -30px;
+  @apply text-(primary  3) absolute -top-7.5 right-2;
 }
 /* :deep(.n-scrollbar-rail__scrollbar) {
   display: none;
@@ -189,5 +211,9 @@ const options = [
 }
 :deep(.n-menu .n-submenu-children .n-menu-item-content-header) {
   @apply text-3.5;
+}
+
+:deep(.n-button:not(.n-button--disabled)):hover {
+  @apply !text-primary;
 }
 </style>

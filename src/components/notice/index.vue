@@ -71,7 +71,7 @@
         <div>总数 {{ myList?.total }}</div>
         <NPagination
           :display-order="['size-picker', 'pages', 'quick-jumper']"
-          v-model:page="page"
+          v-model:page="pageNum"
           v-model:page-size="pageSize"
           :page-count="myList?.pages"
           show-quick-jumper
@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { NScrollbar, NPagination } from "naive-ui";
 import { getMyList } from "@/utils/network/api/index";
 import { MyList } from "@/utils/network/types";
@@ -99,7 +99,7 @@ interface Props {
 const emit = defineEmits(["update:showModal"]);
 withDefaults(defineProps<Props>(), {});
 const curCategory = ref("");
-const page = ref(1);
+const pageNum = ref(1);
 const pageSize = ref(10);
 const myList = ref<MyList>();
 function getIconClass(value: string) {
@@ -112,17 +112,21 @@ function getIconClass(value: string) {
       return "defaultIcon";
   }
 }
+const myListParams = computed(() => ({
+  pageSize: String(pageSize.value),
+  pageNum: String(pageNum.value),
+  ...(curCategory.value !== "" ? { category: curCategory.value } : {}),
+}));
 
 async function initData() {
-  const { data } = await getMyList(curCategory.value);
-  console.log(data);
+  const { data } = await getMyList(myListParams.value);
   myList.value = data;
 }
 onMounted(() => {
   initData();
   getAlarmCategoryData();
 });
-watch(() => curCategory.value, initData);
+watch(() => myListParams.value, initData);
 </script>
 
 <style scoped>
@@ -133,5 +137,10 @@ watch(() => curCategory.value, initData);
   overflow: hidden;
   text-overflow: ellipsis;
   height: 3rem; /* 根据字体大小调整高度以显示两行 */
+}
+:deep(
+    .n-pagination .n-pagination-item:not(.n-pagination-item--disabled):hover
+  ) {
+  @apply text-primary;
 }
 </style>
