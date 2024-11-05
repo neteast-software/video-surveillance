@@ -7,7 +7,7 @@ import storage from "@/utils/other/storage";
 import { getMenuList } from "@/utils/network/api/root";
 import { login } from "@/utils/network/api/root";
 import type { MenuList } from "@/utils/network/types/root";
-import { ref, reactive, h } from "vue";
+import { ref, reactive, h, shallowRef } from "vue";
 import { createMenu, createRoutes } from "@/utils/other/create";
 
 // export const routes: RouteRecordRaw[] = [
@@ -81,8 +81,8 @@ import { createMenu, createRoutes } from "@/utils/other/create";
 //   },
 // ];
 
-export const menuOptions = ref();
-export const routes = ref<RouteRecordRaw[]>([]);
+export const menuOptions = shallowRef();
+export const routes = shallowRef<RouteRecordRaw[]>([]);
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [{ path: "/", redirect: "/index" },

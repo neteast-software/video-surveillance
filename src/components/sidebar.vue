@@ -16,6 +16,7 @@
       <div class="text-3 text-lightGrey mb-6 lt-laptop-(mb-3) mx-2.5">菜单</div>
       <NScrollbar class="flex-h-rest">
         <NMenu
+          ref="menuInstRef"
           :options="menuOptions"
           :value="menuKey"
           @update:value="handleMenuSelect"
@@ -84,19 +85,36 @@ import {
   NProgress,
   NMenu,
   NScrollbar,
+  MenuInst,
 } from "naive-ui";
 import user from "@/assets/imgs/user.png";
 import { menuOptions } from "../router";
-import { useRouter } from "vue-router";
-import { computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { computed, watch, ref, onMounted, nextTick } from "vue";
 const router = useRouter();
+const route = useRoute()
+const menuInstRef = ref<MenuInst | null>(null)
 function handleMenuSelect(key: string) {
   console.log("key", key);
   router.push(key);
 }
 const menuKey = computed(() => {
-  return router.currentRoute.value.path as string;
+  // return router.currentRoute.value.path as string;
+  return route.path
 });
+watch((menuOptions), async(options) => {
+  if (options) {
+    console.log('menuOptions更新', options)
+    await nextTick()
+    setTimeout(() => {
+      menuInstRef.value?.showOption(route.path)
+    }, 100)
+  }
+})
+// onMounted(() => {
+// })
+
+
 
 const options = [
   {
