@@ -231,7 +231,6 @@ async function negotiate(ts: number) {
         ts,
         scale.value
       );
-
       // data = await testRecordRatio(
       //     `${props.nvrId}-${props.channelId}`,
       //     'rtsp://admin:hk123456@112.5.140.146:554/Streaming/tracks/101?starttime=20240527t000000z&endtime=20240527t120000z',

@@ -2,6 +2,7 @@
   "files": [],
 
   "compilerOptions": {
+    "noEmitOnError": false,
     "types": ["node"], // 确保这里包含 "node"
     "baseUrl": "./",
     "paths": {

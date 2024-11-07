@@ -41,7 +41,7 @@
               @mouseleave="showCurrentTime = false"
             >
               <img
-                src="../assets/videoLine.svg"
+                src="../../assets/svgs/videoLine.svg"
                 alt=""
                 class="absolute max-w-none left-1/2 top-1/2 -translate-x-[50%] -translate-y-1/2 pointer-events-none"
               />

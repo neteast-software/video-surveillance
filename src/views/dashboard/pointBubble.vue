@@ -80,7 +80,16 @@
       <div
         class="absolute -top-38 left-0 h-37 w-62 bg-white p-1 rounded-2 lt-laptop-(w-52 h-34 -top-35)"
       >
-        <img src="../../assets/imgs/text/text.png" class="fill-parent" alt="" />
+        <!-- TODO -->
+        <Monitor
+          :id="String(curData.id)"
+          :nvr-id="curData.nvrId!"
+          :nvr-name="curData.name"
+          :channel-id="curData.id"
+          :ch-name="curData.name"
+          :channel-num="0"
+        >
+        </Monitor>
         <div
           @click="navigateToFullscreenPage"
           class="i-icons:navigate w-5 h-5 text-white absolute bottom-2 right-2"
@@ -149,6 +158,7 @@ import { useMapInfoStore } from "@/stores/mapInfo";
 import { storeToRefs } from "pinia";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { computed, ref } from "vue";
+import Monitor from "@/views/index/Monitor.vue";
 const mapInfo = useMapInfoStore();
 const { curDetailId } = storeToRefs(mapInfo);
 const deviceInfo = useDeviceInfoStore();

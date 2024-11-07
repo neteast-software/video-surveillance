@@ -1,5 +1,5 @@
 import * as Cesium from "cesium";
-import { Color } from 'cesium'
+import { Color } from "cesium";
 import Viewer from "cesium/Source/Widgets/Viewer/Viewer";
 import { ref, watch } from "vue";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
@@ -81,9 +81,9 @@ function scaleEntity(entity: any, scale: number) {
 const scrollToItemBus = useEventBus(scrollToItemKey);
 export function setupClickHandler(viewer: Viewer) {
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-
   handler.setInputAction((movement: any) => {
     const pickedObject = viewer.scene.pick(movement.position);
+    console.log("123123", pickedObject);
     if (Cesium.defined(pickedObject) && pickedObject.id) {
       const entity = pickedObject.id;
       // 恢复上一个选中实体的缩放

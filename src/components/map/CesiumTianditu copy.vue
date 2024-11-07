@@ -94,7 +94,7 @@ onMounted(() => {
     showRenderLoopErrors: false,
     shadows: false,
     sceneMode: 2, //2d模式
-    requestRenderMode: true
+    requestRenderMode: true,
   });
   // viewer.scene.globe.maximumScreenSpaceError = 2; // 适当增加误差来提升性能
   viewer.scene.postProcessStages.fxaa.enabled = true; // 开启FXAA抗锯齿
@@ -105,8 +105,6 @@ onMounted(() => {
   // viewer.imageryLayers.addImageryProvider(newtdtMap("cva"), 2);
   // viewer.scene.screenSpaceCameraController.maximumZoomDistance = 30000; //最大缩放距离
   viewer.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
-
-  
 
   // ClickToGetLocation(viewer); //点击获取位置
   //相机
@@ -134,13 +132,17 @@ onMounted(() => {
     enableCompassOuterRing: false, // 启用外环指南针
   });
 
-  viewer.dataSources.add(Cesium.GeoJsonDataSource.load('/output.geojson',  {
-      stroke: Cesium.Color.LIGHTCORAL,
-    })).then(function(dataSource) {
-      console.log('控制', dataSource, viewer)
-      viewer!.dataSources.add(dataSource)
-      viewer!.flyTo(dataSource)
-    })
+  viewer.dataSources
+    .add(
+      Cesium.GeoJsonDataSource.load("/output.geojson", {
+        stroke: Cesium.Color.LIGHTCORAL,
+      })
+    )
+    .then(function (dataSource) {
+      console.log("控制", dataSource, viewer);
+      viewer!.dataSources.add(dataSource);
+      viewer!.flyTo(dataSource);
+    });
 
   //修改底图样式
   // modifyMap(viewer, {

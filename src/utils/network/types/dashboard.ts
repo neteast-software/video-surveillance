@@ -22,6 +22,7 @@ export interface AllDevices {
   responsible: string; // 负责人
   type: string; // 类型
   time?: string; // 时间
+  nvrId?: number;
 }
 
 export interface DeviceDetail {

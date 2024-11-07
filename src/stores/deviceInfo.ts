@@ -47,7 +47,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 3,
-      name: "设备地点名称",
+      name: "设备地点名称3",
       alarmInfo: "EPC-1北头岭隧道",
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
@@ -65,7 +65,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 4,
-      name: "设备地点名称",
+      name: "设备地点名称4",
       alarmInfo: "EPC-1北头岭隧道",
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
@@ -83,7 +83,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 5,
-      name: "设备地点名称",
+      name: "设备地点名称5",
       alarmInfo: "EPC-1北头岭隧道",
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
@@ -101,7 +101,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 6,
-      name: "设备地点名称",
+      name: "设备地点名称6",
       alarmInfo: "EPC-1北头岭隧道",
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
@@ -119,7 +119,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 7,
-      name: "设备地点名称",
+      name: "设备地点名称7",
       alarmInfo: "EPC-1北头岭隧道",
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
@@ -138,7 +138,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 8,
-      name: "设备地点名称",
+      name: "设备地点名称8",
       alarmInfo: "EPC-1北头岭隧道",
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
@@ -171,7 +171,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     const { data } = await getAllDevices();
     console.log("initAllDevices", data);
     if (!data) return;
-    // dataList.value = data;
+    dataList.value = data;
   }
 
   const deviceStatus = ref([
