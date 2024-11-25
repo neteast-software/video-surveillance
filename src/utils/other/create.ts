@@ -8,10 +8,12 @@ const componentMap: Record<string, RouteComponent> = {
   viewer: Viewer,
 };
 export function createRoutes(menuData: MenuList[]): RouteRecordRaw[] {
-  return menuData.map((menuItem) => {
+  const routes = menuData.map((menuItem) => {
+    const mappingComponent = componentMap[menuItem.component!]
     const route = {
       path: menuItem.path ? `/${menuItem.path}` : "",
       name: menuItem.path ? menuItem.path : "",
+      props: mappingComponent ? (r: any) => ({ key: r.path }) : undefined,
       meta: {
         title: menuItem.name,
         icon: () =>
@@ -20,12 +22,13 @@ export function createRoutes(menuData: MenuList[]): RouteRecordRaw[] {
       },
       component: !menuItem.component
         ? undefined
-        : componentMap[menuItem.component!] ||
-          (() => import(`@/views/${menuItem.component}/index.vue`)), // 动态导入组件
+        : mappingComponent ||
+        (() => import(`@/views/${menuItem.component}/index.vue`)), // 动态导入组件
       children: menuItem.children ? createRoutes(menuItem.children) : undefined,
     };
     return route;
   });
+  return routes as unknown as RouteRecordRaw[]
 }
 
 export function createMenu(routes: any) {

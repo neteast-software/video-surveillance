@@ -131,16 +131,16 @@ onMounted(() => {
     enableDistanceLegend: true, // 启用比例尺
     enableCompassOuterRing: false, // 启用外环指南针
   });
-
   viewer.dataSources
     .add(
       Cesium.GeoJsonDataSource.load("/output.geojson", {
-        stroke: Cesium.Color.LIGHTCORAL,
+        // stroke: Cesium.Color.LIGHTCORAL,
+        stroke: Cesium.Color.fromCssColorString("rgba(255, 255, 255, 0.5)"),
       })
     )
     .then(function (dataSource) {
       console.log("控制", dataSource, viewer);
-      viewer!.dataSources.add(dataSource);
+      //   viewer!.dataSources.add(dataSource);
       viewer!.flyTo(dataSource);
     });
 

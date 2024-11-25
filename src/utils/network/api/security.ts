@@ -264,9 +264,9 @@ export const getPresetPoint = async (nvrId: number, channelNum: number) => {
 };
 
 // 获取设备通道视频编码信息
-export const getChannelEncode = async (nvrId: number, channelNum: number) => {
-  const { data } = await pack.get<{ data: { encType: number } }>(
-    `/config/getChannelVideoEncType/${nvrId}/${channelNum}`
+export const getChannelEncode = async (nvrId: number, channelId: number) => {
+  const { data } = await pack.get<{ data: { encType: string } }>(
+    `/config/getChannelVideoEncType/${nvrId}/${channelId}`
   );
   return data.value!;
 };

@@ -8,12 +8,18 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
   const curDeviceStatus = ref(); // 设备状态
   const curdeviceType = ref("0"); // 设备类型
   const curdeviceListId = ref(0); // 设备列表
-  // const dataList = ref<AllDevices[]>([]);
-  const dataList = ref<AllDevices[]>([
+  const dataList = ref<AllDevices[]>([]);
+  const dataListTest = [
     {
       id: 1,
       name: "设备地点名称1",
-      alarmInfo: "EPC-1北头岭隧道",
+      alarmInfo: {
+        type: "EPC-1北头岭隧道",
+        time: "2021-07-01",
+        content: "摄像头异常",
+        title: "摄像头异常",
+        img: "/img/key-alarmInfos.svg",
+      },
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
       type: "2",
@@ -32,7 +38,13 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     {
       id: 2,
       name: "设备地点名称2",
-      alarmInfo: "EPC-1北头岭隧道",
+      alarmInfo: {
+        type: "EPC-1北头岭隧道",
+        time: "2021-07-01",
+        content: "摄像头异常",
+        title: "摄像头异常",
+        img: "/img/key-alarmInfos.svg",
+      },
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "002",
       type: "3",
@@ -47,8 +59,14 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 3,
-      name: "设备地点名称3",
-      alarmInfo: "EPC-1北头岭隧道",
+      name: "设备地点名称",
+      alarmInfo: {
+        type: "EPC-1北头岭隧道",
+        time: "2021-07-01",
+        content: "摄像头异常",
+        title: "摄像头异常",
+        img: "/img/key-alarmInfos.svg",
+      },
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
       time: "2021-07-01",
@@ -65,8 +83,14 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 4,
-      name: "设备地点名称4",
-      alarmInfo: "EPC-1北头岭隧道",
+      name: "设备地点名称",
+      alarmInfo: {
+        type: "EPC-1北头岭隧道",
+        time: "2021-07-01",
+        content: "摄像头异常",
+        title: "摄像头异常",
+        img: "/img/key-alarmInfos.svg",
+      },
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
       time: "2021-07-01",
@@ -83,8 +107,14 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 5,
-      name: "设备地点名称5",
-      alarmInfo: "EPC-1北头岭隧道",
+      name: "设备地点名称",
+      alarmInfo: {
+        type: "EPC-1北头岭隧道",
+        time: "2021-07-01",
+        content: "摄像头异常",
+        title: "摄像头异常",
+        img: "/img/key-alarmInfos.svg",
+      },
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
       time: "2021-07-01",
@@ -101,8 +131,14 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 6,
-      name: "设备地点名称6",
-      alarmInfo: "EPC-1北头岭隧道",
+      name: "设备地点名称",
+      alarmInfo: {
+        type: "EPC-1北头岭隧道",
+        time: "2021-07-01",
+        content: "摄像头异常",
+        title: "摄像头异常",
+        img: "/img/key-alarmInfos.svg",
+      },
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
       time: "2021-07-01",
@@ -119,8 +155,14 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 7,
-      name: "设备地点名称7",
-      alarmInfo: "EPC-1北头岭隧道",
+      name: "设备地点名称",
+      alarmInfo: {
+        type: "EPC-1北头岭隧道",
+        time: "2021-07-01",
+        content: "摄像头异常",
+        title: "摄像头异常",
+        img: "/img/key-alarmInfos.svg",
+      },
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
       time: "2021-07-01",
@@ -138,8 +180,14 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     },
     {
       id: 8,
-      name: "设备地点名称8",
-      alarmInfo: "EPC-1北头岭隧道",
+      name: "设备地点名称",
+      alarmInfo: {
+        type: "EPC-1北头岭隧道",
+        time: "2021-07-01",
+        content: "摄像头异常",
+        title: "摄像头异常",
+        img: "/img/key-alarmInfos.svg",
+      },
       address: "福州市鼓楼区鼓东街道道山西路中段96号",
       serialNo: "001",
       time: "2021-07-01",
@@ -166,11 +214,16 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     //   manufacturer: "海康威视",
     //   type: 0,
     // },
-  ]);
+  ];
   async function initAllDevices() {
     const { data } = await getAllDevices();
     console.log("initAllDevices", data);
     if (!data) return;
+    // const newData = [...dataListTest, ...data];
+    // console.log("dataListTest", dataListTest);
+
+    // console.log("newData", newData);
+
     dataList.value = data;
   }
 
@@ -189,7 +242,7 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
     )?.name;
     console.log("typeValue", typeValue, "statusValue", statusValue);
     if (!typeValue || !statusValue) return "/img/key-projects.svg";
-    return `/img/${statusValue}-${typeValue}.svg`;
+    return `img/${statusValue}-${typeValue}.svg`;
   }
 
   // 通过设备类型和状态对设备列表进行筛选

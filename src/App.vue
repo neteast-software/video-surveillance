@@ -1,35 +1,38 @@
 <template>
-  <LkNaiveProvider
-    class="fill-parent bg-#F6F8F9 h-full flex-col text-basic"
-    :naive-theme-overrides="themeOverrides"
-  >
-    <navbar v-model:showModal="showModal"></navbar>
-    <main class="flex flex-h-rest">
-      <!--  v-if="isLogin" -->
-      <NModal
-        v-model:show="showModal"
-        transform-origin="center"
-        :mask-closable="false"
-      >
-        <notice v-model:showModal="showModal"></notice>
-      </NModal>
-      <sidebar></sidebar>
-      <div class="flex-w-rest">
-        <router-view v-slot="{ Component }" class="relative p-5">
-          <transition name="fade" mode="out-in">
-            <component
-              :is="Component"
-              class="absolute top-0 left-0 w-full h-full bg-white"
-            />
-          </transition>
-        </router-view>
-      </div>
-    </main>
-    <!-- <template v-else>
-      <NSpin class="absolute-center" size="large">
-        <template #description> 登录中 </template>
-      </NSpin>
-    </template> -->
+  <LkNaiveProvider :naive-theme-overrides="themeOverrides">
+    <div v-if="route.meta?.singlePage">
+      <router-view v-slot="{ Component }" class="relative p-5">
+        <transition name="fade" mode="out-in">
+          <component
+            :is="Component"
+            class="absolute top-0 left-0 w-full h-full bg-white"
+          />
+        </transition>
+      </router-view>
+    </div>
+    <div class="fill-parent bg-#F6F8F9 h-full flex-col text-basic" v-else>
+      <navbar v-model:showModal="showModal"></navbar>
+      <main class="flex flex-h-rest">
+        <NModal
+          v-model:show="showModal"
+          transform-origin="center"
+          :mask-closable="false"
+        >
+          <notice v-model:showModal="showModal"></notice>
+        </NModal>
+        <sidebar></sidebar>
+        <div class="flex-w-rest">
+          <router-view v-slot="{ Component }" class="relative p-5">
+            <transition name="fade" mode="out-in">
+              <component
+                :is="Component"
+                class="absolute top-0 left-0 w-full h-full bg-white"
+              />
+            </transition>
+          </router-view>
+        </div>
+      </main>
+    </div>
   </LkNaiveProvider>
 </template>
 
@@ -40,9 +43,10 @@ import { LkNaiveProvider } from "linker-uii";
 import { GlobalThemeOverrides, NModal, NSpin } from "naive-ui";
 import notice from "./components/notice/index.vue";
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 
 const showModal = ref(false);
-
+const route = useRoute();
 const themeOverrides: GlobalThemeOverrides = {
   common: {
     primaryColor: "#3563EF",
@@ -53,6 +57,7 @@ const themeOverrides: GlobalThemeOverrides = {
   Input: {
     borderFocus: "1px solid #3563EF",
     borderHover: "1px solid #3563EF",
+    colorFocus: "#3563EF",
     boxShadowFocus: "0 3px 6px -4px rgba(22,93,255)",
   },
   Select: {
@@ -81,22 +86,24 @@ const themeOverrides: GlobalThemeOverrides = {
   Button: {
     borderHover: "1px solid #3563EF",
     textColorHover: "#3563EF",
-    // colorHover: "#F94144",
-    // colorPressed: "#F94144",
-    // borderPressed: "1px solid #F94144",
+    textColorGhostHover: "#3563EF",
     borderFocus: "1px solid #3563EF",
     textColorFocus: "#3563EF",
     borderPressed: "1px solid #3563EF",
     textColorPressed: "#3563EF",
     colorHoverPrimary: "#3563EF",
     colorPressedPrimary: "#3563EF",
-    // textColorHoverError: "#FFF8EF",
-    // colorHoverError: "#FFF8EF",.
     colorPressedError: "#F94144",
+    colorPressed: "#3563EF",
+    colorFocus: "#3563EF",
   },
   Popselect: {
     extraTextColor: "#3563EF",
     railColor: "#3563EF",
+  },
+  Dialog: {
+    // closeColorHover: "red",
+    // iconColorSuccess: "#3563EF",
   },
 
   // ...
@@ -126,11 +133,19 @@ const themeOverrides: GlobalThemeOverrides = {
   opacity: 0;
   transform: translatex(6px);
 }
-
+.n-input--focus {
+  background-color: transparent !important;
+}
+:deep(.n-input--focus) {
+  background-color: transparent !important;
+}
 :deep(.n-button):hover {
-  background-color: #3563ef;
+  background-color: #3563ef !important;
 }
 :deep(.n-button):focus {
-  background-color: #3563ef;
+  background-color: #3563ef !important;
+}
+:deep(.n-button):active {
+  background-color: #3563ef !important;
 }
 </style>

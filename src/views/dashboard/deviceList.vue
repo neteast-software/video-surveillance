@@ -22,7 +22,9 @@
             <div class="text-4 text-basic truncate flex-w-rest">
               {{ data.name }}
             </div>
-            <span class="text-lightGrey">{{ data.compression }}</span>
+            <span class="text-lightGrey whitespace-nowrap">{{
+              data.compression
+            }}</span>
           </div>
           <div class="flex-between text-greyText h-11">
             <div class="flex-col flex-center lt-laptop-(text-3)">
@@ -35,9 +37,14 @@
             </div>
             <div class="flex-col flex-center lt-laptop-(text-3)">
               <div
-                class="text-(basic 4) font-700 flex-center lt-laptop-(text-3.5)"
+                class="text-(basic 4) w-100px font-700 flex-center lt-laptop-(text-3.5)"
+                style="
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                "
               >
-                {{ data.resolution }}
+                {{ data.resolution || "-" }}
               </div>
               分辨率
             </div>

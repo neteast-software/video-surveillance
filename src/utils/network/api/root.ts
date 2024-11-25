@@ -9,6 +9,11 @@ export const login = async (username: string, password: string) => {
   });
   return data.value!;
 };
+//登出
+export const logout = async (username: string) => {
+  const { data } = await http.post("/logout", { username });
+  return data.value!;
+};
 
 //菜单列表
 export const getMenuList = async () => {

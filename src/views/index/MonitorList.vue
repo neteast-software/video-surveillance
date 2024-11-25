@@ -4,13 +4,12 @@
   >
     <header class="flex justify-between items-center px-5 lt-laptop-(px-3)">
       <div class="w-full relative">
-        <NButton
-          type="primary"
-          class="absolute right-1.5 top-1/2 -translate-y-1/2 z-10"
-          style="width: 52px; height: 26px"
+        <div
+          class="h-6.5 w-13 flex-center rounded-1 absolute right-1.5 top-1/2 -translate-y-1/2 z-10 bg-primary text-(white 3.5) cursor-pointer"
           @click="searchKeyword = keyword"
-          >搜索</NButton
         >
+          搜索
+        </div>
         <NInput
           style="width: 100%; background: transparent"
           placeholder="请输入关键字"

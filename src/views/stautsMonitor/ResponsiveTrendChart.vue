@@ -1,18 +1,20 @@
 <template>
-  <div class="fill-parent flex-col gap-2 relative">
-    <div class="flex justify-between mb-5 space-y-4 lt-laptop-(mb-2)">
+  <div class="flex-col gap-2 relative h-full justify-between">
+    <div class="flex justify-between space-y-4">
       <div class="flex gap-2">
         <button
-          v-for="range in timeRanges"
-          :key="range.id"
-          @click="activeRange = range.id"
+          v-for="range in alarmCategory"
+          :key="range.value"
+          @click="activeRange = range.value"
           class="px-4 py-1.5 rounded-md text-(greyText 4) transition lt-laptop-(px-3 py-1px text-3 h-6)"
           :class="
-            activeRange === range.id ? 'bg-#3563ef text-white' : 'bg-#F5F9FF '
+            activeRange === range.value
+              ? 'bg-#3563ef text-white'
+              : 'bg-#F5F9FF '
           "
         >
           <!-- border-(1px solid #eaeaea) -->
-          {{ range.name }}
+          {{ range.category }}
         </button>
       </div>
       <!-- <div class="absolute left-30 top-20 w-30 h-20 frosted z-9999">111</div> -->
@@ -32,8 +34,8 @@
         </span>
       </div>
     </div>
-    <main class="flex-h-rest flex-col">
-      <div class="grid grid-cols gap-7px mb-2">
+    <main class="flex-col">
+      <div class="grid grid-cols gap-7px mb-2 lt-laptop-(gap-5px)">
         <div
           v-for="month in selectType === 1
             ? months.firsthalf
@@ -53,7 +55,11 @@
               trigger="hover"
               placement="bottom-start"
               :show-arrow="false"
-              style="padding: 0px; background-color: transparent"
+              style="
+                padding: 0px;
+                background-color: transparent;
+                border-radius: 6px;
+              "
             >
               <template #trigger>
                 <div
@@ -70,7 +76,7 @@
                 <div
                   class="p-1.5 bg-white rounded-1 flex-between gap-10 w-full"
                 >
-                  <span class="text-greyText">在线数量</span>
+                  <span class="text-greyText">事件数量</span>
                   {{ getAlarmCount(month, day) }}
                 </div>
               </div>
@@ -97,6 +103,12 @@ import { onMounted, ref, watch } from "vue";
 import { NPopover } from "naive-ui";
 import { getAlarmTrend } from "@/utils/network/api/statusMonitor";
 import type { AlarmTrend } from "@/utils/network/types/statusMonitor";
+import { useCommonDataStore } from "@/stores/index";
+import { storeToRefs } from "pinia";
+
+const CommonData = useCommonDataStore();
+const { alarmCategory } = storeToRefs(CommonData);
+const { getAlarmCategoryData } = CommonData;
 interface Props {
   selectType?: string;
 }
@@ -104,7 +116,7 @@ const props = withDefaults(defineProps<Props>(), {
   selectType: "0",
 });
 
-const activeRange = ref(0);
+const activeRange = ref("");
 const currentDate = ref(new Date()); // 当前日期
 const currentYear = currentDate.value.getFullYear(); // 当前年份
 const alarmTrendData = ref<AlarmTrend[]>([]);
@@ -112,11 +124,10 @@ async function initdata() {
   const { data } = await getAlarmTrend(props.selectType, activeRange.value);
   alarmTrendData.value = data;
 }
-onMounted(initdata);
-const timeRanges = [
-  { id: 0, name: "全部" },
-  { id: 1, name: "离线次数" },
-];
+onMounted(() => {
+  initdata();
+  getAlarmCategoryData("1");
+});
 const colorRanges = [
   { min: 0, max: 100 },
   { min: 100, max: 200 },
@@ -164,9 +175,10 @@ function getAlarmCount(month: number, day: number) {
     rgba(247, 251, 255, 0.1) 83%
   );
   box-sizing: border-box;
-  border: 1px solid;
-  border-image: linear-gradient(317deg, #ffffff 8%, rgba(255, 255, 255, 0) 78%)
-    1;
+  border: 1px solid #fff;
+  /* border-image: linear-gradient(317deg, #ffffff 8%, rgba(255, 255, 255, 0) 78%)
+    1; */
   backdrop-filter: blur(10px);
+  border-radius: 6px;
 }
 </style>

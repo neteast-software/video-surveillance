@@ -109,3 +109,6 @@ button:focus-visible {
   -webkit-box-orient: vertical; /* 垂直布局 */
   text-overflow: ellipsis;
 }
+.n-input--focus {
+  background-color: transparent !important;
+}

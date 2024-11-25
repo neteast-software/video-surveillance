@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch, nextTick } from "vue";
 import { getMonday, getFirstDayOfMonth } from "@/utils/other/calendar";
 
 interface Props {
@@ -52,7 +52,24 @@ function clickActiveDay(day: { day: Date }) {
   currentDate.value = day.day;
   emits("update:timestamp", day.day.getTime());
 }
-
+// 滚动到指定位置
+function scrollToActiveDay() {
+  const activeDay = document.querySelector(".calendarActive");
+  if (activeDay) {
+    calendarContainer.value?.scrollTo({
+      left:
+        activeDay.getBoundingClientRect().left -
+        calendarContainer.value.getBoundingClientRect().left -
+        200,
+      behavior: "smooth",
+    });
+  }
+}
+onMounted(() => {
+  nextTick(() => {
+    scrollToActiveDay();
+  });
+});
 const animatedElement = ref<HTMLElement | null>(null);
 // 回到今日
 function goToToday() {
@@ -65,6 +82,9 @@ function goToToday() {
     animateCSS(animatedElement.value, "fadeIn");
   }
   emits("backToday", false);
+  nextTick(() => {
+    scrollToActiveDay();
+  });
 }
 // 更新当前日期和星期
 function updateActiveDateAndWeek(date: Date) {
@@ -96,11 +116,12 @@ watch(
 // 计算某一天的事件数量
 function getEventColors(day: string) {
   if (!props.events) return [];
-  const event = props.events.find((event) => event.date.split("-")[2] === day);
+  const event = props.events.find(
+    (event) => parseInt(event.date.split("-")[2]) === parseInt(day)
+  );
   if (!event) return [];
   const colors = [];
   if (event.offlineAlarm) colors.push("bg-info");
-  // if (event.onlineAlarm) colors.push("bg-success");
   return colors;
 }
 
@@ -162,7 +183,7 @@ const handleWheel = (
         <div class="w-full h-1px bg-greyLine my-2 lt-laptop-(my-1)"></div>
         <div
           class="text-5 font-700 rounded-full lt-laptop-(text-3.5) w-8 flex-center lt-laptop-(w-6) transition"
-          :class="{ active: activeDate === day.day.getDate() }"
+          :class="{ calendarActive: activeDate === day.day.getDate() }"
         >
           {{ day.label }}
         </div>
@@ -183,7 +204,7 @@ const handleWheel = (
 :deep(.n-float-button) {
   @apply !absolute top-1/2 -translate-y-1/2 !s-8 !min-h-8 z-2;
 }
-.active {
+.calendarActive {
   @apply bg-primary text-white;
 }
 

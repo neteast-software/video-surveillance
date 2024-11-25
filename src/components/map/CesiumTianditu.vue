@@ -3,7 +3,13 @@
 </template>
 
 <script setup lang="ts">
-import { flyToPositionKey, zoomKey, zoomUpdateKey } from "@/config/eventBus";
+import {
+  flyToPositionKey,
+  zoomKey,
+  zoomUpdateKey,
+  zoomInEvent,
+  zoomOutEvent,
+} from "@/config/eventBus";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { useMapInfoStore } from "@/stores/mapInfo";
 import { setAntialias } from "@/utils/map";
@@ -28,6 +34,9 @@ const { zoomLevel, show3D, backOrigin, curBaseMapStyle } = storeToRefs(mapInfo);
 const deviceInfo = useDeviceInfoStore();
 const { filteredDataList, curdeviceListId } = storeToRefs(deviceInfo);
 
+const zoomInBus = useEventBus(zoomInEvent);
+const zoomOutBus = useEventBus(zoomOutEvent);
+
 const Cartesian = Cesium.Cartesian3.fromDegrees(119.6, 25.75, 10000);
 let viewer: Cesium.Viewer | null = null;
 const isFlying = ref(false);
@@ -51,9 +60,17 @@ onMounted(() => {
     requestRenderMode: true,
   });
   viewer.scene.debugShowFramesPerSecond = true;
-  viewer.imageryLayers.addImageryProvider(newtdtMap("vec"));
-  viewer.imageryLayers.addImageryProvider(newtdtMap("cva"));
+  const vecLayer = viewer.imageryLayers.addImageryProvider(newtdtMap("vec"));
+  const cvaLayer = viewer.imageryLayers.addImageryProvider(newtdtMap("cva"));
+
+  // vecLayer.hue = -40.9
+  // vecLayer.contrast = -0.9
+  // cvaLayer.hue = -40.9
+  // cvaLayer.contrast = -0.9
+
+  viewer.scene.screenSpaceCameraController.maximumZoomDistance = 100000; //最小缩放距离
   viewer.scene.screenSpaceCameraController.minimumZoomDistance = 200; //最小缩放距离
+
   viewer.scene.postProcessStages.fxaa.enabled = true;
   viewer.camera.setView({
     destination: Cartesian,
@@ -63,20 +80,49 @@ onMounted(() => {
       roll: Cesium.Math.toRadians(0),
     },
   });
+  const markMaterial = new Cesium.ColorMaterialProperty(
+    new Cesium.Color(0.2, 0.7, 0.2, 0.6)
+  );
+
+  const baseColor = new Cesium.Color(0.8, 0.3, 0.6, 0.3);
+
   viewer.dataSources
     .add(
-      Cesium.GeoJsonDataSource.load("/output.geojson", {
-        stroke: Cesium.Color.LIGHTCORAL,
+      // 不加/ ,自动会填充base 的 view路径
+      //   /out.json  /output.geojson
+      Cesium.GeoJsonDataSource.load("/G228_11_12.geojson", {
+        stroke: baseColor,
       })
     )
     .then(function (dataSource) {
       console.log("dataSource", dataSource.entities.values);
+      dataSource.entities.values.forEach((item) => {
+        // console.log(item)
+        if (
+          item.properties &&
+          item.properties.Layer &&
+          item.properties.Layer._value.includes("highlight")
+        ) {
+          if (item.polygon) {
+            item.polygon.material = markMaterial;
+          }
+          if (item.polyline) {
+            item.polyline.material = markMaterial;
+          }
+        }
+        if (item.billboard) {
+          console.log(item);
+          item.show = false;
+          console.log("billboard", item.billboard);
+        }
+      });
       flyToOrigin().then(mapInfo.showControlBar);
     });
 
   viewer.scene.preRender.addEventListener(updateBubble);
   addDemoGraphic1(viewer);
   setupClickHandler(viewer);
+  //视角
 });
 const zoomBus = useEventBus(zoomKey);
 const zoomUpdateBus = useEventBus(zoomUpdateKey);
@@ -99,12 +145,6 @@ function updateCamera(zoomLevel: number, oldZoomLevel: number) {
     });
   }
 }
-function onZoomLevelChange() {
-  if (viewer) {
-    const level = viewer.camera.positionCartographic.height;
-    zoomUpdateBus.emit(Math.round(level));
-  }
-}
 
 function updateBuilding() {
   if (viewer) updateBubblePosition(viewer);
@@ -114,6 +154,25 @@ function updateBubble() {
 }
 
 // 控件相关
+//控制地图视角
+zoomInBus.on(() => {
+  updateZoomIn();
+});
+zoomOutBus.on(() => {
+  updateZoomOut();
+});
+function updateZoomIn() {
+  if (viewer) viewer.camera.zoomIn(5000);
+}
+function updateZoomOut() {
+  if (viewer) viewer.camera.zoomOut(5000);
+}
+
+onBeforeUnmount(() => {
+  zoomInBus.reset();
+  zoomOutBus.reset();
+});
+
 // 控制地图3D的显示
 watch(
   () => show3D.value,
@@ -166,7 +225,9 @@ flyToPositionBus.on(() => {
 function removeEventListener() {
   const cesium = unref(viewer);
   if (cesium) {
-    cesium.camera.changed.removeEventListener(onZoomLevelChange);
+    // cesium.camera.changed.removeEventListener(onZoomLevelChange);
+    cesium.camera.changed.removeEventListener(updateZoomIn);
+    cesium.camera.changed.removeEventListener(updateZoomOut);
     cesium.scene.camera.changed.removeEventListener(updateBuilding);
     cesium.scene.postRender.removeEventListener(updateBubble);
   }

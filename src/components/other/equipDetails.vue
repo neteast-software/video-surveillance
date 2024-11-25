@@ -161,6 +161,7 @@ import { getDeviceDetail } from "@/utils/network/api/dashboard";
 import type { DeviceDetail } from "@/utils/network/types/dashboard";
 import { createLineChart } from "@/utils/other/create";
 import { getAlarmList } from "@/utils/network/api/statusMonitor";
+import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { AlarmList } from "@/utils/network/types/statusMonitor";
 import { set } from "date-fns";
 const mapInfo = useMapInfoStore();
@@ -172,14 +173,19 @@ const alarmList = ref<AlarmList[]>([]);
 const selectlist = ref(); // 列表下拉框选中值
 const curEventType = ref("0"); // 当前事件类型
 const isLoading = ref(false);
-
+const deviceInfo = useDeviceInfoStore();
+const { dataList, curdeviceListId } = storeToRefs(deviceInfo);
 async function initDeviceDetail() {
   if (!curDetailId.value) return;
-  const { data } = await getDeviceDetail(curDetailId.value);
+  const { data } = await getDeviceDetail(curDetailId.value, curData.value.type);
   deviceDetail.value = data;
   source.value = createLineChart(data.echartsData.dataBody);
 }
 
+//筛选dataList中对应curdeviceListId的数据
+const curData = computed(() => {
+  return dataList.value.filter((item) => item.id == curdeviceListId.value)[0];
+});
 const listParams = computed(() => {
   if (curEventType.value === "0")
     return {

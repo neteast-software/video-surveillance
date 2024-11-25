@@ -12,7 +12,7 @@
       >
         <div class="w-7.5 h-7.5 rounded-full flex-center bg-white ml-1 text-3">
           <NBadge
-            :value="BadgeValue"
+            :value="lastAlarm?.num"
             :max="20"
             :offset="[-2, 2]"
             color="#3563EF"
@@ -20,8 +20,10 @@
             <div class="i-icons:message w-5.5 h-5.5 text-basic"></div>
           </NBadge>
         </div>
-        <span class="mx-2">通知性文字通知性文字通知性文字</span>
-        <span class="mr-4">一个小时前</span>
+        <div class="mx-2 truncate max-w-60">
+          {{ lastAlarm?.title }}
+        </div>
+        <span class="mr-4">{{ lastAlarm?.happenTime }}</span>
       </div>
       <div
         class="text-3.5 px-2 py-1.5 bg-white/30 rounded-1 flex-center gap-2 cursor-pointer"
@@ -47,8 +49,10 @@
 
 <script setup lang="ts">
 import { NBadge } from "naive-ui";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useFullscreen } from "@vueuse/core";
+import { getLastAlarm } from "@/utils/network/api/index";
+import { LastAlarm } from "@/utils/network/types";
 const { isFullscreen, toggle } = useFullscreen();
 
 interface Props {
@@ -57,6 +61,14 @@ interface Props {
 const emit = defineEmits(["update:showModal"]);
 withDefaults(defineProps<Props>(), {});
 const BadgeValue = ref(11);
+
+const lastAlarm = ref<LastAlarm>();
+async function initData() {
+  const { data } = await getLastAlarm();
+  console.log(data);
+  lastAlarm.value = data;
+}
+onMounted(initData);
 </script>
 
 <style scoped>

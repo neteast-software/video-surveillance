@@ -1,5 +1,7 @@
 import { useFetch, createFetch, UseFetchReturn } from "@vueuse/core";
 import type { BeforeFetchContext } from "@vueuse/core";
+import router from "@/router";
+import { clearRoute } from "@/router";
 import { Ref, unref, watch, reactive } from "vue";
 import { clearUrl } from "../other";
 import { baseUrl, timeout } from "@/presets";
@@ -15,6 +17,10 @@ const invalidMethods = [
   "delete",
   "DELETE",
 ] as const;
+let messageInfo = {
+  meg: "",
+  date: 0,
+};
 export type RequestMethods = (typeof invalidMethods)[number];
 interface RequestorConfig {
   baseUrl: string;
@@ -248,7 +254,8 @@ class Requestor {
           break;
         case 401:
           ret = Promise.reject("未登录");
-          // router.push('/login');
+          storage.remove("access_token");
+          //   router.push("/login");
           break;
         case 402:
           ret = Promise.reject(ret.error || "发生异常");
@@ -260,9 +267,24 @@ class Requestor {
           //     content: ret.msg || '系统异常',
           //     duration: 2200
           // });
-          window.$message?.create(ret.msg, {
-            type: ret?.type || "error",
-          });
+          if (ret.msg.includes("未登录")) {
+            storage.remove("access_token");
+            router.push("/login");
+            clearRoute();
+          }
+          const currentDate = new Date().getTime();
+          if (
+            currentDate - messageInfo.date > 1000 ||
+            messageInfo.meg !== ret.msg
+          ) {
+            window.$message?.create(ret.msg, {
+              type: ret?.type || "error",
+            });
+          }
+          messageInfo = {
+            meg: ret.msg,
+            date: currentDate,
+          };
           ret = Promise.reject(ret.msg);
           break;
       }

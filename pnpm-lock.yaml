@@ -46,7 +46,7 @@ dependencies:
     version: 5.5.1
   linker-uii:
     specifier: latest
-    version: 0.13.0(@types/video.js@7.3.58)(naive-ui@2.40.1)(vue@3.5.12)
+    version: 0.15.0(@types/video.js@7.3.58)(naive-ui@2.40.1)(vue@3.5.12)
   pinia:
     specifier: ^2.2.4
     version: 2.2.6(typescript@5.6.3)(vue@3.5.12)
@@ -3105,8 +3105,8 @@ packages:
     resolution: {integrity: sha512-7qo1Mq8ZNmaR4USHHm615nEW2lPeeWJ3bTyoqFbd35DLx0LUH7C6ptt5FDCTAlbIzs3+WKrk5SkJvw8AFDE2hg==}
     dev: false
 
-  /linker-uii@0.13.0(@types/video.js@7.3.58)(naive-ui@2.40.1)(vue@3.5.12):
-    resolution: {integrity: sha512-44n4IC0HX5Zc9c4hE8+YqnIxU1UeUaS9zz7YE+U+AswC8PpCJm61LF9Qmb+rfX0uK0AwRywB0UYG662jstwwsw==}
+  /linker-uii@0.15.0(@types/video.js@7.3.58)(naive-ui@2.40.1)(vue@3.5.12):
+    resolution: {integrity: sha512-LcxV5tbbzpqYFMX8bWGGwgfA6RWj4dyWmqn139q/Q4QOtRb3x11BFu2JoqdAUvWKEyWQ3wsO/trBp8bT9Zk34Q==}
     peerDependencies:
       naive-ui: ^2.39.0
       vue: ^3.4.37
@@ -3128,7 +3128,6 @@ packages:
       qs: 6.13.0
       recordrtc: 5.6.2
       uuid: 10.0.0
-      video-surveillance: link:../../../../Users/hatiwowo/WebPage/video-surveillance
       video.js: 7.20.1
       vue: 3.5.12(typescript@5.6.3)
       vue-router: 4.4.5(vue@3.5.12)

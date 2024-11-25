@@ -13,7 +13,7 @@
         </div>
       </div>
     </header>
-    <div class="flex-col h-full mt-3 lt-laptop-(mt-1)">
+    <div class="flex-col flex-h-rest mt-3 lt-laptop-(mt-1)">
       <ResponsiveTrendChart :selectType="selectType"></ResponsiveTrendChart>
     </div>
   </div>

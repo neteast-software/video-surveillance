@@ -6,6 +6,7 @@
       :source="source"
       subTitle="总数"
       :title="pieTitle"
+      :seriesOption="seriesOption"
     ></PieChart>
   </div>
 </template>
@@ -17,6 +18,8 @@ import type { PieSource } from "@/components/chart/PieChart.vue";
 import { computed, onMounted, ref } from "vue";
 const title = ref("设备类型告警数量");
 const source = ref<PieSource>([]);
+const isSmallScreen = window.innerHeight < 1000;
+
 async function initData() {
   const { data } = await getAlarmCount();
   const dataBody = data.dataBody;
@@ -24,9 +27,13 @@ async function initData() {
   source.value = dataBody.dataList || [];
 }
 onMounted(initData);
+const seriesOption = computed(() => {
+  return {
+    radius: isSmallScreen ? ["55%", "75%"] : ["65%", "85%"],
+  };
+});
 
 const pieTitle = computed(() => {
-  const isSmallScreen = window.innerHeight < 1000;
   console.log(source.value, window.innerHeight);
   return {
     show: true,

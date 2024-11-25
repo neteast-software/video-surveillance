@@ -64,7 +64,10 @@
       <footer
         class="flex items-center justify-around text-(4.5 primary) lt-laptop-(text-4)"
       >
-        <div class="flex-center gap-2 cursor-pointer">
+        <div
+          class="flex-center gap-2 cursor-pointer"
+          @click="handleGotoAlarmList"
+        >
           <div class="i-icons:event w-5 h-5"></div>
           预警台账
         </div>
@@ -78,6 +81,7 @@
         </div>
       </footer>
       <div
+        v-if="curData.type === '2' && curData.nvrId"
         class="absolute -top-38 left-0 h-37 w-62 bg-white p-1 rounded-2 lt-laptop-(w-52 h-34 -top-35)"
       >
         <!-- TODO -->
@@ -186,6 +190,14 @@ const curData = computed(() => {
 });
 const isSmallScreen = computed(() => window.innerWidth < 1540);
 
+function handleGotoAlarmList() {
+  router.push({
+    name: "alarmList",
+    query: {
+      deviceName: curData.value.name || "",
+    },
+  });
+}
 // const keyProject = ref([
 //   { key: "name", name: "项目名称：", value: "双园道路监控探头" },
 //   { key: "time", name: "施工时间：", value: "2021-10-10 12：12：12" },

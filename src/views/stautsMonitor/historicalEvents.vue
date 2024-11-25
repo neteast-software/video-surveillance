@@ -18,7 +18,6 @@
     <div class="w-full h-1px bg-greyLine my-4"></div>
     <div>
       <header class="flex-y-center justify-between font-600">
-        <!-- :is-date-disabled="disablePreviousDate" -->
         <NDatePicker
           type="month"
           v-model:value="timestamp"
@@ -40,7 +39,7 @@
         :events="events"
       ></Calendar>
     </div>
-    <div class="relative flex-h-rest">
+    <div class="relative flex-h-rest overflow-hidden">
       <Transition appear name="slideBottom" v-if="alarmList.length > 0">
         <div class="flex-col gap-2.5 h-full mt-2 overflow-auto transition">
           <div
@@ -102,8 +101,6 @@ import {
 import type { AlarmList } from "@/utils/network/types/statusMonitor";
 import { createLineChart } from "@/utils/other/create";
 
-// import "v-calendar/style.css";
-// import { DatePicker } from "v-calendar";
 import { format } from "date-fns";
 import { getFirstDayOfMonth, getLastDayOfMonth } from "@/utils/other/calendar";
 
@@ -121,8 +118,6 @@ const alarmList = ref<AlarmList[]>([]);
 async function initsource() {
   const { data } = await getHistoryEvent(curdeviceType.value, 1);
   listTitle.value = data?.dataBody.title;
-  // const title = data?.dataBody.title || "";
-
   const dataList = data?.dataBody.dataList || [];
   const xAxis = data?.dataBody.abscissa || [];
   const xAxisDays = xAxis.map((date) => date.split("-")[2]);
@@ -140,8 +135,6 @@ async function initsource() {
       ["数量", ...(values as number[])],
     ];
   }
-  // source.value = createLineChart(data);
-
   source.value = createLineChart(data.dataBody);
 }
 watch(() => curdeviceType.value, initsource);
@@ -193,57 +186,6 @@ const eventType = [
   // { id: 2, name: "设备", value: "" },
   // { id: 3, name: "非设备", value: "" },
 ];
-const lists = ref([
-  {
-    data: "2024-10-1",
-    time: "13:43",
-    name: "这里显示的是事111件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "alerts",
-  },
-  {
-    data: "2024-10-1",
-    time: "13:43",
-    name: "这里显示的是事件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "equip",
-  },
-  {
-    data: "2024-10-21",
-    time: "13:43",
-    name: "这里显示的是事件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "noequip",
-  },
-  {
-    data: "2024-10-21",
-    time: "13:43",
-    name: "这里显示的是事件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "noequip",
-  },
-  {
-    data: "2024-10-21",
-    time: "13:43",
-    name: "这里显示的是事件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "noequip",
-  },
-  {
-    data: "2024-10-17",
-    time: "13:43",
-    name: "这里显示的是事件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "noequip",
-  },
-  {
-    data: "2024-10-14",
-    time: "13:43",
-    name: "这里显示的是事件名称事件名称",
-    desc: "这里显示的是该事件简介描述这里显示的是该事件简介描述这里显示的是该事件简介描述",
-    status: "noequip",
-  },
-]);
 </script>
 
 <style scoped>

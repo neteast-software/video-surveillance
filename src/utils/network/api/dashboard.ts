@@ -1,7 +1,5 @@
 import http from "../http";
-// import Pack from "../pack";
 import type { AllDevices, DeviceDetail } from "../types/dashboard";
-// const pack = new http();
 
 //获取数量统计
 export const getOnlineStatistics = async () => {
@@ -17,9 +15,9 @@ export const getAllDevices = async () => {
 };
 
 //获取设备详情
-export const getDeviceDetail = async (deviceId: number) => {
+export const getDeviceDetail = async (deviceId: number, deviceType: string) => {
   const { data } = await http.get<{ data: DeviceDetail }>(
-    `/v2/index/deviceDetail/${deviceId}`
+    `/v2/index/deviceDetail/${deviceId}/${deviceType}`
   );
   return data.value!;
 };

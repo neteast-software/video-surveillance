@@ -142,9 +142,11 @@ const isH264 = ref(true);
 async function getCodec() {
   if (!props.nvrId) return;
   if (!props.controls) return;
-  const { data } = await getChannelEncode(props.nvrId, props.channelNum);
+  //   TODO  channelNum 改成 channel -> id
+  const { data } = await getChannelEncode(props.nvrId, props.channelId);
   const { encType } = data;
-  isH264.value = encType === 1;
+  //   标准 264
+  isH264.value = encType.includes("264");
   console.log("获取到的codec", encType, isH264.value);
 }
 watch(() => props.controls, getCodec);
