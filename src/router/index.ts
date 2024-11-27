@@ -96,6 +96,24 @@ const router = createRouter({
         singlePage: true,
       },
     },
+    {
+      path: "/binding",
+      name: "binding",
+      component: () => import("../views/binding/index.vue"),
+      meta: {
+        title: "绑定账号",
+        singlePage: true,
+      },
+    },
+    {
+      path: "/buildBinding",
+      name: "buildBinding",
+      component: () => import("../views/binding/index2.vue"),
+      meta: {
+        title: "网页授权",
+        singlePage: true,
+      },
+    },
     // {
     //   path: "/dashboard",
     //   name: "dashboard",
@@ -107,6 +125,7 @@ const router = createRouter({
     // },
   ],
 });
+const whiteList = ["login", "binding", "buildBinding"];
 export const hasGetRouter = shallowRef();
 router.beforeEach(async (to, _, next) => {
   if (window.top !== window.self) {
@@ -125,7 +144,7 @@ router.beforeEach(async (to, _, next) => {
     // }
     // console.error("登录失败:", error);
     // router.push("/login"); // 或者重定向到登录页面
-    if (to.name !== "login") {
+    if (!whiteList.includes(to.name as string)) {
       return next("/login");
     }
     return next();

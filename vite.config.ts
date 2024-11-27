@@ -7,7 +7,7 @@ import cesium from "vite-plugin-cesium";
 
 const pathResolve = (dir: string) => resolve(__dirname, dir);
 export default defineConfig({
-  //   base: "/view", //打包相对路径
+  base: "/view", // 打包时 需要加上这个相对路径
   resolve: {
     alias: {
       "@": pathResolve("src"),

@@ -10,7 +10,10 @@
         </transition>
       </router-view>
     </div>
-    <div class="fill-parent bg-#F6F8F9 h-full flex-col text-basic" v-else>
+    <div
+      class="fill-parent bg-#F6F8F9 h-full flex-col text-basic"
+      v-else-if="route.name"
+    >
       <navbar v-model:showModal="showModal"></navbar>
       <main class="flex flex-h-rest">
         <NModal

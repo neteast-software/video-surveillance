@@ -106,6 +106,7 @@ class Requestor {
     | void {
     const { options } = ctx;
     const accessToken = storage.get<string>("access_token");
+    const mpAuthorization = storage.get<string>("mpAuthorization") || "";
     // const accessToken =
     //     'eyJhbGciOiJIUzUxMiJ9.eyJ1aWQiOjEsInVzZXJfa2V5IjoiYWY0MTFmMjgtYzlkNi00Y2EyLWE0YzItMTY1NjA5ODhkZGZiIiwidXNlcm5hbWUiOiJhZG1pbiJ9.kMLNl6iXZ3G4EqyLm_06mGz6cQYeWv23eAo8XTHhrpgs7epI5BliQkS_8Hp8Jl9mcRKsJRYxORPEmpzYxd8wiw';
     // const accessToken =
@@ -113,6 +114,7 @@ class Requestor {
     options.headers = {
       ...options.headers,
       Authorization: accessToken ? `Bearer ${accessToken}` : "",
+      MpAuthorization: mpAuthorization,
     };
     return {
       options,
