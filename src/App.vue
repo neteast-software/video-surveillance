@@ -24,15 +24,19 @@
           <notice v-model:showModal="showModal"></notice>
         </NModal>
         <sidebar></sidebar>
-        <div class="flex-w-rest">
-          <router-view v-slot="{ Component }" class="relative p-5">
+        <div class="relative flex-w-rest">
+          <router-view v-slot="prop" class="relative p-5">
+            <!-- {{ prop.route.meta }} -->
             <transition name="fade" mode="out-in">
               <component
-                :is="Component"
+                :is="prop.Component"
                 class="absolute top-0 left-0 w-full h-full bg-white"
               />
             </transition>
           </router-view>
+          <div class="absolute bottom-0 w-full bg-red">
+            <div></div>
+          </div>
         </div>
       </main>
     </div>

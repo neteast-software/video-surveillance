@@ -34,7 +34,7 @@
                 <span v-if="nvrName">{{ nvrName }} | </span>{{ chName }}
               </button>
             </template>
-            <template #middle-right>
+            <!-- <template #middle-right>
               <ControlButton
                 v-if="!isH264"
                 :icon="visualization"
@@ -47,7 +47,7 @@
                 @click="setH264Codec(nvrId, channelNum)"
                 >切换H264</ControlButton
               >
-            </template>
+            </template> -->
             <slot></slot>
           </WebRTCPlayer>
         </template>

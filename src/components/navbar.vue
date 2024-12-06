@@ -2,8 +2,10 @@
   <div class="h-16 bg-#4880FF flex-between py-3.5 px-6 text-white relative">
     <aside class="flex-center z-1">
       <div class="i-icons:logo w-6 h-6"></div>
-      <span class="text-5 ml-1 mr-2">视频监控系统</span>
-      <span clas="text-4">国道G228线二、三期项目</span>
+      <span class="text-6 ml-1 mr-8">左海建投智慧工地系统</span>
+      <span clas="text-4"
+        >国道G228线长乐松下至福清元洪公路工程二、三期项目</span
+      >
     </aside>
     <aside class="flex gap-10 z-1">
       <div
@@ -11,14 +13,14 @@
         @click="emit('update:showModal', true)"
       >
         <div class="w-7.5 h-7.5 rounded-full flex-center bg-white ml-1 text-3">
-          <NBadge
+          <!-- <NBadge
             :value="lastAlarm?.num"
-            :max="20"
+            :max="99"
             :offset="[-2, 2]"
             color="#3563EF"
           >
-            <div class="i-icons:message w-5.5 h-5.5 text-basic"></div>
-          </NBadge>
+          </NBadge> -->
+          <div class="i-icons:message w-5.5 h-5.5 text-basic"></div>
         </div>
         <div class="mx-2 truncate max-w-60">
           {{ lastAlarm?.title }}

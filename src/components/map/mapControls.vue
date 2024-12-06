@@ -1,6 +1,6 @@
 <template>
   <div class="text-basic">
-    <div class="button hover:scale-106" @click="toggleBaseMapStyle">
+    <!-- <div class="button hover:scale-106" @click="toggleBaseMapStyle">
       <div
         class="icon"
         :class="{
@@ -8,7 +8,7 @@
           'i-icons:moon': !curBaseMapStyle,
         }"
       ></div>
-    </div>
+    </div> -->
     <div class="button hover:scale-106 my-3" @click="show3D = !show3D">
       {{ show3D ? "2D" : "3D" }}
     </div>

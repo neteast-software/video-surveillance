@@ -25,10 +25,10 @@
           :default-selected-keys="defaultExpandedKeys"
         />
       </NScrollbar>
-      <NButton class="mb-3 !mr-5">
+      <!-- <NButton class="mb-3 !mr-5">
         <div class="i-icons:add w-5 h-5"></div>
         添加设备
-      </NButton>
+      </NButton> -->
     </aside>
     <div class="h-full w-1px bg-greyLine mr-5"></div>
     <Viewer

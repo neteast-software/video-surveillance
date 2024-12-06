@@ -30,7 +30,6 @@
           </NTabPane>
           <NTabPane
             :tab-props="{
-              style: { marginRight: '40px' },
               class:
                 'relative after:absolute after:-right-10 after:inline-block after:w-px after:h-5 after:bg-[#D8D8D8]',
             }"
@@ -59,6 +58,36 @@
               :cascade="tab.cascade"
             ></FunctionalPermission>
           </NTabPane>
+          <NTabPane
+            :tab-props="{
+              class:
+                'relative after:absolute after:-right-10 after:inline-block after:w-px after:h-5 after:bg-[#D8D8D8]',
+            }"
+            display-directive="show:lazy"
+            name="监控权限"
+            tab="监控权限"
+          >
+            <!-- TODO 角色权限树形结构 -->
+            <MonitoringPermission
+              :role-id="selectedRoleId"
+              :key="selectedRoleId"
+            ></MonitoringPermission>
+          </NTabPane>
+          <NTabPane
+            v-for="tab in tabs"
+            :key="tab.dictValue"
+            display-directive="show:lazy"
+            :name="tab.dictLabel"
+            :tab="tab.dictLabel"
+          >
+            <FunctionalPermission
+              :tab-id="tab.dictValue"
+              :role-id="selectedRoleId"
+              :key="selectedRoleId"
+              :types="tab.commitType"
+              :cascade="tab.cascade"
+            ></FunctionalPermission>
+          </NTabPane>
         </NTabs>
       </section>
     </div>
@@ -67,6 +96,7 @@
 
 <script setup lang="ts">
 import RolePermission from "@/views/permission/RolePermission.vue";
+import MonitoringPermission from "@/views/permission/MonitoringPermission.vue";
 // import FunctionalPermission from "@/views/permission/FunctionalPermission.vue";
 import RoleBar from "@/views/permission/RoleBar.vue";
 import { NTabs, NTabPane } from "naive-ui";

@@ -111,19 +111,13 @@ const testCode = ref();
 const route = useRoute();
 const router = useRouter();
 onMounted(async () => {
-  const code = route.query.code as string;
+  const token = route.query.token as string;
   console.log("123123123123");
   console.log(route);
-  if (code) {
-    console.log("code", code);
-    const { data } = await getAuthorizationToken(code);
-    console.log("data", data);
-    if (data.MpAuthorization) {
-      storage.set("mpAuthorization", data.MpAuthorization);
-    } else {
-      window.$message.error("授权失败");
-    }
+  if (token) {
+    storage.set("mpAuthorization", token);
   } else {
+    window.$message.error("身份校验失败失败");
     // const { data } = await buildAuthorizationUrl();
     // if (data) {
     //   console.log("即将跳转----");
@@ -137,12 +131,8 @@ onMounted(async () => {
 function handleBinding() {
   formRef.value?.validate().then(async (valid) => {
     if (valid) {
-      const { data } = await bindAccount(formData.value);
-      if (data) {
-        bindingSuccessful.value = true;
-      } else {
-        window.$message.error("绑定失败");
-      }
+      await bindAccount(formData.value);
+      bindingSuccessful.value = true;
     } else {
       console.log("error");
     }

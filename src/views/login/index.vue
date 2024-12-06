@@ -3,7 +3,7 @@
     <div
       class="absolute left-50% -translate-x-50% bottom-30px flex flex-col items-center text-primary"
     >
-      <div>国道G228先长乐松下至福清元洪公路工程二、三期项自</div>
+      <div>国道G228线长乐松下至福清元洪公路工程二、三期项目</div>
       <div>建设单位:左海建设投资有限公司</div>
     </div>
     <div
@@ -47,8 +47,8 @@
         </NFormItem>
         <div class="flex justify-between mt-3 mb-16">
           <!-- 自动登陆 -->
-          <div class="text-#A0AEC0"><NCheckbox class="mr-2" />自动登录</div>
-          <div class="text-primary">忘记密码？</div>
+          <!-- <div class="text-#A0AEC0"><NCheckbox class="mr-2" />自动登录</div> -->
+          <!-- <div class="text-primary">忘记密码？</div> -->
         </div>
         <NButton
           type="primary"
@@ -96,7 +96,7 @@ function handleLogin() {
         setNickName(data.nickName);
         storage.set("access_token", data.access_token);
         window.$message.success("登录成功");
-        router.push("/");
+        router.push("/dashboard");
       }
     })
     .catch(() => {});

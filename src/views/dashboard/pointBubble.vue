@@ -13,7 +13,7 @@
       class="transition bg-white bg rounded-1 p-7.5 text-4 absolute bottom-0 left-0 lt-laptop-(p-4)"
       v-if="curData.type != '0'"
     >
-      <header class="flex-y-center gap-3 mb-5 text-4.5 lt-laptop-(text-4 mb-3)">
+      <header class="flex-y-center gap-3 mb-4 text-4.5 lt-laptop-(text-4 mb-3)">
         <div class="font-600 flex-center">
           <div class="w-1 h-4 bg-primary rounded-2px mr-2"></div>
           {{ curData.name }}
@@ -27,7 +27,7 @@
         </NTag>
       </header>
       <section class="mb-7 lt-laptop-(mb-5)">
-        <div class="flex gap-2.5">
+        <!-- <div class="flex gap-2.5">
           <div class="i-icons:position w-5 h-5 text-greyText mt-1"></div>
           <div>
             <div class="text-4.5 lt-laptop-(text-4)">
@@ -37,18 +37,38 @@
               curData.address
             }}</span>
           </div>
-        </div>
-        <div class="relative">
-          <div class="my-4 lt-laptop-(my-3)">
-            设备编号: {{ curData.serialNo }}
+        </div> -->
+        <div class="relative flex text-14px mb-1">
+          <div class="mr-6 whitespace-nowrap">
+            负责人: {{ curData.responsible || "--" }}
           </div>
-          <div>负责人: {{ curData.responsible }}</div>
-          <!-- <div>预警时间: {{ curData.time }}</div> -->
+          <div class="whitespace-nowrap">
+            设备编号: {{ curData.serialNo || "--" }}
+          </div>
           <img
             src="../../assets/imgs/cardImg.png"
             alt=""
-            class="absolute right-5 -top-6"
+            class="absolute w-80px h-80px -right-16px -top-60px lt-laptop-(-top-50px)"
           />
+        </div>
+        <!-- absolute -top-38 left-0 -->
+        <div
+          v-if="curData.type === '2' && curData.nvrId"
+          class="h-46 w-full bg-white p-1 rounded-2 lt-laptop-( h-38 )"
+        >
+          <Monitor
+            :id="String(curData.id)"
+            :nvr-id="curData.nvrId!"
+            :nvr-name="curData.name"
+            :channel-id="curData.id"
+            :ch-name="curData.name"
+            :channel-num="0"
+          >
+          </Monitor>
+          <div
+            @click="navigateToFullscreenPage"
+            class="i-icons:navigate w-5 h-5 text-white absolute bottom-2 right-2"
+          ></div>
         </div>
         <div class="bg-#F4F8FF p-3 mt-4 flex gap-3 lt-laptop-(p-2)">
           <img
@@ -64,9 +84,10 @@
       <footer
         class="flex items-center justify-around text-(4.5 primary) lt-laptop-(text-4)"
       >
+        <!-- @click="handleGotoAlarmList" -->
         <div
           class="flex-center gap-2 cursor-pointer"
-          @click="handleGotoAlarmList"
+          @click="showAlarmList(curData.id)"
         >
           <div class="i-icons:event w-5 h-5"></div>
           预警台账
@@ -74,31 +95,12 @@
         <div class="w-1px h-6 bg-greyLine"></div>
         <div
           class="flex-center gap-2 cursor-pointer"
-          @click="curDetailId = curData.id"
+          @click="showDeviceDetail(curData.id)"
         >
           <div class="i-icons:trend w-5 h-5"></div>
           设备详情
         </div>
       </footer>
-      <div
-        v-if="curData.type === '2' && curData.nvrId"
-        class="absolute -top-38 left-0 h-37 w-62 bg-white p-1 rounded-2 lt-laptop-(w-52 h-34 -top-35)"
-      >
-        <!-- TODO -->
-        <Monitor
-          :id="String(curData.id)"
-          :nvr-id="curData.nvrId!"
-          :nvr-name="curData.name"
-          :channel-id="curData.id"
-          :ch-name="curData.name"
-          :channel-num="0"
-        >
-        </Monitor>
-        <div
-          @click="navigateToFullscreenPage"
-          class="i-icons:navigate w-5 h-5 text-white absolute bottom-2 right-2"
-        ></div>
-      </div>
     </div>
     <div
       class="transition bg-white bg rounded-1 p-7.5 text-4 absolute bottom-0 left-0"
@@ -161,12 +163,18 @@ import { useRouter } from "vue-router";
 import { useMapInfoStore } from "@/stores/mapInfo";
 import { storeToRefs } from "pinia";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
-import { computed, ref } from "vue";
+import { computed, ref, watch, nextTick } from "vue";
 import Monitor from "@/views/index/Monitor.vue";
 const mapInfo = useMapInfoStore();
-const { curDetailId } = storeToRefs(mapInfo);
+const { curDetailId, alarmCurDetailId } = storeToRefs(mapInfo);
 const deviceInfo = useDeviceInfoStore();
 const { dataList, curdeviceListId } = storeToRefs(deviceInfo);
+watch(bubbleVisible, () => {
+  if (!bubbleVisible.value) {
+    curDetailId.value = 0;
+    alarmCurDetailId.value = 0;
+  }
+});
 defineProps({
   visible: Boolean,
   position: {
@@ -174,6 +182,26 @@ defineProps({
     default: () => [0, 0], // 弹窗的初始位置
   },
 });
+function showDeviceDetail(id) {
+  if (alarmCurDetailId.value === 0) {
+    curDetailId.value = id;
+  } else {
+    alarmCurDetailId.value = 0;
+    setTimeout(() => {
+      curDetailId.value = id;
+    }, 300);
+  }
+}
+function showAlarmList(id) {
+  if (curDetailId.value === 0) {
+    alarmCurDetailId.value = id;
+  } else {
+    curDetailId.value = 0;
+    setTimeout(() => {
+      alarmCurDetailId.value = id;
+    }, 300);
+  }
+}
 const router = useRouter();
 // const showDetail = ref(true); // 是否是重点工程
 function navigateToFullscreenPage() {
@@ -191,12 +219,12 @@ const curData = computed(() => {
 const isSmallScreen = computed(() => window.innerWidth < 1540);
 
 function handleGotoAlarmList() {
-  router.push({
-    name: "alarmList",
-    query: {
-      deviceName: curData.value.name || "",
-    },
-  });
+  //   router.push({
+  //     name: "alarmList",
+  //     query: {
+  //       deviceName: curData.value.name || "",
+  //     },
+  //   });
 }
 // const keyProject = ref([
 //   { key: "name", name: "项目名称：", value: "双园道路监控探头" },

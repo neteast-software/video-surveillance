@@ -8,7 +8,7 @@ import "virtual:uno.css";
 import { createPinia } from "pinia";
 import { setupCalendar } from "v-calendar";
 import { Linker } from "linker-uii";
-import Vconsole from "vconsole";
+// import Vconsole from "vconsole";
 import http from "@/utils/network/http";
 
 const linker = Linker.create();
@@ -20,9 +20,8 @@ document.head.appendChild(meta);
 
 const pinia = createPinia();
 const app = createApp(App);
-// use vconsole
 
-new Vconsole();
+// new Vconsole();
 
 app.use(pinia);
 app.use(router);

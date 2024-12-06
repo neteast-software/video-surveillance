@@ -16,6 +16,8 @@ export interface MenuList {
   path: string;
   query: string;
   sort: number;
+
+  isFrame: boolean;
   component?: string;
   children: MenuList[];
 }

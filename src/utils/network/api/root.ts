@@ -20,3 +20,9 @@ export const getMenuList = async () => {
   const { data } = await http.get<{ data: MenuList[] }>("/menu/getRouters");
   return data.value!;
 };
+
+/** 用户信息 */
+export const getUserInfo = async () => {
+  const { data } = await http.get("/user/info");
+  return data.value!;
+};

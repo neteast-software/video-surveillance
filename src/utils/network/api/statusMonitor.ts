@@ -9,7 +9,7 @@ import type {
   AlarmList,
 } from "../types/statusMonitor";
 
-//获取监控状态/安全帽状态
+//获取监控状态/智慧安全帽状态
 export const getStatusTotal = async (deviceType: number) => {
   const { data } = await http.get<{ data: StatusTotal }>(
     `/v2/index/deviceOnlineAlarm/${deviceType}`

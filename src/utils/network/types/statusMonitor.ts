@@ -4,6 +4,7 @@ export interface StatusTotal {
   onlineCount: number;
   alarmCount: number;
   alarmRate: number;
+  offlineCount: number;
 }
 
 export interface ChartData {

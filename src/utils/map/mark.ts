@@ -6,6 +6,9 @@ import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 import { useEventBus } from "@vueuse/core";
 import { scrollToItemKey } from "@/config/eventBus";
+import { useMapInfoStore } from "@/stores/mapInfo";
+const mapInfo = useMapInfoStore();
+const { curDetailId, alarmCurDetailId } = storeToRefs(mapInfo);
 
 const deviceInfo = useDeviceInfoStore();
 const { filteredDataList, curdeviceListId } = storeToRefs(deviceInfo);
@@ -94,6 +97,12 @@ export function setupClickHandler(viewer: Viewer) {
         const position = entity.position.getValue(Cesium.JulianDate.now());
         bubblePosition.value = calculateScreenPosition(viewer, position);
         bubbleVisible.value = true;
+        if (curDetailId.value !== 0) {
+          curDetailId.value = entity.id; // 更新当前选中的设备ID
+        }
+        if (alarmCurDetailId.value !== 0) {
+          alarmCurDetailId.value = entity.id; // 更新当前选中的告警设备ID
+        }
         curdeviceListId.value = entity.id; // 更新当前选中的设备ID
         // 更新当前选中的实体并缩放
         selectEntity = entity;
@@ -119,6 +128,13 @@ export function updatePointStatus(viewer: Viewer, newId: number) {
       selectEntity = entity; // 更新选中实体
       scaleEntity(selectEntity, 1.1); // 缩放选中实体
       bubbleVisible.value = true; // 显示气泡
+      if (curDetailId.value !== 0) {
+        curDetailId.value = newId; // 更新当前选中的设备ID
+      }
+      if (alarmCurDetailId.value !== 0) {
+        alarmCurDetailId.value = newId; // 更新当前选中的告警设备ID
+      }
+
       flyToPosition(viewer); // 飞到选中实体位置
     } else {
       // 恢复未选中实体的缩放
@@ -145,8 +161,8 @@ export function flyToPosition(viewer: Viewer) {
   const adjustedHeight = height + 10000;
   viewer.camera.flyTo({
     destination: Cesium.Cartesian3.fromDegrees(
-      longitude,
-      latitude + 0.005,
+      longitude - 0.01,
+      latitude + 0.015,
       adjustedHeight
     ),
     orientation: {

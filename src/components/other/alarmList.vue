@@ -7,18 +7,18 @@
       <div
         ref="detailsRef"
         class="flex-col h-full w-full py-7.5"
-        v-show="curDetailId !== 0"
+        v-show="alarmCurDetailId !== 0"
       >
         <header
           class="flex-between mb-6 px-7.5 text-5 lt-laptop-(px-5 text-4.5)"
         >
-          <div class="font-600">设备详情</div>
+          <div class="font-600">预警台账</div>
           <div
-            @click="curDetailId = 0"
+            @click="alarmCurDetailId = 0"
             class="i-icons:close w-6 h-6 text-lightGrey cursor-pointer"
           ></div>
         </header>
-        <main class="px-7.5 lt-laptop-(px-5)">
+        <!-- <main class="px-7.5 lt-laptop-(px-5)">
           <div class="flex-center mb-1">
             <img
               src="@/assets/imgs/text/listImg.png"
@@ -73,77 +73,51 @@
           <div
             class="w-full h-1px bg-greyLine mt-6 mb-7 lt-laptop-(mt-3 mb-4)"
           ></div>
-        </main>
+        </main> -->
 
-        <NTabs
-          animated
-          v-model:value="curEventType"
-          :tabs-padding="30"
-          class="flex-h-rest"
+        <NScrollbar
+          ref="scrollbar"
+          class="px-7.5 lt-laptop-(px-5)"
+          v-if="filterLists.length !== 0"
         >
-          <template #suffix>
-            <NSelect
-              v-model:value="selectlist"
-              class="w-26 text-4"
-              :options="selectDatas"
-              placeholder="预警等级"
-            ></NSelect>
-          </template>
-
-          <n-tab-pane
-            v-for="option in eventData"
-            :name="option.id"
-            :tab="option.label"
-            class="h-full"
+          <div
+            class="w-full rounded-1 py-4 px-3 lt-laptop-(py-3 px-2) mb-3"
+            :class="
+              eventType.find((item) => list.category === item.id)?.color || ''
+            "
+            v-for="list in filterLists"
           >
-            <div class="fill-parent relative">
-              <NScrollbar
-                ref="scrollbar"
-                class="px-7.5 lt-laptop-(px-5)"
-                v-if="filterLists.length !== 0"
-              >
+            <div class="flex-between mb-3 lt-laptop-(mb-2)">
+              <div class="flex-center gap-1">
                 <div
-                  class="w-full rounded-1 py-4 px-3 lt-laptop-(py-3 px-2) mb-3"
-                  :class="
+                  class="i-palette:alerts w-4 h-4"
+                  :class="`i-palette:${
                     eventType.find((item) => list.category === item.id)
-                      ?.color || ''
-                  "
-                  v-for="list in filterLists"
-                >
-                  <div class="flex-between mb-3 lt-laptop-(mb-2)">
-                    <div class="flex-center gap-1">
-                      <div
-                        class="i-palette:alerts w-4 h-4"
-                        :class="`i-palette:${
-                          eventType.find((item) => list.category === item.id)
-                            ?.value || ''
-                        }`"
-                      ></div>
-                      <span class="text-greyText">{{ list.happenTime }}</span>
-                    </div>
-                    <!-- <div class="i-icons:details rotate-90 w-3.5 h-3.5"></div> -->
-                  </div>
-                  <div class="flex-center gap-2">
-                    <img
-                      src="@/assets/imgs/text/build.png"
-                      class="w-20 h-16 lt-laptop-(w-18 h-14)"
-                      alt=""
-                    />
-                    <div class="flex-w-rest overflow-hidden">
-                      <div class="text-4 lt-laptop-(text-3.5) truncate">
-                        {{ list.title }}
-                      </div>
-                      <div class="list-desc text-greyText lt-laptop-(text-3)">
-                        {{ list.content }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </NScrollbar>
-              <listEmpty v-else></listEmpty>
+                      ?.value || ''
+                  }`"
+                ></div>
+                <span class="text-greyText">{{ list.happenTime }}</span>
+              </div>
+              <!-- <div class="i-icons:details rotate-90 w-3.5 h-3.5"></div> -->
             </div>
-          </n-tab-pane>
-        </NTabs>
+            <div class="flex-center gap-2">
+              <img
+                src="@/assets/imgs/text/build.png"
+                class="w-20 h-16 lt-laptop-(w-18 h-14)"
+                alt=""
+              />
+              <div class="flex-w-rest overflow-hidden">
+                <div class="text-4 lt-laptop-(text-3.5) truncate">
+                  {{ list.title }}
+                </div>
+                <div class="list-desc text-greyText lt-laptop-(text-3)">
+                  {{ list.content }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </NScrollbar>
+        <listEmpty v-else></listEmpty>
       </div>
     </NSpin>
   </Transition>
@@ -154,7 +128,7 @@ import { FilterStatus } from "@/utils/other/data";
 import { NTag, NTabs, NTabPane, NScrollbar, NSelect, NSpin } from "naive-ui";
 import LineChart from "@/components/chart/LineChart.vue";
 import listEmpty from "@/components/other/listEmpty.vue";
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, nextTick } from "vue";
 import { useMapInfoStore } from "@/stores/mapInfo";
 import { storeToRefs } from "pinia";
 import { getDeviceDetail } from "@/utils/network/api/dashboard";
@@ -165,7 +139,7 @@ import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { AlarmList } from "@/utils/network/types/statusMonitor";
 import { set } from "date-fns";
 const mapInfo = useMapInfoStore();
-const { curDetailId } = storeToRefs(mapInfo);
+const { alarmCurDetailId } = storeToRefs(mapInfo);
 
 const source = ref<(number | string)[][]>([]);
 const deviceDetail = ref<DeviceDetail>();
@@ -176,8 +150,11 @@ const isLoading = ref(false);
 const deviceInfo = useDeviceInfoStore();
 const { dataList, curdeviceListId } = storeToRefs(deviceInfo);
 async function initDeviceDetail() {
-  if (!curDetailId.value) return;
-  const { data } = await getDeviceDetail(curDetailId.value, curData.value.type);
+  if (!alarmCurDetailId.value) return;
+  const { data } = await getDeviceDetail(
+    alarmCurDetailId.value,
+    curData.value.type
+  );
   deviceDetail.value = data;
   source.value = createLineChart(data.echartsData.dataBody);
 }
@@ -189,11 +166,11 @@ const curData = computed(() => {
 const listParams = computed(() => {
   if (curEventType.value === "0")
     return {
-      deviceId: curDetailId.value,
+      deviceId: alarmCurDetailId.value,
     };
   else {
     return {
-      deviceId: curDetailId.value,
+      deviceId: alarmCurDetailId.value,
       category: curEventType.value,
     };
   }
@@ -215,7 +192,7 @@ function initData() {
   }
 }
 
-watch(() => curDetailId.value, initData);
+watch(() => alarmCurDetailId.value, initData);
 watch(() => curEventType.value, initList);
 
 const legend = ref({

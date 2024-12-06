@@ -25,11 +25,11 @@
 import PermissionTree from "./PermissionTree.vue";
 import { NButton, NSpin } from "naive-ui";
 import {
-  getMenuTree,
-  getRoleMenu,
-  saveRoleMenu,
+  getDeviceTree,
+  getSelectedRoleDevice,
+  saveDeviceRole,
 } from "@/utils/network/api/baseSetting";
-// import { getSubSystemList, getRoleDetail, saveRoleMenu } from '@/utils/network/api/manager';
+
 import { onMounted, shallowRef, ref } from "vue";
 import { type TreeOption } from "naive-ui";
 import { useDialogAsync } from "@/ui/dialog";
@@ -44,7 +44,7 @@ const menuIndeterminate = shallowRef<number[]>([]);
 //子系统权限树
 const subSystemTree = shallowRef<TreeOption[]>([]);
 async function initSubsystemTree() {
-  const { data } = await getMenuTree();
+  const { data } = await getDeviceTree();
   if (!data) return;
   recursionSetLabel(data);
   subSystemTree.value = data as unknown as TreeOption[];
@@ -54,7 +54,8 @@ async function initSubsystemTree() {
 async function initRoleDetail() {
   const { roleId } = props;
   if (!roleId) return;
-  const { data } = await getRoleMenu(roleId);
+  const { data } = await getSelectedRoleDevice(roleId);
+
   if (!data) return;
   menuChecked.value = data;
 }
@@ -90,7 +91,7 @@ async function savePermission() {
     ];
     console.log("checkMenu", checkMenu);
 
-    await saveRoleMenu({ id: roleId, menuIds: checkMenu });
+    await saveDeviceRole({ id: roleId, menuIds: checkMenu });
     window.$message?.success("保存成功");
   } finally {
     loading.value = false;

@@ -59,7 +59,7 @@ onMounted(() => {
     sceneMode: 2, //2d模式
     requestRenderMode: true,
   });
-  viewer.scene.debugShowFramesPerSecond = true;
+  viewer.scene.debugShowFramesPerSecond = false;
   const vecLayer = viewer.imageryLayers.addImageryProvider(newtdtMap("vec"));
   const cvaLayer = viewer.imageryLayers.addImageryProvider(newtdtMap("cva"));
 
@@ -85,12 +85,13 @@ onMounted(() => {
   );
 
   const baseColor = new Cesium.Color(0.8, 0.3, 0.6, 0.3);
-
+  const base = process.env.NODE_ENV === "development" ? "/" : "";
   viewer.dataSources
     .add(
-      // 不加/ ,自动会填充base 的 view路径
+      //TODO打包 不加/ ,自动会填充base 的 view路径
       //   /out.json  /output.geojson
-      Cesium.GeoJsonDataSource.load("/G228_11_12.geojson", {
+
+      Cesium.GeoJsonDataSource.load(`${base}G228_11_12.geojson`, {
         stroke: baseColor,
       })
     )

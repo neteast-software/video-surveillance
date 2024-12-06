@@ -9,26 +9,30 @@ const componentMap: Record<string, RouteComponent> = {
 };
 export function createRoutes(menuData: MenuList[]): RouteRecordRaw[] {
   const routes = menuData.map((menuItem) => {
-    const mappingComponent = componentMap[menuItem.component!]
+    const mappingComponent = componentMap[menuItem.component!];
     const route = {
       path: menuItem.path ? `/${menuItem.path}` : "",
       name: menuItem.path ? menuItem.path : "",
       props: mappingComponent ? (r: any) => ({ key: r.path }) : undefined,
       meta: {
         title: menuItem.name,
+        isFrame: menuItem.isFrame,
         icon: () =>
-          h("div", { class: `i-icons:${menuItem.path.toLowerCase()} w-5 h-5` }),
+          h("div", { class: `i-icons:${menuItem.icon.toLowerCase()} w-5 h-5` }),
         uri: menuItem.init,
       },
       component: !menuItem.component
         ? undefined
         : mappingComponent ||
-        (() => import(`@/views/${menuItem.component}/index.vue`)), // 动态导入组件
+          (() => import(`@/views/${menuItem.component}/index.vue`)), // 动态导入组件
       children: menuItem.children ? createRoutes(menuItem.children) : undefined,
     };
+
     return route;
   });
-  return routes as unknown as RouteRecordRaw[]
+  console.log("11111");
+  console.log(routes);
+  return routes as unknown as RouteRecordRaw[];
 }
 
 export function createMenu(routes: any) {
@@ -38,7 +42,7 @@ export function createMenu(routes: any) {
   return routesFilter.map((route: any) => {
     const menuOption = {
       label: route.meta?.title || "",
-      key: route.path,
+      key: route.meta.isFrame === "0" ? route.meta.uri : route.path,
       icon: route.meta?.icon ? route.meta.icon : undefined,
       children: route.children ? createMenu(route.children) : undefined,
     };
