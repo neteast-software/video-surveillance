@@ -168,11 +168,16 @@ async function addMonitor(monitor: MonitorItem | MonitorItem[]) {
 const monitorBus = useEventBus(pickMonitorKey);
 monitorBus.on(addMonitorLock);
 
-onMounted(() => {
-  if (props.deviceId) {
-    gridCount.value = 1;
+onMounted(() => {});
+watch(
+  () => props.deviceId,
+  (val) => {
+    console.log("deviceId", val);
+    if (val) {
+      gridCount.value = 1;
+    }
   }
-});
+);
 </script>
 
 <style scoped>

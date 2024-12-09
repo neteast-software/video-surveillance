@@ -160,6 +160,7 @@ import { useEventBus } from "@vueuse/core";
 import { pickMonitorKey } from "./helper";
 import { MonitorItem } from "@/utils/network/types/security";
 import { v4 as uuidv4 } from "uuid";
+import { de } from "date-fns/locale";
 enum MonitorStatus {
   ALL = "all",
   ONLINE = "online",
@@ -168,6 +169,7 @@ enum MonitorStatus {
 interface Props {
   regionId: number;
   activeMonitor: number;
+  deviceId: number;
 }
 const props = withDefaults(defineProps<Props>(), {});
 defineEmits<{
@@ -178,6 +180,7 @@ const popoverVisible = ref(false);
 const selectMonitorCard = ref(0);
 
 function onPickMonitor(nvrId: number, nvrName: string, ch: ChannelItem) {
+  console.log("onPickMonitor---");
   if (!ch.online) return;
   monitorBus.emit({
     key: uuidv4(),
@@ -245,6 +248,7 @@ const filteredDeviceList = computed(() => {
 async function initMonitorList() {
   const { data } = await getDevicesList();
   deviceList.value = data;
+
   const limit = 4;
   let len = 0;
   const cache: MonitorItem[] = [];
@@ -272,6 +276,23 @@ async function initMonitorList() {
       len++;
     });
   });
+  if (props.deviceId) {
+    // onPickMonitor
+    console.log(555555);
+    console.log(deviceList.value);
+    const nvr = deviceList.value.find((nvr) =>
+      nvr.channels?.some((ch) => ch.id == props.deviceId)
+    );
+    console.log(nvr);
+    if (nvr) {
+      const ch = nvr.channels?.find((ch) => ch.id == props.deviceId);
+      if (ch) {
+        setTimeout(() => {
+          onPickMonitor(nvr.id, nvr.name, ch);
+        });
+      }
+    }
+  }
   options.value = [
     { label: "全部", value: 0 },
     ...deviceList.value.map((nvr) => ({ label: nvr.name, value: nvr.id })),

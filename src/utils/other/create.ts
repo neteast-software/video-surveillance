@@ -7,6 +7,7 @@ import { Viewer } from "linker-uii";
 const componentMap: Record<string, RouteComponent> = {
   viewer: Viewer,
 };
+
 export function createRoutes(menuData: MenuList[]): RouteRecordRaw[] {
   const routes = menuData.map((menuItem) => {
     const mappingComponent = componentMap[menuItem.component!];
@@ -30,8 +31,7 @@ export function createRoutes(menuData: MenuList[]): RouteRecordRaw[] {
 
     return route;
   });
-  console.log("11111");
-  console.log(routes);
+
   return routes as unknown as RouteRecordRaw[];
 }
 

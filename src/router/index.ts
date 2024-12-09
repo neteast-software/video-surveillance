@@ -115,6 +115,15 @@ const router = createRouter({
       },
     },
     // {
+    //   path: "/homePage",
+    //   name: "homePage",
+    //   component: () => import("../views/homePage/index.vue"),
+    //   meta: {
+    //     title: "123",
+    //     singlePage: true,
+    //   },
+    // },
+    // {
     //   path: "/dashboard",
     //   name: "dashboard",
     //   component: () => import("../views/dashboard/index.vue"),
@@ -125,7 +134,7 @@ const router = createRouter({
     // },
   ],
 });
-const whiteList = ["login", "binding", "buildBinding"];
+const whiteList = ["login", "binding", "buildBinding", "homePage"];
 export const hasGetRouter = shallowRef();
 router.beforeEach(async (to, _, next) => {
   if (window.top !== window.self) {

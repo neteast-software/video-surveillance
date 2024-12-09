@@ -96,7 +96,7 @@ function handleLogin() {
         setNickName(data.nickName);
         storage.set("access_token", data.access_token);
         window.$message.success("登录成功");
-        router.push("/dashboard");
+        router.push("/homePage");
       }
     })
     .catch(() => {});

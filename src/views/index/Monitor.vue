@@ -84,7 +84,7 @@
         :style="{ bottom: controls ? '100px' : '14px' }"
       >
         <img :src="positionImg" mode="scaleToFill" class="w-4 h-4" />
-        <span v-if="nvrName">{{ nvrName }} | </span>{{ chName }}
+        <span v-if="nvrName">{{ nvrName }} </span>
       </button>
     </div>
   </div>

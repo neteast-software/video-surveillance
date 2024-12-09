@@ -27,6 +27,21 @@
               </NFormItem>
             </div>
             <!--  -->
+            <div class="item-container flex items-center w-full mb-30px">
+              <div class="w-28 mr-4 text-align-end">
+                <span class="text-red">*</span>项目全称:
+              </div>
+              <NFormItem class="flex-1 h-50px" path="fullName">
+                <NInput
+                  type="textarea"
+                  v-model:value="formData.fullName"
+                  placeholder="请输入"
+                  class="!text-14px"
+                >
+                </NInput>
+              </NFormItem>
+            </div>
+            <!--  -->
             <div class="item-container flex items-center h-64px w-full">
               <div class="w-28 mr-4 text-align-end">
                 <span class="text-red">*</span>项目简称:
@@ -82,20 +97,7 @@
                 </NInput>
               </NFormItem>
             </div>
-            <!--  -->
-            <div class="item-container flex items-center h-64px w-full">
-              <div class="w-28 mr-4 text-align-end">竣工日期:</div>
-              <NFormItem class="flex-1">
-                <NDatePicker
-                  clearable
-                  v-model:formatted-value="formData.completionDate"
-                  value-format="yyyy-MM-dd"
-                  placeholder="请选择"
-                  class="!text-14px flex-1"
-                >
-                </NDatePicker>
-              </NFormItem>
-            </div>
+
             <!--  -->
             <div class="item-container flex items-center h-64px w-full">
               <div class="w-28 mr-4 text-align-end">
@@ -131,20 +133,6 @@
             <!--  -->
             <div class="item-container flex items-center h-64px w-full">
               <div class="w-28 mr-4 text-align-end">
-                <span class="text-red">*</span>项目全称:
-              </div>
-              <NFormItem class="flex-1" path="fullName">
-                <NInput
-                  v-model:value="formData.fullName"
-                  placeholder="请输入"
-                  class="!text-14px"
-                >
-                </NInput>
-              </NFormItem>
-            </div>
-            <!--  -->
-            <div class="item-container flex items-center h-64px w-full">
-              <div class="w-28 mr-4 text-align-end">
                 <span class="text-red">*</span>项目状态:
               </div>
               <NFormItem class="flex-1" path="projectStatus">
@@ -158,12 +146,13 @@
               </NFormItem>
             </div>
             <!--  -->
-            <div class="item-container flex items-center h-64px w-full">
+            <div class="item-container flex items-center w-full mb-30px">
               <div class="w-28 mr-4 text-align-end">
                 <span class="text-red">*</span>项目途经:
               </div>
-              <NFormItem class="flex-1" path="route">
+              <NFormItem class="flex-1 h-50px" path="route">
                 <NInput
+                  type="textarea"
                   v-model:value="formData.route"
                   placeholder="请输入"
                   class="!text-14px"
@@ -171,7 +160,6 @@
                 </NInput>
               </NFormItem>
             </div>
-
             <!--  -->
             <div class="item-container flex items-center h-64px w-full">
               <div class="w-28 mr-4 text-align-end">
@@ -186,6 +174,7 @@
                 </NInput>
               </NFormItem>
             </div>
+
             <!--  -->
             <div class="item-container flex items-center h-64px w-full">
               <div class="w-28 mr-4 text-align-end">
@@ -209,6 +198,20 @@
               <NFormItem class="flex-1" path="operationStartDate">
                 <NDatePicker
                   v-model:formatted-value="formData.operationStartDate"
+                  value-format="yyyy-MM-dd"
+                  placeholder="请选择"
+                  class="!text-14px flex-1"
+                >
+                </NDatePicker>
+              </NFormItem>
+            </div>
+            <!--  -->
+            <div class="item-container flex items-center h-64px w-full">
+              <div class="w-28 mr-4 text-align-end">竣工日期:</div>
+              <NFormItem class="flex-1">
+                <NDatePicker
+                  clearable
+                  v-model:formatted-value="formData.completionDate"
                   value-format="yyyy-MM-dd"
                   placeholder="请选择"
                   class="!text-14px flex-1"

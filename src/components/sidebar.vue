@@ -224,8 +224,6 @@ function handleMenuSelect(key: string) {
 }
 const menuKey = computed(() => {
   // return router.currentRoute.value.path as string;
-  console.log("2222");
-  console.log(route);
   return route.path;
 });
 watch(menuOptions, async (options) => {
@@ -248,6 +246,7 @@ async function initData() {
   }`;
   console.log("userInfo", userInfo);
   //   dataRoleIds  roleIds
+  if (!userInfo.roleIds) return;
   allowModify.value = userInfo.dataRoleIds.some((item) => {
     return userInfo.roleIds.includes(item);
   });

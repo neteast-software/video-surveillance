@@ -26,7 +26,12 @@
         <sidebar></sidebar>
         <div class="relative flex-w-rest">
           <router-view v-slot="prop" class="relative p-5">
-            <!-- {{ prop.route.meta }} -->
+            <!-- {{ prop.route?.meta?.uri }} -->
+            <div
+              v-if="prop.route?.meta?.uri"
+              ref="routerViewContainer"
+              class="routerViewContainer"
+            ></div>
             <transition name="fade" mode="out-in">
               <component
                 :is="prop.Component"
@@ -49,11 +54,16 @@ import sidebar from "./components/sidebar.vue";
 import { LkNaiveProvider } from "linker-uii";
 import { GlobalThemeOverrides, NModal, NSpin } from "naive-ui";
 import notice from "./components/notice/index.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 const showModal = ref(false);
 const route = useRoute();
+
+onMounted(() => {
+  //   insertBuildingBg();
+});
+
 const themeOverrides: GlobalThemeOverrides = {
   common: {
     primaryColor: "#3563EF",
@@ -118,6 +128,18 @@ const themeOverrides: GlobalThemeOverrides = {
 </script>
 
 <style scoped>
+.routerViewContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.8;
+  background-repeat: no-repeat;
+  background-size: 90%;
+  background-position: 90% 100%;
+  background-image: url("/public/img/common/building_bg.png");
+}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;

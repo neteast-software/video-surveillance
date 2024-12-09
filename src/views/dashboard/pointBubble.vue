@@ -54,9 +54,10 @@
         <!-- absolute -top-38 left-0 -->
         <div
           v-if="curData.type === '2' && curData.nvrId"
-          class="h-46 w-full bg-white p-1 rounded-2 lt-laptop-( h-38 )"
+          class="relative h-46 w-full bg-white p-1 rounded-2 lt-laptop-( h-38 )"
         >
           <Monitor
+            @click="navigateToFullscreenPage(curData.id)"
             :id="String(curData.id)"
             :nvr-id="curData.nvrId!"
             :nvr-name="curData.name"
@@ -66,8 +67,8 @@
           >
           </Monitor>
           <div
-            @click="navigateToFullscreenPage"
-            class="i-icons:navigate w-5 h-5 text-white absolute bottom-2 right-2"
+            @click="navigateToFullscreenPage(curData.id)"
+            class="i-icons:navigate w-5 h-5 text-white absolute bottom-2 cursor-pointer right-2"
           ></div>
         </div>
         <div class="bg-#F4F8FF p-3 mt-4 flex gap-3 lt-laptop-(p-2)">
@@ -204,11 +205,11 @@ function showAlarmList(id) {
 }
 const router = useRouter();
 // const showDetail = ref(true); // 是否是重点工程
-function navigateToFullscreenPage() {
+function navigateToFullscreenPage(deviceId = 1) {
   router.push({
     name: "index", // 在 router 配置中定义的路由名称
     query: {
-      deviceId: 1,
+      deviceId,
     },
   });
 }

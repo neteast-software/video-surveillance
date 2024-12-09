@@ -5,15 +5,16 @@ import { ref, watch } from "vue";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { storeToRefs } from "pinia";
 import { useEventBus } from "@vueuse/core";
-import { scrollToItemKey } from "@/config/eventBus";
+import { scrollToItemKey, flyToPositionKey } from "@/config/eventBus";
 import { useMapInfoStore } from "@/stores/mapInfo";
+
 const mapInfo = useMapInfoStore();
 const { curDetailId, alarmCurDetailId } = storeToRefs(mapInfo);
 
 const deviceInfo = useDeviceInfoStore();
 const { filteredDataList, curdeviceListId } = storeToRefs(deviceInfo);
 const { getIconByTypeAndStatus } = deviceInfo;
-
+const flyToPositionBus = useEventBus(flyToPositionKey);
 let entities: any = [];
 let selectEntity: any = null; // 正在选中的实体
 
@@ -118,6 +119,7 @@ export function setupClickHandler(viewer: Viewer) {
         curdeviceListId.value = 0; // 重置设备ID
       }
     }
+    flyToPosition(viewer); // 飞到选中实体位置
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 }
 
@@ -134,7 +136,6 @@ export function updatePointStatus(viewer: Viewer, newId: number) {
       if (alarmCurDetailId.value !== 0) {
         alarmCurDetailId.value = newId; // 更新当前选中的告警设备ID
       }
-
       flyToPosition(viewer); // 飞到选中实体位置
     } else {
       // 恢复未选中实体的缩放
