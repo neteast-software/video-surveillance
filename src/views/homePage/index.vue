@@ -3,8 +3,8 @@
     <div class="top_decoration"></div>
     <div class="main_decoration"></div>
     <div class="main_decoration2"></div>
-    <!-- <div class="bottom_decoration"></div> -->
-    <div class="particle_canvas_container"></div>
+    <div class="bottom_decoration"></div>
+    <!-- <div class="particle_canvas_container"></div> -->
     <div class="option_group_container">
       <div
         v-for="(item, index) in options"
@@ -78,7 +78,7 @@ function gotoPath(path: string, windowOpne: boolean) {
   }
 }
 onMounted(() => {
-  setParticle();
+  //   setParticle();
 });
 function setParticle() {
   /**
@@ -302,6 +302,7 @@ function setParticle() {
   position: absolute;
   top: 55%;
   left: 46%;
+  z-index: 2;
 }
 
 /* @media (max-height: 860px) {
