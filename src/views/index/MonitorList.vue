@@ -179,8 +179,10 @@ import type { NVRItem, ChannelItem } from "@/utils/network/types/monitor";
 import { useEventBus } from "@vueuse/core";
 import { pickMonitorKey } from "./helper";
 import { MonitorItem } from "@/utils/network/types/security";
+import { useDeviceInfoStore } from "@/stores/deviceInfo";
+import { storeToRefs } from "pinia";
 import { v4 as uuidv4 } from "uuid";
-import { de } from "date-fns/locale";
+
 enum MonitorStatus {
 	ALL = "all",
 	ONLINE = "online",
@@ -191,13 +193,13 @@ interface Props {
 	activeMonitor: number;
 	deviceId: number;
 }
+const { selectMonitorCard } = storeToRefs(useDeviceInfoStore());
 const props = withDefaults(defineProps<Props>(), {});
 defineEmits<{
 	select: [indexCode: string];
 }>();
 const monitorBus = useEventBus(pickMonitorKey);
 const popoverVisible = ref(false);
-const selectMonitorCard = ref(0);
 
 function onPickMonitor(nvrId: number, nvrName: string, ch: ChannelItem) {
 	console.log("onPickMonitor---");
@@ -273,6 +275,7 @@ async function initMonitorList() {
 	let len = 0;
 	const cache: MonitorItem[] = [];
 	const labelSet = new Set<string>();
+	selectMonitorCard.value = data[0].channels![0].id;
 	deviceList.value.forEach((nvr) => {
 		// if (len >= limit) return;
 		nvr.channels?.forEach((ch) => {
