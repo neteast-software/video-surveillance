@@ -53,6 +53,9 @@ dependencies:
   recordrtc:
     specifier: ^5.6.2
     version: 5.6.2
+  three:
+    specifier: ^0.171.0
+    version: 0.171.0
   uuid:
     specifier: ^9.0.1
     version: 9.0.1
@@ -3940,6 +3943,10 @@ packages:
       mkdirp: 1.0.4
       yallist: 4.0.0
     dev: true
+
+  /three@0.171.0:
+    resolution: {integrity: sha512-Y/lAXPaKZPcEdkKjh0JOAHVv8OOnv/NDJqm0wjfCzyQmfKxV7zvkwsnBgPBKTzJHToSOhRGQAGbPJObT59B/PQ==}
+    dev: false
 
   /tiny-warning@1.0.3:
     resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}

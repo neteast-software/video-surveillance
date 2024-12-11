@@ -25,6 +25,7 @@
     "linker-uii": "latest",
     "pinia": "^2.2.4",
     "recordrtc": "^5.6.2",
+    "three": "^0.171.0",
     "uuid": "^9.0.1",
     "v-calendar": "^3.1.2",
     "vconsole": "^3.15.1",

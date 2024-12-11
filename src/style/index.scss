@@ -1,90 +1,90 @@
 @import "slide.scss";
 // @use "slide.scss" as slide;
 :root {
-  /* #3563EF */
-  --primary-color: 53 99 239;
-  //#DFEBFF
-  --primary-bg-color: 225 234 246;
-  /* #232D42 */
-  --text-basic: 35 45 66;
-  /* #8A92A6 */
-  --text-grey: 138 146 166;
-  /* #A0AEC0 */
-  --text-lightGrey: 160 174 192;
-  /* #EEEEEE*/
-  --border-grey: 238 238 238;
-  /* #F4F8FF*/
-  --primary-lightBg: 244 248 255;
-  --n-item-color-active-hover: #ff0 !important;
-  //状态颜色
-  // #4DC591
-  --success-color: 77 197 145;
-  // #E8FFF5
-  --success-bg-color: 232 255 245;
-  // #FF7648
-  --warning-color: 255 118 72;
-  // #FFF0D4
-  --warning-bg-color: 255 240 212;
-  // #8A92A6
-  --info-color: 138 146 166;
-  // #D4D7DF
-  --info-bg-color: 212 215 223;
+	/* #3563EF */
+	--primary-color: 53 99 239;
+	//#DFEBFF
+	--primary-bg-color: 225 234 246;
+	/* #232D42 */
+	--text-basic: 35 45 66;
+	/* #8A92A6 */
+	--text-grey: 138 146 166;
+	/* #A0AEC0 */
+	--text-lightGrey: 160 174 192;
+	/* #EEEEEE*/
+	--border-grey: 238 238 238;
+	/* #F4F8FF*/
+	--primary-lightBg: 244 248 255;
+	--n-item-color-active-hover: #ff0 !important;
+	//状态颜色
+	// #4DC591
+	--success-color: 77 197 145;
+	// #E8FFF5
+	--success-bg-color: 232 255 245;
+	// #FF7648
+	--warning-color: 255 118 72;
+	// #FFF0D4
+	--warning-bg-color: 255 240 212;
+	// #8A92A6
+	--info-color: 138 146 166;
+	// #D4D7DF
+	--info-bg-color: 212 215 223;
 }
 * {
-  box-sizing: border-box;
-  /* 禁止选中文字 */
-  moz-user-select: -moz-none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+	box-sizing: border-box;
+	/* 禁止选中文字 */
+	moz-user-select: -moz-none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 html,
 body,
 #app {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
 }
 #app {
-  background-size: contain;
-  background-repeat: no-repeat;
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 6px;
-  background-color: rgba(255, 255, 255, 0);
+	width: 10px;
+	height: 6px;
+	background-color: rgba(255, 255, 255, 0);
 }
 
 /*滚动条中间滑动部分*/
 ::-webkit-scrollbar-thumb {
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0);
+	border-radius: 6px;
+	background-color: rgba(255, 255, 255, 0);
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: rgba(255, 255, 255, 0);
-  cursor: pointer;
-  transition: border-color 0.25s;
+	border-radius: 8px;
+	border: 1px solid transparent;
+	padding: 0.6em 1.2em;
+	font-size: 1em;
+	font-weight: 500;
+	font-family: inherit;
+	background-color: rgba(255, 255, 255, 0);
+	cursor: pointer;
+	transition: border-color 0.25s;
 }
 // button:hover {
 /* border-color: #646cff; */
@@ -94,32 +94,36 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 } */
 .particle_canvas {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  opacity: 0.5;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	opacity: 0.5;
 }
 .dataframe {
-  @apply border-(1 solid greyLine) rounded-1 p-5 flex-col lt-laptop-(p-3);
-  h1 {
-    @apply text-4 font-600 m-0;
-  }
+	@apply border-(1 solid greyLine) rounded-1 p-5 flex-col lt-laptop-(p-3);
+	h1 {
+		@apply text-4 font-600 m-0;
+	}
 }
 .blue-gradient {
-  background: linear-gradient(180deg, #f3f9fc 0%, rgba(245, 249, 255, 0) 100%);
+	background: linear-gradient(
+		180deg,
+		#f3f9fc 0%,
+		rgba(245, 249, 255, 0) 100%
+	);
 }
 .list-desc {
-  overflow: hidden;
-  display: -webkit-box; /* 将容器设为盒子模型 */
-  -webkit-line-clamp: 2; /* 限制显示两行 */
-  -webkit-box-orient: vertical; /* 垂直布局 */
-  text-overflow: ellipsis;
+	overflow: hidden;
+	display: -webkit-box; /* 将容器设为盒子模型 */
+	-webkit-line-clamp: 2; /* 限制显示两行 */
+	-webkit-box-orient: vertical; /* 垂直布局 */
+	text-overflow: ellipsis;
 }
 .n-input--focus {
-  background-color: transparent !important;
+	background-color: transparent !important;
 }
 .n-button--primary-type {
-  background-color: rgb(53, 99, 239) !important;
+	background-color: rgb(53, 99, 239) !important;
 }
