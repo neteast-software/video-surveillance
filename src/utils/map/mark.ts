@@ -167,7 +167,6 @@ export function setupClickHandler(viewer: Viewer) {
 	const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 	handler.setInputAction((movement: any) => {
 		const pickedObject = viewer.scene.pick(movement.position);
-		console.log("123123", pickedObject);
 		if (Cesium.defined(pickedObject) && pickedObject.id) {
 			const entity = pickedObject.id;
 			// 恢复上一个选中实体的缩放
@@ -213,8 +212,6 @@ export function updatePointStatus(viewer: Viewer, newId: number) {
 	let found = false;
 	entities.forEach((entity: any) => {
 		if (entity.id == newId) {
-			console.log(entity);
-			console.log(1111111);
 			found = true;
 			selectEntity = entity; // 更新选中实体
 			scaleEntity(selectEntity, 1.1); // 缩放选中实体

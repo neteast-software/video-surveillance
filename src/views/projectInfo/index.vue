@@ -486,7 +486,6 @@ const formData = ref<ProjectDetail>({
 });
 onMounted(async () => {
 	const { data } = await getProjectDetail();
-	console.log(data);
 	//   data.completionDate = data.completionDate
 	//     ? data.completionDate
 	//     : "2024-01-01";
@@ -548,20 +547,15 @@ const rules = {
 	],
 };
 function handleSubmit() {
-	console.log("提交");
 	formRef.value
 		?.validate()
 		.then(async (valid) => {
-			console.log("111111");
-			console.log(valid);
 			if (valid) {
 				await saveProjectDetail(formData.value);
 				window.$message?.success("提交成功");
 			}
 		})
 		.catch((err) => {
-			console.log("22222");
-			console.log(err);
 			window.$message?.error("提交失败");
 		});
 }

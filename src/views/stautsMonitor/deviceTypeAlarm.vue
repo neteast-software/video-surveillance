@@ -1,14 +1,14 @@
 <template>
-  <div class="dataframe relative">
-    <div class="text-4 font-600">{{ title }}</div>
-    <PieChart
-      class="w-full"
-      :source="source"
-      subTitle="总数"
-      :title="pieTitle"
-      :seriesOption="seriesOption"
-    ></PieChart>
-  </div>
+	<div class="dataframe relative">
+		<div class="text-4 font-600">{{ title }}</div>
+		<PieChart
+			class="w-full"
+			:source="source"
+			subTitle="总数"
+			:title="pieTitle"
+			:seriesOption="seriesOption"
+		></PieChart>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -21,37 +21,36 @@ const source = ref<PieSource>([]);
 const isSmallScreen = window.innerHeight < 1000;
 
 async function initData() {
-  const { data } = await getAlarmCount();
-  const dataBody = data.dataBody;
-  title.value = dataBody.title;
-  source.value = dataBody.dataList || [];
+	const { data } = await getAlarmCount();
+	const dataBody = data.dataBody;
+	title.value = dataBody.title;
+	source.value = dataBody.dataList || [];
 }
 onMounted(initData);
 const seriesOption = computed(() => {
-  return {
-    radius: isSmallScreen ? ["55%", "75%"] : ["65%", "85%"],
-  };
+	return {
+		radius: isSmallScreen ? ["55%", "75%"] : ["65%", "85%"],
+	};
 });
 
 const pieTitle = computed(() => {
-  console.log(source.value, window.innerHeight);
-  return {
-    show: true,
-    text: source.value.reduce((acc, cur) => acc + cur.value, 0),
-    subtext: "总数",
-    left: isSmallScreen ? "48%" : "49%",
-    top: isSmallScreen ? "36%" : "40%",
-    textAlign: "center",
-    itemGap: 5,
-    textStyle: {
-      fontSize: 30,
-      color: "#3563EF",
-      fontWeight: "bold",
-    },
-    subtextStyle: {
-      fontSize: 14,
-    },
-  };
+	return {
+		show: true,
+		text: source.value.reduce((acc, cur) => acc + cur.value, 0),
+		subtext: "总数",
+		left: isSmallScreen ? "48%" : "49%",
+		top: isSmallScreen ? "36%" : "40%",
+		textAlign: "center",
+		itemGap: 5,
+		textStyle: {
+			fontSize: 30,
+			color: "#3563EF",
+			fontWeight: "bold",
+		},
+		subtextStyle: {
+			fontSize: 14,
+		},
+	};
 });
 </script>
 

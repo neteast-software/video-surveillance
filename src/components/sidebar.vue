@@ -243,7 +243,6 @@ watch(route, (to) => {
 });
 watch(menuOptions, async (options) => {
 	if (options) {
-		console.log("menuOptions更新", options);
 		await nextTick();
 		setTimeout(() => {
 			menuInstRef.value?.showOption(route.path);
@@ -259,7 +258,6 @@ async function initData() {
 	companyNameAndJob.value = `${userInfo.companyName || ""} ${
 		userInfo.job || ""
 	}`;
-	console.log("userInfo", userInfo);
 	//   dataRoleIds  roleIds
 	if (!userInfo.roleIds) return;
 	allowModify.value = userInfo.dataRoleIds.some((item) => {
@@ -299,7 +297,6 @@ function handleModifyPassword() {
 		?.validate()
 		.then(async (valid) => {
 			if (valid) {
-				console.log("修改密码成功");
 				await modifyPassword({
 					oldPwd: formData.value.password,
 					newPwd: formData.value.newPassword,

@@ -167,17 +167,12 @@ router.beforeEach(async (to, _, next) => {
 	const { data } = await getMenuList();
 	routes.value = createRoutes(data); // 更新动态路由
 	menuOptions.value = createMenu(routes.value);
-	console.log(2222);
 
-	console.log(menuOptions.value);
 	// 将动态路由添加到 router
 	routes.value.forEach((route) => {
 		router.addRoute(route);
 	});
-	console.log(123);
 
-	console.log(router);
-	console.log(to);
 	hasGetRouter.value = true; // 设置标志，防止重复加载
 	next({ ...to }); // 继续导航
 });

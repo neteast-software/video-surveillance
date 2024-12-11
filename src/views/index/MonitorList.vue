@@ -202,7 +202,6 @@ const monitorBus = useEventBus(pickMonitorKey);
 const popoverVisible = ref(false);
 
 function onPickMonitor(nvrId: number, nvrName: string, ch: ChannelItem) {
-	console.log("onPickMonitor---");
 	if (!ch.online) return;
 	monitorBus.emit({
 		key: uuidv4(),
@@ -301,12 +300,9 @@ async function initMonitorList() {
 	});
 	if (props.deviceId) {
 		// onPickMonitor
-		console.log(555555);
-		console.log(deviceList.value);
 		const nvr = deviceList.value.find((nvr) =>
 			nvr.channels?.some((ch) => ch.id == props.deviceId)
 		);
-		console.log(nvr);
 		if (nvr) {
 			const ch = nvr.channels?.find((ch) => ch.id == props.deviceId);
 			if (ch) {
