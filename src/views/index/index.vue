@@ -62,8 +62,6 @@ const activeMonitor = ref(0); // 当前选中的监控
 const deviceId = ref();
 onMounted(() => {
 	deviceId.value = route.query.deviceId || "";
-	console.log("5555555");
-	console.log(deviceId.value);
 	if (deviceId.value) {
 		activeMonitor.value = deviceId.value;
 		// isFullscreen.value = true;

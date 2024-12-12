@@ -218,7 +218,6 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
 	];
 	async function initAllDevices() {
 		const { data } = await getAllDevices();
-		console.log("initAllDevices", data);
 		if (!data) return;
 		// const newData = [...dataListTest, ...data];
 		// console.log("dataListTest", dataListTest);
@@ -259,7 +258,6 @@ export const useDeviceInfoStore = defineStore("deviceInfo", () => {
 		const statusValue = deviceStatus.value.find(
 			(item) => item.value === status
 		)?.name;
-		console.log("typeValue", typeValue, "statusValue", statusValue);
 		if (!typeValue || !statusValue) return "/img/key-projects.svg";
 		return `img/${statusValue}-${typeValue}.svg`;
 	}

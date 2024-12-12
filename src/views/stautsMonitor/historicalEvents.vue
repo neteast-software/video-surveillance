@@ -164,7 +164,6 @@ const params = computed(() => {
 		getLastDayOfMonth(new Date(timestamp.value)),
 		"yyyy-MM-dd"
 	);
-	console.log(startDay, endDay);
 	return { startDay, endDay };
 });
 const events = ref();

@@ -96,7 +96,6 @@ onMounted(() => {
 			})
 		)
 		.then(function (dataSource) {
-			console.log("dataSource", dataSource.entities.values);
 			dataSource.entities.values.forEach((item) => {
 				// console.log(item)
 				if (
@@ -112,9 +111,7 @@ onMounted(() => {
 					}
 				}
 				if (item.billboard) {
-					console.log(item);
 					item.show = false;
-					console.log("billboard", item.billboard);
 				}
 			});
 			flyToOrigin().then(mapInfo.showControlBar);
