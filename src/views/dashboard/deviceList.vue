@@ -17,8 +17,8 @@
 					:src="
 						data.img ||
 						(data.type == '3'
-							? '/public/img/common/helmet.jpg'
-							: '/public/img/common/monitor.jpg')
+							? '/img/common/helmet.jpg'
+							: '/img/common/monitor.jpg')
 					"
 					class="w-22 h-22 rounded-1 lt-laptop-(w-20 h-20)"
 					alt=""
