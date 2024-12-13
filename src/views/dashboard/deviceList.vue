@@ -17,8 +17,8 @@
 					:src="
 						data.img ||
 						(data.type == '3'
-							? '/img/common/helmet.jpg'
-							: '/img/common/monitor.jpg')
+							? 'img/common/helmet.jpg'
+							: 'img/common/monitor.jpg')
 					"
 					class="w-22 h-22 rounded-1 lt-laptop-(w-20 h-20)"
 					alt=""
@@ -34,15 +34,32 @@
 						}}</span>
 					</div>
 					<div class="flex-between text-greyText h-11">
-						<div class="flex-col flex-center lt-laptop-(text-3)">
+						<div
+							v-if="data.type == '3'"
+							class="flex-col flex-center lt-laptop-(text-3)"
+						>
+							<div
+								class="text-(basic 4) font-700 text-sm flex-center"
+							>
+								{{ data.lastLoginTime || "-" }}
+							</div>
+							最后在线时间
+						</div>
+						<div
+							v-else
+							class="flex-col flex-center lt-laptop-(text-3)"
+						>
 							<div
 								class="text-(basic 4) font-700 flex-center lt-laptop-(text-3.5)"
 							>
-								{{ data.durationOnline }}h
+								{{ data.durationOnline || "-" }}h
 							</div>
 							在线时长
 						</div>
-						<div class="flex-col flex-center lt-laptop-(text-3)">
+						<div
+							v-if="data.type != '3'"
+							class="flex-col flex-center lt-laptop-(text-3)"
+						>
 							<div
 								class="text-(basic 4) w-100px font-700 flex-center lt-laptop-(text-3.5)"
 								style="

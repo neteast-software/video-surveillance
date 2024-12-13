@@ -81,12 +81,6 @@ import {
 	addSeconds,
 } from "date-fns";
 import { NSpin } from "naive-ui";
-// import {
-//   getServerWebRTC,
-//   getRealtimeVideo,
-//   getRecordVideo,
-//   testRecordRatio,
-// } from "@/utils/network/api/security";
 import { getRealtimeVideo, getRecordVideo } from "@/utils/network/api/monitor";
 import {
 	recordTimerKey,
@@ -302,6 +296,12 @@ watch(isRecord, (val) => {
 	// destroyPc();
 	pc = createPc();
 });
+watch(
+	() => props.channelId,
+	(val) => {
+		pc = createPc();
+	}
+);
 onBeforeUnmount(() => {
 	destroyPc();
 });

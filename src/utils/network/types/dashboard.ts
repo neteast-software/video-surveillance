@@ -4,6 +4,7 @@ export interface AllDevices {
 	id: number;
 	name: string;
 	durationOnline: number; // 在线时长
+	lastLoginTime: string; // 最后登录时间
 	resolution: string; // 分辨率
 	status: string; // 状态
 	manufacturer: string; // 制造商
@@ -30,6 +31,7 @@ export interface DeviceDetail {
 	id: number;
 	name: string;
 	durationOnline: number; // 在线时长
+	lastLoginTime: string; // 最后登录时间
 	resolution: string; // 分辨率
 	status: string; // 状态
 	manufacturer: string; // 制造商

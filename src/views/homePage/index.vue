@@ -28,8 +28,12 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useCommonInfoStore } from "@/stores/commonInfo";
 import * as THREE from "three";
 // import Stats from "three/addons/libs/stats.module.js";
+const useCommonInfo = useCommonInfoStore();
+const { userCode } = storeToRefs(useCommonInfo);
 const router = useRouter();
 const options = [
 	{
@@ -40,7 +44,7 @@ const options = [
 		windowOpne: false,
 	},
 	{
-		path: "http://36.248.25.240:8010/knowledgeSystem?token=G228&userCode=G228user-1",
+		path: `http://36.248.25.240:8010/knowledgeSystem?token=G228&userCode=G228user-1`,
 		icon: "knowledge-system",
 		name: "知识库管理",
 		classStr: `top-4 left-70`,
@@ -62,11 +66,11 @@ const options = [
 	},
 
 	{
-		path: "http://36.248.25.132:18087/HelmetAuth/OtherSysAuth?token=&projectcode=350100-GDG228XESQ",
+		path: `http://36.248.25.132:18087/HelmetAuth/OtherSysAuth?token=${userCode.value}&projectcode=350100-GDG228XESQ`,
 		icon: "helmet",
 		name: "智慧安全帽",
 		classStr: `top-42 left-10`,
-		windowOpne: false,
+		windowOpne: true,
 	},
 	{
 		path: "/alarmList",
@@ -249,150 +253,13 @@ function waveShow() {
 		count += 0.1;
 	}
 }
-function setParticle() {
-	/**
-	 *3D海洋效应与 Canvas2D
-	 * 您可以更改注释 "效果属性" 下的属性
-	 */
-
-	// Init Context
-	const canvasEl = document.createElement("canvas");
-	canvasEl.className = "particle_canvas";
-	let c = document.createElement("canvas").getContext("2d");
-	let postctx = document
-		.querySelector(".particle_canvas_container")
-		.appendChild(canvasEl)
-		.getContext("2d");
-	let canvas = c.canvas;
-	let vertices = [];
-
-	// Effect Properties
-	let vertexCount = 7000;
-	let vertexSize = 3;
-	let oceanWidth = 60;
-	let oceanHeight = -80;
-	let gridSize = 64;
-	let waveSize = 16;
-	let perspective = 100;
-
-	// Common variables
-	let depth = (vertexCount / oceanWidth) * gridSize;
-	let frame = 0;
-	let { sin, cos, tan, PI } = Math;
-
-	// Render loop
-	let loop = () => {
-		let rad = (sin(frame / 100) * PI) / 20;
-		let rad2 = (sin(frame / 50) * PI) / 10;
-		frame++;
-		if (
-			postctx.canvas.width !== postctx.canvas.offsetWidth ||
-			postctx.canvas.height !== postctx.canvas.offsetHeight
-		) {
-			postctx.canvas.width = canvas.width = postctx.canvas.offsetWidth;
-			postctx.canvas.height = canvas.height = postctx.canvas.offsetHeight;
-		}
-
-		c.fillStyle = `rgb(10,20,53)`;
-		// c.fillStyle = `rgba(255, 255, 255, 0)`;
-		c.fillRect(0, 0, canvas.width, canvas.height);
-		c.save();
-		c.translate(canvas.width / 2, canvas.height / 1.4);
-		c.beginPath();
-		vertices.forEach((vertex, i) => {
-			let ni = i + oceanWidth;
-			let x = vertex[0] - (frame % (gridSize * 2));
-			let z =
-				vertex[2] -
-				((frame * 2) % gridSize) +
-				(i % 2 === 0 ? gridSize / 2 : 0);
-			let wave =
-				cos(frame / 45 + x / 50) -
-				sin(frame / 20 + z / 50) +
-				sin(frame / 30 + (z * x) / 10000);
-			let y = vertex[1] + wave * waveSize;
-			let a = Math.max(0, 1 - Math.sqrt(x ** 2 + z ** 2) / depth);
-			let tx, ty, tz;
-
-			y -= oceanHeight;
-
-			// Transformation variables
-			tx = x;
-			ty = y;
-			tz = z;
-
-			// Rotation Y
-			tx = x * cos(rad) + z * sin(rad);
-			tz = -x * sin(rad) + z * cos(rad);
-
-			x = tx;
-			y = ty;
-			z = tz;
-
-			// Rotation Z
-			tx = x * cos(rad) - y * sin(rad);
-			ty = x * sin(rad) + y * cos(rad);
-
-			x = tx;
-			y = ty;
-			z = tz;
-
-			// Rotation X
-
-			ty = y * cos(rad2) - z * sin(rad2);
-			tz = y * sin(rad2) + z * cos(rad2);
-
-			x = tx;
-			y = ty;
-			z = tz;
-
-			x /= z / perspective;
-			y /= z / perspective;
-
-			if (a < 0.01) return;
-			if (z < 0) return;
-
-			c.globalAlpha = a;
-			c.fillStyle = `hsl(${180 + wave * 20}deg, 100%, 50%)`;
-			c.fillRect(
-				x - (a * vertexSize) / 2,
-				y - (a * vertexSize) / 2,
-				a * vertexSize,
-				a * vertexSize
-			);
-			c.globalAlpha = 1;
-		});
-		c.restore();
-
-		// Post-processing
-		postctx.drawImage(canvas, 0, 0);
-		postctx.globalCompositeOperation = "screen";
-		postctx.filter = "blur(16px)";
-		postctx.drawImage(canvas, 0, 0);
-		postctx.filter = "blur(0)";
-		postctx.globalCompositeOperation = "source-over";
-
-		requestAnimationFrame(loop);
-	};
-
-	// Generating dots
-	for (let i = 0; i < vertexCount; i++) {
-		let x = i % oceanWidth;
-		let y = 0;
-		let z = (i / oceanWidth) >> 0;
-		let offset = oceanWidth / 2;
-		vertices.push([(-offset + x) * gridSize, y * gridSize, z * gridSize]);
-	}
-
-	loop();
-}
 </script>
 <style scoped>
 /* waveBg.png */
 .home_page_container {
+	min-width: 1280 !important;
+	min-height: 720px !important;
 	width: 100% !important;
-	min-width: 1580px;
-	min-height: 860px;
 	padding: 0 !important;
 	position: relative;
 	background: linear-gradient(
@@ -459,8 +326,8 @@ function setParticle() {
 
 .top_decoration {
 	width: 100% !important;
-	height: 100px;
-	background-size: cover;
+	min-height: 100px;
+	background-size: 100% auto;
 	background-repeat: no-repeat;
 	background-image: url("/public/img/homePage/topDecoration.png");
 	z-index: 1;

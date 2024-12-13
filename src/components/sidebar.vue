@@ -1,5 +1,7 @@
 <template>
-	<div class="h-full py-4 bg relative border-r-(1px solid greyLine) max-w-58">
+	<div
+		class="h-full py-4 bg relative border-r-(1px solid greyLine) max-w-58 z-999"
+	>
 		<div class="flex-col h-full">
 			<header
 				class="flex-center bg-#EFF3F7 rounded-2 p-2 min-w-48 mb-4.5 mx-2.5"
@@ -220,8 +222,9 @@ import { storeToRefs } from "pinia";
 import { getUserInfo } from "@/utils/network/api/root";
 import { useCommonInfoStore } from "@/stores/commonInfo";
 import { modifyPassword } from "@/utils/network/api/baseSetting";
-
-const { nickName, allowModify } = storeToRefs(useCommonInfoStore());
+const useCommonInfo = useCommonInfoStore();
+const { setUserCode } = useCommonInfo;
+const { nickName, allowModify } = storeToRefs(useCommonInfo);
 const router = useRouter();
 const route = useRoute();
 const menuInstRef = ref<MenuInst | null>(null);
@@ -259,6 +262,7 @@ async function initData() {
 		userInfo.job || ""
 	}`;
 	//   dataRoleIds  roleIds
+	setUserCode(userInfo.userCode);
 	if (!userInfo.roleIds) return;
 	allowModify.value = userInfo.dataRoleIds.some((item) => {
 		return userInfo.roleIds.includes(item);

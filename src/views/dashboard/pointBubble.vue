@@ -85,8 +85,8 @@
 						:src="
 							curData.img ||
 							(curData.type == '3'
-								? '/public/img/common/helmet.jpg'
-								: '/public/img/common/monitor.jpg')
+								? 'img/common/helmet.jpg'
+								: 'img/common/monitor.jpg')
 						"
 						class="w-14 h-14 rounded-1"
 						alt=""

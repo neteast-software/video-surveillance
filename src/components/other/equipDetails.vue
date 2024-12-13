@@ -24,8 +24,8 @@
 							:src="
 								curData?.img ||
 								(curData?.type == '3'
-									? '/public/img/common/helmet.jpg'
-									: '/public/img/common/monitor.jpg')
+									? 'img/common/helmet.jpg'
+									: 'img/common/monitor.jpg')
 							"
 							class="w-24 h-24 rounded-1 lt-laptop-(w-18 h-18)"
 							alt=""
