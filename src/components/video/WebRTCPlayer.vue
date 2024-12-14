@@ -246,7 +246,7 @@ async function negotiate(ts: number) {
 				props.nvrId,
 				props.channelId,
 				btoa(pc!.localDescription!.sdp),
-				props.channelId == selectMonitorCard.value ? "01" : "02"
+				props.controls ? "01" : "02"
 			);
 		}
 	} catch (err) {
