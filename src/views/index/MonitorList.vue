@@ -202,7 +202,10 @@ const monitorBus = useEventBus(pickMonitorKey);
 const popoverVisible = ref(false);
 
 function onPickMonitor(nvrId: number, nvrName: string, ch: ChannelItem) {
-	if (!ch.online) return;
+	if (!ch.online) {
+		window.$message.warning("设备离线");
+		return;
+	}
 	monitorBus.emit({
 		key: uuidv4(),
 		nvrId,
