@@ -134,6 +134,18 @@ useEventListener(videoEl, "timeupdate", () => {
 	if (!el) return;
 	recordTimer.value = el.currentTime * playSpeed.value;
 });
+let RefreshTimer: NodeJS.Timeout;
+useEventListener(videoEl, "waiting", () => {
+	clearTimeout(RefreshTimer);
+	RefreshTimer = setTimeout(() => {
+		console.log("触发自动刷新");
+		createPc();
+	}, 5000);
+});
+useEventListener(videoEl, "loadedmetadata", (ev: Event) => {
+	clearTimeout(RefreshTimer);
+});
+
 useEventListener(videoEl, "error", (err) => {
 	console.log("出现错误了", err);
 	isRecordPlaying.value = false;
