@@ -14,7 +14,8 @@
 				ref="videoEl"
 				:autoplay="true"
 				class="w-full h-full"
-				style="object-fit: fill"
+				style="object-fit: contain"
+				preload="auto"
 			></video>
 			<slot></slot>
 			<NSpin
@@ -89,7 +90,6 @@ import {
 	isRecordKey,
 	playSpeedKey,
 } from "./helper";
-import { storeToRefs } from "pinia";
 import { v4 as uuidv4 } from "uuid";
 interface Props {
 	nvrId: number;
@@ -101,7 +101,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
 	clientID: uuidv4(),
 });
-const { selectMonitorCard } = storeToRefs(useDeviceInfoStore());
 defineEmits<{
 	"add-preset": [];
 	command: [value: string, flag: number];
@@ -135,6 +134,10 @@ useEventListener(videoEl, "timeupdate", () => {
 	if (!el) return;
 	recordTimer.value = el.currentTime * playSpeed.value;
 });
+useEventListener(videoEl, "error", (err) => {
+	console.log("出现错误了", err);
+	isRecordPlaying.value = false;
+});
 watch(isRecordPlaying, (val) => {
 	if (!videoIsReady.value) return;
 	if (!isRecord.value) return;
@@ -143,31 +146,24 @@ watch(isRecordPlaying, (val) => {
 	val ? el.play() : el.pause();
 });
 
-watch(selectMonitorCard, (val) => {
-	if (val == props.channelId) {
-		pc = createPc();
-	}
-});
 // webrtc
 let pc: RTCPeerConnection | null = null;
 let lastTimeStamp = 0;
 let retryCount = 0;
 let retryLimit = 3;
+let stream = new MediaStream();
+
 function createPc() {
 	if (retryCount >= retryLimit) {
 		return null;
 	}
 	destroyPc();
+	console.log("新建rtc连接");
 	videoIsReady.value = false;
 	if (isRecord.value) {
 		isRecordPlaying.value = false;
 	}
-	pc = new RTCPeerConnection({
-		iceServers: [{ urls: ["stun:stun4.l.google.com:19302"] }],
-		// iceServers: [
-		//     { urls: 'turn:116.204.75.102:3478', username: 'neteast', credential: 'as4hqnGjasdo20OEe97g1aJHKdsfsa' }
-		// ]
-	});
+	pc = new RTCPeerConnection();
 	const ts = Date.now();
 	lastTimeStamp = ts;
 	pc.onnegotiationneeded = () => negotiate(ts);
@@ -177,20 +173,26 @@ function createPc() {
 	pc.addTransceiver("audio", {
 		direction: "recvonly",
 	});
-	const stream = new MediaStream();
 	pc.ontrack = (event) => {
 		stream.addTrack(event.track);
-		if (videoEl.value) {
+		if (
+			stream.getAudioTracks().length > 0 &&
+			stream.getVideoTracks().length > 0 &&
+			videoEl.value
+		) {
 			videoEl.value.srcObject = stream;
 			if (videoEl.value.paused) {
 				videoEl.value.play();
 			}
 		}
 	};
-	pc.onconnectionstatechange = () => {
+	pc.onconnectionstatechange = (ev) => {
 		const state = pc?.connectionState;
 		if (!state) return;
 		switch (state) {
+			case "connecting":
+				console.log(props.nvrId, props.channelId, "连接中");
+				break;
 			case "failed":
 				// case 'disconnected':
 				if (isRecord.value) isRecordPlaying.value = false;
@@ -201,26 +203,25 @@ function createPc() {
 				videoIsReady.value = true;
 				webRTCError.value = "";
 				retryCount = 0;
-				// destroyPc(pc);
 				break;
 			default:
+				console.log("新的事件", state);
 				break;
 		}
 	};
 	return pc;
 }
-// onMounted(createPc);
-pc = createPc();
+createPc();
 const startTime = ref(format(startOfDay(new Date()), "yyyy-MM-dd HH:mm:ss"));
 const endTime = ref(format(endOfDay(new Date()), "yyyy-MM-dd HH:mm:ss"));
 
 const webRTCError = ref("");
 async function negotiate(ts: number) {
 	webRTCError.value = "";
-	const offer = await pc!.createOffer();
-	await pc!.setLocalDescription(offer);
 	let data: any;
 	try {
+		const offer = await pc!.createOffer();
+		await pc!.setLocalDescription(offer);
 		if (isRecord.value) {
 			console.log("录制", startTime.value, endTime.value);
 			data = await getRecordVideo(
@@ -233,14 +234,6 @@ async function negotiate(ts: number) {
 				ts,
 				scale.value
 			);
-			// data = await testRecordRatio(
-			//     `${props.nvrId}-${props.channelId}`,
-			//     'rtsp://admin:hk123456@112.5.140.146:554/Streaming/tracks/101?starttime=20240527t000000z&endtime=20240527t120000z',
-			//     btoa(pc!.localDescription!.sdp),
-			//     props.clientID,
-			//     ts,
-			//     scale.value
-			// );
 		} else {
 			data = await getRealtimeVideo(
 				props.nvrId,
@@ -250,6 +243,7 @@ async function negotiate(ts: number) {
 			);
 		}
 	} catch (err) {
+		console.log("webRTC error", err);
 		if (err === "Stream Codec not H264") {
 			webRTCError.value = "不支持的视频编码";
 		} else {
@@ -264,9 +258,11 @@ async function negotiate(ts: number) {
 	}
 	if (ts < lastTimeStamp) return;
 	const answer = atob(data.answer);
-	pc!.setRemoteDescription(
-		new RTCSessionDescription({ type: "answer", sdp: answer })
-	);
+	if (pc) {
+		pc.setRemoteDescription(
+			new RTCSessionDescription({ type: "answer", sdp: answer })
+		);
+	}
 }
 const scale = ref(1.0);
 const onSpeedChange = useDebounceFn((speed: number) => {
@@ -276,34 +272,41 @@ const onSpeedChange = useDebounceFn((speed: number) => {
 	endTime.value = format(endOfDay(time), "yyyy-MM-dd HH:mm:ss");
 	recordTimer.value = 0;
 	scale.value = speed;
-	pc = createPc();
+	createPc();
 }, 200);
 const onRecordTimeChange = useDebounceFn((time: Date) => {
 	if (!isRecord.value) return;
 	startTime.value = format(time, "yyyy-MM-dd HH:mm:ss");
 	endTime.value = format(endOfDay(time), "yyyy-MM-dd HH:mm:ss");
 	recordTimer.value = 0;
-	// destroyPc();
-	pc = createPc();
+	createPc();
 }, 200);
 function destroyPc() {
-	if (!pc) return;
+	if (!pc) {
+		return;
+	}
+	stream.getTracks().forEach((track) => {
+		track.stop();
+	});
 	pc.close();
 	pc = null;
+	// console.log("destroy pc这里执行到了");
 }
 watch(isRecord, (val) => {
 	if (val) return;
-	// destroyPc();
-	pc = createPc();
+	createPc();
 });
 watch(
 	() => props.channelId,
 	(val) => {
-		pc = createPc();
+		createPc();
+		// console.log("新的通道流", props.channelId);
 	}
 );
 onBeforeUnmount(() => {
 	destroyPc();
+	pc = null;
+	stream = null;
 });
 
 // 录屏工具
