@@ -145,13 +145,12 @@ watch(isRecordPlaying, (val) => {
 	if (!el) return;
 	val ? el.play() : el.pause();
 });
-
 // webrtc
 let pc: RTCPeerConnection | null = null;
 let lastTimeStamp = 0;
 let retryCount = 0;
-let retryLimit = 3;
-let stream = new MediaStream();
+let retryLimit = 5;
+let stream: MediaStream | null = null;
 
 function createPc() {
 	if (retryCount >= retryLimit) {
@@ -173,6 +172,7 @@ function createPc() {
 	pc.addTransceiver("audio", {
 		direction: "recvonly",
 	});
+	stream = new MediaStream();
 	pc.ontrack = (event) => {
 		stream.addTrack(event.track);
 		if (
@@ -194,9 +194,10 @@ function createPc() {
 				console.log(props.nvrId, props.channelId, "连接中");
 				break;
 			case "failed":
-				// case 'disconnected':
+			case "disconnected":
 				if (isRecord.value) isRecordPlaying.value = false;
 				retryCount++;
+				console.log("断线重试", retryCount);
 				createPc();
 				break;
 			case "connected":
