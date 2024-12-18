@@ -109,6 +109,7 @@ import draggable from "vuedraggable";
 import { isEmptyObject } from "@/utils/other";
 import { useDialogAsync } from "@/components/dialog";
 import ControlButton from "@/components/video/ControlButton.vue";
+import { nextTick } from "vue";
 interface Props {
 	isFullscreen: boolean;
 	activeMonitor: number;
@@ -138,14 +139,17 @@ const monitorList = computed({
 		sourceList.value.splice(0, l.length, ...l);
 	},
 });
-watch(monitorList, (val) => {
-	console.log("monitorList改变", val);
-});
+
 function pickMonitor(index: number) {
 	const item = sourceList.value.splice(index, 1)[0];
 	if (!item) return;
+	removeMonitor(item);
 	sourceList.value.unshift(item);
-	gridCount.value = 1;
+	gridCount.value = 0;
+	nextTick(() => {
+		//进入后强制刷新
+		gridCount.value = 1;
+	});
 	emit("update:activeMonitor", item.channelId);
 }
 
@@ -160,17 +164,34 @@ async function delMonitor(index: number) {
 // 历史回放
 const showHistory = ref(false);
 const addMonitorLock = useDebounceFn(addMonitor, 200);
+function removeMonitor(item: MonitorItem) {
+	sourceList.value.forEach((element, index) => {
+		if (
+			element.nvrId === item.nvrId &&
+			element.channelName === item.channelName
+		) {
+			sourceList.value.splice(index, 1);
+			return;
+		}
+	});
+}
 async function addMonitor(monitor: MonitorItem | MonitorItem[]) {
 	// sourceList.value.unshift({ indexCode } as unknown as MonitorItem);
 	// const { data } = await getMonitorInfo(indexCode);
 	// // sourceList.value.unshift(data);
 	// const idx = sourceList.value.findIndex((item) => item.indexCode === indexCode);
 	// sourceList.value.splice(idx, 1, data);
-	// console.log('新增显示器data', data, sourceList.value);
+	// console.log("新增显示器data", sourceList.value);
 	if (Array.isArray(monitor)) {
+		//提取sourceList的channelid与name
+		for (const item of monitor) {
+			removeMonitor(item);
+		}
 		sourceList.value.unshift(...monitor);
 		return;
 	}
+	removeMonitor(monitor);
+	// console.log(sourceList.value);
 	sourceList.value.unshift(monitor);
 }
 const monitorBus = useEventBus(pickMonitorKey);
@@ -180,7 +201,6 @@ onMounted(() => {});
 watch(
 	() => props.deviceId,
 	(val) => {
-		console.log("deviceId", val);
 		if (val) {
 			gridCount.value = 1;
 		}
