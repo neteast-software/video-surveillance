@@ -91,6 +91,7 @@ import {
 	playSpeedKey,
 } from "./helper";
 import { v4 as uuidv4 } from "uuid";
+import { nextTick } from "vue";
 interface Props {
 	nvrId: number;
 	controls?: boolean;
@@ -186,15 +187,21 @@ function createPc() {
 	});
 	stream = new MediaStream();
 	pc.ontrack = (event) => {
-		stream.addTrack(event.track);
+		let newStream = new MediaStream();
+		newStream.addTrack(event.track);
 		if (
-			stream.getAudioTracks().length > 0 &&
-			stream.getVideoTracks().length > 0 &&
+			// newStream.getAudioTracks().length > 0 &&
+			newStream.getVideoTracks().length > 0 &&
 			videoEl.value
 		) {
-			videoEl.value.srcObject = stream;
+			videoEl.value.pause();
+			stream.getTracks()?.forEach((track) => {
+				track.stop();
+			});
+			videoEl.value.srcObject = newStream;
+			stream = newStream;
 			if (videoEl.value.paused) {
-				videoEl.value.play();
+				nextTick(() => videoEl.value.play());
 			}
 		}
 	};
