@@ -39,7 +39,7 @@
       <NScrollbar class="px-7.5 !h-120 text-4">
         <div class="flex gap-5 mb-4" v-for="record in myList?.records">
           <img
-            src="{{record.img}}"
+            :src="record.img"
             class="w-45 h-30"
             alt=""
           />

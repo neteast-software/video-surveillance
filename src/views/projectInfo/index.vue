@@ -129,6 +129,7 @@
 								<NInputNumber
 									v-model:value="formData.estimatedInvestment"
 									placeholder="请输入"
+                                    :min="0"
 									class="!text-14px w-full"
 								>
 								</NInputNumber>
@@ -274,6 +275,7 @@
 								<NInputNumber
 									v-model:value="formData.constructionPeriod"
 									placeholder="请输入"
+                                    :min="0"
 									class="!text-14px w-full"
 								>
 								</NInputNumber>
