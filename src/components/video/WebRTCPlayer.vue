@@ -91,7 +91,6 @@ import {
 	playSpeedKey,
 } from "./helper";
 import { v4 as uuidv4 } from "uuid";
-import { nextTick } from "vue";
 interface Props {
 	nvrId: number;
 	controls?: boolean;
@@ -137,14 +136,17 @@ useEventListener(videoEl, "timeupdate", () => {
 });
 let RefreshTimer: NodeJS.Timeout;
 useEventListener(videoEl, "waiting", () => {
-	clearTimeout(RefreshTimer);
-	RefreshTimer = setTimeout(() => {
-		console.log("触发自动刷新");
-		createPc();
-	}, 5000);
+	// clearTimeout(RefreshTimer);
+	// RefreshTimer = setTimeout(() => {
+	// 	console.log("触发自动刷新");
+	// 	createPc();
+	// }, 10000);
 });
 useEventListener(videoEl, "loadedmetadata", (ev: Event) => {
 	clearTimeout(RefreshTimer);
+	if (videoEl.value.paused) {
+		videoEl.value.play();
+	}
 });
 
 useEventListener(videoEl, "error", (err) => {
@@ -187,23 +189,33 @@ function createPc() {
 	});
 	stream = new MediaStream();
 	pc.ontrack = (event) => {
-		let newStream = new MediaStream();
-		newStream.addTrack(event.track);
-		if (
-			// newStream.getAudioTracks().length > 0 &&
-			newStream.getVideoTracks().length > 0 &&
-			videoEl.value
-		) {
-			videoEl.value.pause();
-			stream.getTracks()?.forEach((track) => {
-				track.stop();
+		const kind = event.track.kind;
+		const trackType = stream.getTracks().map((t) => t.kind);
+		if (trackType.includes(kind)) {
+			stream.getTracks().forEach((track) => {
+				if (track.kind == kind) {
+					console.log("更新了轨道", track.kind);
+					stream.removeTrack(track);
+				}
 			});
-			videoEl.value.srcObject = newStream;
-			stream = newStream;
-			if (videoEl.value.paused) {
-				nextTick(() => videoEl.value.play());
-			}
 		}
+		stream.addTrack(event.track);
+
+		if (videoEl.value.played) {
+			//避免AbortError
+			videoEl.value.pause();
+			videoEl.value.srcObject = null;
+		}
+
+		videoEl.value.srcObject = stream;
+		if (videoEl.value.paused && trackType.length >= 1) {
+			videoEl.value.load();
+			videoEl.value.volume = 1;
+		}
+		console.log(
+			"拥有轨道",
+			stream.getTracks().map((t) => t.kind)
+		);
 	};
 	pc.onconnectionstatechange = (ev) => {
 		const state = pc?.connectionState;
@@ -220,9 +232,13 @@ function createPc() {
 				createPc();
 				break;
 			case "connected":
+				console.log("webrtc连接成功");
 				videoIsReady.value = true;
 				webRTCError.value = "";
 				retryCount = 0;
+				if (videoEl.value.paused) {
+					videoEl.value?.play();
+				}
 				break;
 			default:
 				console.log("新的事件", state);
