@@ -145,7 +145,11 @@
 									</div>
 									<div class="flex-center gap-2">
 										<img
-											src="@/assets/imgs/text/build.png"
+											:src="
+												list.img
+													? list.img
+													: '@/assets/imgs/text/build.png'
+											"
 											class="w-20 h-16 lt-laptop-(w-18 h-14)"
 											alt=""
 										/>
@@ -190,6 +194,7 @@ import { getAlarmList } from "@/utils/network/api/statusMonitor";
 import { useDeviceInfoStore } from "@/stores/deviceInfo";
 import { AlarmList } from "@/utils/network/types/statusMonitor";
 import { set } from "date-fns";
+import { list } from "@/assets/icons";
 const mapInfo = useMapInfoStore();
 const { curDetailId } = storeToRefs(mapInfo);
 
