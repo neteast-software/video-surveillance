@@ -8,7 +8,7 @@
 			项目信息管理
 		</div>
 		<div class="overflow-scroll flex-1">
-			<NForm ref="formRef" :model="formData" :rules="rules">
+			<NForm ref="formRef" :model="formData">
 				<div class="flex gap-14 mb-4 w-full">
 					<!-- left -->
 					<div class="flex-1 flex-col max-w-600px">
@@ -17,7 +17,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>所属地市:
+								所属地市:
 							</div>
 							<NFormItem class="flex-1" path="city">
 								<NInput
@@ -33,7 +33,7 @@
 							class="item-container flex items-center w-full mb-30px"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>项目全称:
+								项目全称:
 							</div>
 							<NFormItem class="flex-1 h-50px" path="fullName">
 								<NInput
@@ -50,7 +50,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>项目简称:
+								项目简称:
 							</div>
 							<NFormItem class="flex-1" path="abbr">
 								<NInput
@@ -66,7 +66,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>项目起点:
+								项目起点:
 							</div>
 							<NFormItem class="flex-1" path="startPoint">
 								<NInput
@@ -82,7 +82,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>项目终点:
+								项目终点:
 							</div>
 							<NFormItem class="flex-1" path="endPoint">
 								<NInput
@@ -98,7 +98,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>建设标准:
+								建设标准:
 							</div>
 							<NFormItem
 								class="flex-1"
@@ -120,7 +120,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>概算总投资(亿):
+								概算总投资(亿):
 							</div>
 							<NFormItem
 								class="flex-1"
@@ -129,7 +129,7 @@
 								<NInputNumber
 									v-model:value="formData.estimatedInvestment"
 									placeholder="请输入"
-                                    :min="0"
+									:min="0"
 									class="!text-14px w-full"
 								>
 								</NInputNumber>
@@ -140,7 +140,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>全线用地批复时间:
+								全线用地批复时间:
 							</div>
 							<NFormItem class="flex-1" path="landApprovalDate">
 								<NDatePicker
@@ -162,7 +162,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>项目状态:
+								项目状态:
 							</div>
 							<NFormItem class="flex-1" path="projectStatus">
 								<NSelect
@@ -179,7 +179,7 @@
 							class="item-container flex items-center w-full mb-30px"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>项目途经:
+								项目途经:
 							</div>
 							<NFormItem class="flex-1 h-50px" path="route">
 								<NInput
@@ -196,7 +196,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>建设规模(KM):
+								建设规模(KM):
 							</div>
 							<NFormItem class="flex-1" path="constructionScale">
 								<NInput
@@ -213,7 +213,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>开工日期:
+								开工日期:
 							</div>
 							<NFormItem class="flex-1" path="startDate">
 								<NDatePicker
@@ -230,7 +230,7 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>通车日期:
+								通车日期:
 							</div>
 							<NFormItem class="flex-1" path="operationStartDate">
 								<NDatePicker
@@ -269,13 +269,13 @@
 							class="item-container flex items-center h-64px w-full"
 						>
 							<div class="w-28 mr-4 text-align-end">
-								<span class="text-red">*</span>建设工期(月):
+								建设工期(月):
 							</div>
 							<NFormItem class="flex-1" path="constructionPeriod">
 								<NInputNumber
 									v-model:value="formData.constructionPeriod"
 									placeholder="请输入"
-                                    :min="0"
+									:min="0"
 									class="!text-14px w-full"
 								>
 								</NInputNumber>
@@ -304,7 +304,7 @@
 					class="item-container flex items-start w-full mb-60px max-w-1260px"
 				>
 					<div class="w-28 mr-4 text-align-end">
-						<span class="text-red">*</span>建设规模、主要 技术标准:
+						建设规模、主要 技术标准:
 					</div>
 					<NFormItem
 						class="flex-1 h-50px"
@@ -325,7 +325,7 @@
 					class="item-container flex items-start w-full mb-60px max-w-1260px"
 				>
 					<div class="w-28 mr-4 text-align-end">
-						<span class="text-red">*</span>项目建设意义与 主要效益:
+						项目建设意义与 主要效益:
 					</div>
 					<NFormItem
 						class="flex-1 h-50px"
@@ -346,7 +346,7 @@
 					class="item-container flex items-start w-full mb-60px max-w-1260px"
 				>
 					<div class="w-28 mr-4 text-align-end">
-						<span class="text-red">*</span>资金来源(金额 及比例%):
+						资金来源(金额 及比例%):
 					</div>
 					<NFormItem class="flex-1 h-50px" path="fundingSource">
 						<NInput
@@ -501,53 +501,6 @@ onMounted(async () => {
 	data.projectStatus = data.projectStatus ? data.projectStatus : "1";
 	formData.value = data;
 });
-const rules = {
-	city: [{ required: true, message: "请输入所属地市", trigger: "blur" }],
-	abbr: [{ required: true, message: "请输入项目简称", trigger: "blur" }],
-	startPoint: [
-		{ required: true, message: "请输入项目起点", trigger: "blur" },
-	],
-	endPoint: [{ required: true, message: "请输入项目终点", trigger: "blur" }],
-	constructionStandards: [
-		{ required: true, message: "请输入建设标准", trigger: "blur" },
-	],
-	//   estimatedInvestment: [
-	//     { required: true, message: "请输入概算总投资", trigger: "blur" },
-	//   ],
-	landApprovalDate: [
-		{ required: true, message: "请选择全线用地批复时间", trigger: "blur" },
-	],
-	fullName: [{ required: true, message: "请输入项目全称", trigger: "blur" }],
-
-	route: [{ required: true, message: "请输入项目途经", trigger: "blur" }],
-	constructionScale: [
-		{ required: true, message: "请输入建设规模", trigger: "blur" },
-	],
-	startDate: [{ required: true, message: "请选择开工日期", trigger: "blur" }],
-	operationStartDate: [
-		{ required: true, message: "请选择通车日期", trigger: "blur" },
-	],
-	//   constructionPeriod: [
-	//     { required: true, message: "请输入建设工期", trigger: "blur" },
-	//   ],
-	constructionTechStandards: [
-		{
-			required: true,
-			message: "请输入建设规模、主要技术标准",
-			trigger: "blur",
-		},
-	],
-	projectSignificanceBenefits: [
-		{
-			required: true,
-			message: "请输入项目建设意义与主要效益",
-			trigger: "blur",
-		},
-	],
-	fundingSource: [
-		{ required: true, message: "请输入资金来源", trigger: "blur" },
-	],
-};
 function handleSubmit() {
 	formRef.value
 		?.validate()
