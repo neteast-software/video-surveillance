@@ -106,7 +106,11 @@
 						</div>
 						<div class="flex-center gap-2">
 							<img
-								src="@/assets/imgs/text/build.png"
+								:src="
+									list.img
+										? list.img
+										: '@/assets/imgs/text/build.png'
+								"
 								class="w-20 h-16 lt-laptop-(w-18 h-14)"
 								alt=""
 							/>
