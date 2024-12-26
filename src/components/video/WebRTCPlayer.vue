@@ -136,11 +136,11 @@ useEventListener(videoEl, "timeupdate", () => {
 });
 let RefreshTimer: NodeJS.Timeout;
 useEventListener(videoEl, "waiting", () => {
-	// clearTimeout(RefreshTimer);
-	// RefreshTimer = setTimeout(() => {
-	// 	console.log("触发自动刷新");
-	// 	createPc();
-	// }, 10000);
+	clearTimeout(RefreshTimer);
+	RefreshTimer = setTimeout(() => {
+		console.log("触发自动刷新");
+		createPc();
+	}, 10000);
 });
 useEventListener(videoEl, "loadedmetadata", (ev: Event) => {
 	clearTimeout(RefreshTimer);
@@ -180,6 +180,10 @@ function createPc() {
 	pc = new RTCPeerConnection();
 	const ts = Date.now();
 	lastTimeStamp = ts;
+	pc.oniceconnectionstatechange = (ev) => {
+		console.log("ice状态", pc?.iceConnectionState);
+	};
+
 	pc.onnegotiationneeded = () => negotiate(ts);
 	pc.addTransceiver("video", {
 		direction: "recvonly",
@@ -279,7 +283,7 @@ async function negotiate(ts: number) {
 			);
 		}
 	} catch (err) {
-		console.log("webRTC error", err);
+		console.error("webRTC error", err);
 		if (err === "Stream Codec not H264") {
 			webRTCError.value = "不支持的视频编码";
 		} else {
@@ -292,6 +296,7 @@ async function negotiate(ts: number) {
 		videoIsReady.value = true;
 		return;
 	}
+
 	if (ts < lastTimeStamp) return;
 	const answer = atob(data.answer);
 	if (pc) {
