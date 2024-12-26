@@ -233,6 +233,9 @@ const dialog = useDialog();
 function handleMenuSelect(key: string) {
 	const targetRoute = router.getRoutes().find((r) => r.path === key);
 	if (targetRoute?.meta?.isFrame == "0") {
+		if (!key.startsWith("http")) {
+			key = `${window.location.protocol}//${window.location.host}${key}`;
+		}
 		window.open(key);
 		return;
 	}
