@@ -51,7 +51,7 @@ const options = [
 		windowOpne: true,
 	},
 	{
-		path: "https://road228.neteast.cn/dsj/index.html",
+		path: "/dsj/index.html",
 		icon: "big-events",
 		name: "大事记展示",
 		classStr: `top-16 -left-5 `,

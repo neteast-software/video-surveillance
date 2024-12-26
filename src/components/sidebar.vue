@@ -231,14 +231,19 @@ const menuInstRef = ref<MenuInst | null>(null);
 const dialog = useDialog();
 
 function handleMenuSelect(key: string) {
+	const targetRoute = router.getRoutes().find((r) => r.path === key);
+	if (targetRoute?.meta?.isFrame == "0") {
+		window.open(key);
+		return;
+	}
 	if (key.includes("http://") || key.includes("https://")) {
 		window.open(key);
 	} else {
 		router.push(key);
 	}
 }
+
 const menuKey = computed(() => {
-	// return router.currentRoute.value.path as string;
 	return route.path;
 });
 watch(route, (to) => {
