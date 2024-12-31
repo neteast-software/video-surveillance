@@ -25,7 +25,7 @@
 			class="flex justify-between items-center px-5 gap-x-6 lt-laptop-(gap-x-2 px-3)"
 		>
 			<NSelect
-				style="width: 128px; background: transparent"
+				style="background: transparent"
 				:value="status || undefined"
 				:options="statusOptions"
 				placeholder="设备状态"
@@ -48,7 +48,7 @@
 			>
 				<template #trigger>
 					<div
-						class="border-(1 solid greyLine) w-32 h-full rounded-1 text-#C2C2C2 flex-y-center justify-between px-2 cursor-pointer hover-border-primary truncate"
+						class="border-(1 solid greyLine) w-full h-full rounded-1 text-#C2C2C2 flex-y-center justify-between px-2 cursor-pointer hover-border-primary truncate"
 						:class="{
 							'text-basic': filter !== '',
 						}"
@@ -83,14 +83,6 @@
 					</div>
 				</div>
 			</NPopover>
-			<NSelect
-				style="width: 128px; background: transparent"
-				v-model:value="labels"
-				:options="labelOptions"
-				max-tag-count="responsive"
-				placeholder="设备标签"
-				clearable
-			></NSelect>
 		</header>
 		<section class="h-0 flex-1">
 			<NScrollbar>
